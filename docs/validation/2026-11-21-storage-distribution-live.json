@@ -1,0 +1,684 @@
+{
+  "gameTime": 58907,
+  "room": "W6N8",
+  "profile": {
+    "assignedCpu": 100,
+    "gclProgress": 415312
+  },
+  "territory": {
+    "version": 2,
+    "home": "W6N8",
+    "block": {
+      "minX": -10,
+      "maxX": -2,
+      "minY": -10,
+      "maxY": -2
+    }
+  },
+  "colony": {
+    "lastSeen": 58906,
+    "level": 4,
+    "energy": 1157,
+    "capacity": 1300,
+    "workers": 11,
+    "reason": "SPAWN_BUSY",
+    "economy": {
+      "lastTick": 58906,
+      "ticks": 149,
+      "harvested": 2980,
+      "upgradeEnergy": 1169,
+      "bySource": {
+        "6bb50772cca441b": 1490,
+        "0d080772ccae8f2": 1490
+      },
+      "sources": {
+        "6bb50772cca441b": {
+          "energy": 1520,
+          "capacity": 3000,
+          "regen": 152,
+          "requiredPerTick": 10,
+          "unusedLastCycle": 0
+        },
+        "0d080772ccae8f2": {
+          "energy": 1520,
+          "capacity": 3000,
+          "regen": 152,
+          "requiredPerTick": 10,
+          "unusedLastCycle": 10
+        }
+      },
+      "actors": [
+        "7c1a01db13e0865",
+        "78e701d417171ea",
+        "f11001d6719cdbc",
+        "3e9801f4071d873",
+        "4e0e01f49d164c5",
+        "301701f65cdec99",
+        "15ab01e43beee8a",
+        "b94101ee36c4e6f",
+        "6c5c01d751e859e",
+        "ff7c01d8fecc276",
+        "5cb501f73ca68c3",
+        "3a9501f7e5895b3"
+      ],
+      "lastWindow": {
+        "ticks": 300,
+        "harvested": 5980,
+        "upgradeEnergy": 3681,
+        "bySource": {
+          "0d080772ccae8f2": 2990,
+          "6bb50772cca441b": 2990
+        }
+      }
+    },
+    "planning": "BOOTSTRAP_PHASE_COMPLETE",
+    "plannerCursor": 140,
+    "routes": {
+      "6bb50772cca441b": {
+        "tick": 58858,
+        "roundTrip": 88,
+        "minerTravel": 210,
+        "reachable": true
+      },
+      "0d080772ccae8f2": {
+        "tick": 58858,
+        "roundTrip": 18,
+        "minerTravel": 35,
+        "reachable": true
+      }
+    },
+    "staffing": {
+      "minerWork": 10,
+      "haulCarry": 39,
+      "workerWork": 12,
+      "requiredMinerWork": 10,
+      "requiredHaulCarry": 22,
+      "requiredWorkerWork": 15
+    },
+    "miningSources": {
+      "6bb50772cca441b": {
+        "slots": 3,
+        "assigned": 1,
+        "waiting": 0
+      },
+      "0d080772ccae8f2": {
+        "slots": 1,
+        "assigned": 1,
+        "waiting": 0
+      }
+    },
+    "layout": {
+      "version": 1,
+      "buildings": [
+        {
+          "type": "spawn",
+          "x": 32,
+          "y": 19
+        },
+        {
+          "type": "tower",
+          "x": 35,
+          "y": 18
+        },
+        {
+          "type": "extension",
+          "x": 28,
+          "y": 17
+        },
+        {
+          "type": "extension",
+          "x": 29,
+          "y": 16
+        },
+        {
+          "type": "extension",
+          "x": 29,
+          "y": 18
+        },
+        {
+          "type": "extension",
+          "x": 31,
+          "y": 16
+        },
+        {
+          "type": "extension",
+          "x": 33,
+          "y": 16
+        },
+        {
+          "type": "extension",
+          "x": 35,
+          "y": 14
+        },
+        {
+          "type": "extension",
+          "x": 35,
+          "y": 16
+        },
+        {
+          "type": "extension",
+          "x": 35,
+          "y": 20
+        },
+        {
+          "type": "extension",
+          "x": 36,
+          "y": 15
+        },
+        {
+          "type": "extension",
+          "x": 36,
+          "y": 17
+        },
+        {
+          "type": "extension",
+          "x": 36,
+          "y": 19
+        },
+        {
+          "type": "extension",
+          "x": 37,
+          "y": 16
+        },
+        {
+          "type": "extension",
+          "x": 37,
+          "y": 18
+        },
+        {
+          "type": "extension",
+          "x": 37,
+          "y": 20
+        },
+        {
+          "type": "extension",
+          "x": 37,
+          "y": 26
+        },
+        {
+          "type": "extension",
+          "x": 38,
+          "y": 17
+        },
+        {
+          "type": "extension",
+          "x": 38,
+          "y": 19
+        },
+        {
+          "type": "extension",
+          "x": 38,
+          "y": 27
+        },
+        {
+          "type": "extension",
+          "x": 39,
+          "y": 20
+        },
+        {
+          "type": "extension",
+          "x": 39,
+          "y": 26
+        },
+        {
+          "type": "storage",
+          "x": 40,
+          "y": 17
+        }
+      ]
+    },
+    "expansion": {
+      "reason": "ACTIVE",
+      "remote": {
+        "room": "W6N9",
+        "sourceId": "326f0772c17e747",
+        "reason": "ACTIVE",
+        "travel": 24,
+        "carry": 12,
+        "checked": 58821,
+        "delivered": 23186,
+        "spawnEnergy": 11600,
+        "measuredTick": 58906,
+        "actors": [
+          "b9b101f2466a26d"
+        ],
+        "routeValid": true
+      }
+    }
+  },
+  "alerts": {},
+  "cpu": {
+    "samples": 100,
+    "average": 4.683504750000064,
+    "p95": 5.944581999999997,
+    "peak": 16.29845,
+    "bucket": 10000
+  },
+  "travelers": [
+    {
+      "name": "remoteMiner-W6N8-57487-483",
+      "room": "W6N9",
+      "x": 39,
+      "y": 43,
+      "ttl": 109,
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "memory": {
+        "role": "remoteMiner",
+        "home": "W6N8",
+        "working": false,
+        "targetRoom": "W6N9",
+        "sourceId": "326f0772c17e747",
+        "task": "REMOTE_HARVEST",
+        "lastAction": 0,
+        "_move": {
+          "dest": {
+            "x": 39,
+            "y": 43,
+            "room": "W6N9"
+          },
+          "time": 57548,
+          "path": "39432",
+          "room": "W6N9"
+        }
+      }
+    },
+    {
+      "name": "remoteHauler-W6N8-58661-492",
+      "room": "W6N8",
+      "x": 40,
+      "y": 16,
+      "ttl": 1325,
+      "spawning": false,
+      "store": {
+        "energy": 600
+      },
+      "memory": {
+        "role": "remoteHauler",
+        "home": "W6N8",
+        "working": true,
+        "targetRoom": "W6N9",
+        "sourceId": "326f0772c17e747",
+        "task": "REMOTE_RETURN",
+        "lastAction": -9,
+        "_move": {
+          "dest": {
+            "x": 40,
+            "y": 17,
+            "room": "W6N8"
+          },
+          "time": 58903,
+          "path": "40166",
+          "room": "W6N8"
+        }
+      }
+    }
+  ],
+  "objects": [
+    {
+      "type": "controller",
+      "id": "d9cf0772ccaa764",
+      "level": 4,
+      "progress": 235112,
+      "x": 38,
+      "y": 23
+    },
+    {
+      "type": "spawn",
+      "id": "066af9f43fefc16",
+      "name": "Spawn1",
+      "spawning": {
+        "name": "worker-W6N8-58892-497",
+        "needTime": 27,
+        "spawnTime": 58919
+      },
+      "store": {
+        "energy": 300
+      },
+      "storeCapacityResource": {
+        "energy": 300
+      },
+      "x": 32,
+      "y": 19
+    },
+    {
+      "type": "tower",
+      "id": "8470fa768bc4772",
+      "store": {
+        "energy": 1000
+      },
+      "storeCapacityResource": {
+        "energy": 1000
+      },
+      "x": 35,
+      "y": 18
+    },
+    {
+      "type": "storage",
+      "id": "2b9501623384a7a",
+      "store": {
+        "energy": 24400
+      },
+      "storeCapacity": 1000000,
+      "x": 40,
+      "y": 17
+    },
+    {
+      "type": "creep",
+      "id": "78e701d417171ea",
+      "name": "hauler-W6N8-57421-482",
+      "spawning": false,
+      "store": {
+        "energy": 201
+      },
+      "storeCapacity": 550,
+      "ttl": 79,
+      "body": {
+        "carry": 11,
+        "move": 11
+      },
+      "x": 31,
+      "y": 15,
+      "task": {
+        "role": "hauler",
+        "sourceId": "6bb50772cca441b",
+        "working": true,
+        "task": "HAUL_DELIVER",
+        "lastAction": -9
+      }
+    },
+    {
+      "type": "creep",
+      "id": "f11001d6719cdbc",
+      "name": "hauler-W6N8-57517-484",
+      "spawning": false,
+      "store": {
+        "energy": 300
+      },
+      "storeCapacity": 300,
+      "ttl": 145,
+      "body": {
+        "carry": 6,
+        "move": 6
+      },
+      "x": 30,
+      "y": 7,
+      "task": {
+        "role": "hauler",
+        "sourceId": "6bb50772cca441b",
+        "working": true,
+        "task": "HAUL_DELIVER",
+        "lastAction": -9
+      }
+    },
+    {
+      "type": "creep",
+      "id": "6c5c01d751e859e",
+      "name": "worker-W6N8-57553-485",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "storeCapacity": 150,
+      "ttl": 172,
+      "body": {
+        "work": 3,
+        "carry": 3,
+        "move": 3
+      },
+      "x": 36,
+      "y": 20,
+      "task": {
+        "role": "bootstrap",
+        "working": true,
+        "task": "UPGRADE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "ff7c01d8fecc276",
+      "name": "worker-W6N8-57622-486",
+      "spawning": false,
+      "store": {
+        "energy": 36
+      },
+      "storeCapacity": 150,
+      "ttl": 241,
+      "body": {
+        "work": 3,
+        "carry": 3,
+        "move": 3
+      },
+      "x": 38,
+      "y": 20,
+      "task": {
+        "role": "bootstrap",
+        "working": true,
+        "task": "UPGRADE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "7c1a01db13e0865",
+      "name": "distributor-W6N8-57707-488",
+      "spawning": false,
+      "store": {
+        "energy": 300
+      },
+      "storeCapacity": 300,
+      "ttl": 335,
+      "body": {
+        "carry": 6,
+        "move": 6
+      },
+      "x": 38,
+      "y": 18,
+      "task": {
+        "role": "distributor",
+        "working": true,
+        "task": "DISTRIBUTE_DELIVER",
+        "lastAction": -9
+      }
+    },
+    {
+      "type": "creep",
+      "id": "15ab01e43beee8a",
+      "name": "miner-W6N8-58084-489",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "storeCapacity": 0,
+      "ttl": 694,
+      "body": {
+        "work": 5,
+        "move": 1
+      },
+      "x": 16,
+      "y": 6,
+      "task": {
+        "role": "miner",
+        "sourceId": "6bb50772cca441b",
+        "miningSpot": {
+          "x": 16,
+          "y": 6
+        },
+        "working": false,
+        "task": "MINE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "b94101ee36c4e6f",
+      "name": "miner-W6N8-58494-491",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "storeCapacity": 0,
+      "ttl": 1104,
+      "body": {
+        "work": 5,
+        "move": 1
+      },
+      "x": 33,
+      "y": 14,
+      "task": {
+        "role": "miner",
+        "sourceId": "0d080772ccae8f2",
+        "miningSpot": {
+          "x": 33,
+          "y": 14
+        },
+        "working": false,
+        "task": "MINE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "b9b101f2466a26d",
+      "name": "remoteHauler-W6N8-58661-492",
+      "spawning": false,
+      "store": {
+        "energy": 600
+      },
+      "storeCapacity": 600,
+      "ttl": 1325,
+      "body": {
+        "carry": 12,
+        "move": 12
+      },
+      "x": 40,
+      "y": 16,
+      "task": {
+        "role": "remoteHauler",
+        "sourceId": "326f0772c17e747",
+        "working": true,
+        "task": "REMOTE_RETURN",
+        "lastAction": -9
+      }
+    },
+    {
+      "type": "creep",
+      "id": "3e9801f4071d873",
+      "name": "hauler-W6N8-58733-493",
+      "spawning": false,
+      "store": {
+        "energy": 81
+      },
+      "storeCapacity": 200,
+      "ttl": 1349,
+      "body": {
+        "carry": 4,
+        "move": 4
+      },
+      "x": 39,
+      "y": 19,
+      "task": {
+        "role": "hauler",
+        "sourceId": "0d080772ccae8f2",
+        "working": true,
+        "task": "HAUL_DELIVER",
+        "lastAction": -9
+      }
+    },
+    {
+      "type": "creep",
+      "id": "4e0e01f49d164c5",
+      "name": "hauler-W6N8-58757-494",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "storeCapacity": 600,
+      "ttl": 1421,
+      "body": {
+        "carry": 12,
+        "move": 12
+      },
+      "x": 31,
+      "y": 6,
+      "task": {
+        "role": "hauler",
+        "sourceId": "6bb50772cca441b",
+        "working": false,
+        "task": "HAUL_PICKUP",
+        "lastAction": -9
+      }
+    },
+    {
+      "type": "creep",
+      "id": "301701f65cdec99",
+      "name": "hauler-W6N8-58829-495",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "storeCapacity": 300,
+      "ttl": 1457,
+      "body": {
+        "carry": 6,
+        "move": 6
+      },
+      "x": 38,
+      "y": 16,
+      "task": {
+        "role": "hauler",
+        "sourceId": "6bb50772cca441b",
+        "working": false,
+        "task": "HAUL_STORAGE_WITHDRAW",
+        "lastAction": -9
+      }
+    },
+    {
+      "type": "creep",
+      "id": "5cb501f73ca68c3",
+      "name": "worker-W6N8-58865-496",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "storeCapacity": 150,
+      "ttl": 1484,
+      "body": {
+        "work": 3,
+        "carry": 3,
+        "move": 3
+      },
+      "x": 40,
+      "y": 20,
+      "task": {
+        "role": "bootstrap",
+        "working": false,
+        "task": "WAIT_HAUL_DELIVERY"
+      }
+    },
+    {
+      "type": "creep",
+      "id": "3a9501f7e5895b3",
+      "name": "worker-W6N8-58892-497",
+      "spawning": true,
+      "store": {
+        "energy": 0
+      },
+      "storeCapacity": 150,
+      "body": {
+        "work": 3,
+        "carry": 3,
+        "move": 3
+      },
+      "x": 32,
+      "y": 19,
+      "task": {
+        "role": "bootstrap",
+        "working": false
+      }
+    }
+  ]
+}

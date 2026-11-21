@@ -86,7 +86,7 @@ No fixed full-base footprint is required. Plan structures individually or in sma
 7. Produce RCL-specific construction phases and future reserved tiles. Complete survival infrastructure before optional industry or expensive defenses.
 8. Validate legality, structure limits, connectivity, and critical ranges before placing construction sites. Respect the global construction-site limit.
 
-Store plan version, selected candidate, score components, validation results, and unmet requirements. Planning runs incrementally with a CPU cap and resumes after resets. Replan on meaningful terrain/structure constraints or an explicit revision, not every tick.
+Store plan version, selected candidate, score components, validation results, and unmet requirements. Planning runs incrementally with a CPU cap and resumes after resets. Replan on meaningful terrain/structure constraints or an explicit revision, not every tick. Preserve established building coordinates across destruction; reconstruction restores the saved location before placing new capacity elsewhere. The bootstrap implementation now records and restores these positions; see [reconstruction validation](validation/2026-11-21-building-reconstruction.md).
 
 If a complete preferred layout does not fit, try distributed and reduced optional infrastructure layouts while retaining a functioning colony. Report genuine impossibilities with the failed constraints. Never silently remove a room from the colonization list. Do not destroy the sole spawn or functioning infrastructure to implement a new plan; relocation requires a separately tested staged procedure.
 
@@ -186,3 +186,7 @@ Reserve lawful Power Spawn space in mature dynamic layouts now. Implement proces
 For each subsystem maintain a short ledger of API assumptions, official source URL, verification date, local engine version, and tests that exercise consequential behavior. Consult the [current API](https://docs.screeps.com/api/), [official changelogs](https://blog.screeps.com/categories/Changelogs/), and relevant official engine code. Verify behavior when sources conflict. Documentation age alone is not a diagnosis of the previous bots' failures.
 
 Keep the README focused on setup and operation; document module contracts, memory fields, planner constraints, recovery behavior, and report definitions beside the implementation. Update this plan as measured results change priorities, preserving the fixed territory and autonomy requirements.
+
+## Expansion implementation update — November 21, 2026
+
+The first storage/scouting/remote slice adds RCL 4 storage, a bounded block survey, one adjacent unguarded source per home, dedicated remote transport/mining, and optional two-CLAIM reservation. Home staffing, defense refills, reconstruction, CPU, and energy reserves gate spending. Threats, stale vision, missing storage and invalid routes pause operations. This does not complete milestones 2–3: mature layouts, raids, blocked-route recovery scenarios, multiple replacement-cycle delivery measurements, and unassisted RCL 6 remain open. See [contracts](CORE_BOT.md#scouting-remote-mining-and-storage) and [validation](validation/2026-11-21-scouting-remotes-storage.md).
