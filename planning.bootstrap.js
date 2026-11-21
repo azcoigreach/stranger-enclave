@@ -1,7 +1,8 @@
 'use strict';
+const layout = require('planning.layout');
 
 /** Incremental bootstrap extension/tower placement, not the full mature planner.
- * Stores only cursor/status in the colony record. At most 12 candidates and one site
+ * Stores cursor/status plus the established layout in the colony record. At most 12 candidates and one site
  * per scheduled run. Preserves reachable tiles around all critical objects/exits.
  */
 
@@ -55,14 +56,16 @@ function preservesAccess(colony, x, y) {
 
 /** @param {ColonySnapshot} colony @param {ColonyRecord} record @param {() => boolean} allowed */
 function run(colony, record, allowed) {
-  if (!colony.spawns.length) { record.planning = 'NO_ANCHOR_SPAWN'; return; }
+  layout.observe(colony, record);
   if (colony.hostiles.length) { record.planning = 'HOSTILES_PRESENT'; return; }
   if (colony.sites.length >= 3 || Object.keys(Game.constructionSites).length >= MAX_CONSTRUCTION_SITES) {
     record.planning = 'CONSTRUCTION_BACKLOG'; return;
   }
+  if (layout.rebuild(colony, record, allowed)) return;
+  if (!colony.spawns.length) { record.planning = 'NO_ANCHOR_SPAWN'; return; }
   const existing = [...colony.structures, ...colony.sites];
-  const type = [STRUCTURE_TOWER, STRUCTURE_EXTENSION].find(t =>
-    existing.filter(s => s.structureType === t).length < CONTROLLER_STRUCTURES[t][colony.controller.level]);
+  const type = [STRUCTURE_TOWER, STRUCTURE_STORAGE, STRUCTURE_EXTENSION].find(t =>
+    existing.filter(s => s.structureType === t).length < (CONTROLLER_STRUCTURES[t][colony.controller.level] || 0));
   if (!type) { record.planning = 'BOOTSTRAP_PHASE_COMPLETE'; return; }
   const anchor = colony.spawns[0].pos;
   const terrain = colony.room.getTerrain();
@@ -83,6 +86,7 @@ function run(colony, record, allowed) {
       Math.max(Math.abs(s.pos.x - x), Math.abs(s.pos.y - y)) <= 2)) continue;
     if (!preservesAccess(colony, x, y)) continue;
     const result = colony.room.createConstructionSite(x, y, type);
+    if (result === OK) layout.rememberSite(record, { type, x, y });
     record.planning = result === OK ? `PLACED_${type}_${x}_${y}` : `SITE_FAILED_${result}`;
     return;
   }

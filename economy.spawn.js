@@ -3,6 +3,7 @@
 const config = require('core.config');
 const demand = require('economy.demand');
 const production = require('economy.production');
+const operations = require('operations.remote');
 
 /** Pure bootstrap body selection. The first two workers always use the 200-energy rescue body.
  * @param {number} energy @param {number} active @returns {BodyPartConstant[]}
@@ -43,7 +44,7 @@ function run(colony, memory, record) {
   /** @type {SpawnRequest | null} */
   let request = null;
   if (plan.specialized && viable + pending >= 2) {
-    request = production.request(colony, plan);
+    request = production.request(colony, plan) || operations.request(colony, memory, record);
     if (!request) { record.reason = 'THROUGHPUT_READY'; return; }
     body = request.body;
   } else if (viable + pending >= desired) { record.reason = 'WORKFORCE_READY'; return; }
@@ -55,8 +56,11 @@ function run(colony, memory, record) {
   const role = request ? request.role : 'bootstrap';
   const name = `${role === 'bootstrap' ? 'worker' : role}-${colony.room.name}-${Game.time}-${memory.sequence++}`;
   const result = spawn.spawnCreep(body, name, {
-    memory: { role, home: colony.room.name, working: false, ...(request && request.sourceId ? { sourceId: request.sourceId } : {}) },
+    memory: { role, home: colony.room.name, working: false, ...(request && request.targetRoom ? {targetRoom:request.targetRoom} : {}), ...(request && request.sourceId ? { sourceId: request.sourceId } : {}) },
   });
+  if (result === OK && request && request.targetRoom && record.expansion && record.expansion.remote) {
+    record.expansion.remote.spawnEnergy += cost;
+  }
   record.spawnResult = result;
   record.reason = result === OK ? (request ? `SPAWNING_${request.role.toUpperCase()}_${request.reason}` :
     (active.length < 2 ? 'SPAWNING_RECOVERY_WORKER' : 'SPAWNING_WORKER')) : `SPAWN_FAILED_${result}`;

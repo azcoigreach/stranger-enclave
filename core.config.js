@@ -8,4 +8,6 @@ module.exports = Object.freeze({
   optionalCpuFraction: 0.7,
   maxWorkerUnits: 3,
   downgradeUrgency: 3000,
+  storageWorkerRefillTicks: 15,
+  storageWorkerBufferTicks: 30,
 });

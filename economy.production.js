@@ -31,6 +31,15 @@ function request(colony, plan) {
       requests.push({ role: 'hauler', sourceId: source.id, body, priority: carry === 0 ? 1 : 3, reason: 'SOURCE_HAUL_DEFICIT' });
     }
   }
+  const storage = colony.room.storage;
+  if (storage && storage.my && storage.store.getUsedCapacity(RESOURCE_ENERGY) > 0 &&
+    !colony.workers.some(c => c.memory.role === 'distributor' && viable(c, 25))) {
+    const pairs = Math.min(6, Math.floor(capacity / (BODYPART_COST[CARRY] + BODYPART_COST[MOVE])));
+    /** @type {BodyPartConstant[]} */
+    const body = [];
+    for (let i = 0; i < pairs; i++) body.push(CARRY, MOVE);
+    if (body.length) requests.push({role:'distributor', body, priority:3, reason:'STORAGE_DELIVERY'});
+  }
   const workers = colony.workers.filter(c => c.memory.role === 'bootstrap' && viable(c, 50));
   const workerWork = workers.reduce((sum, c) => sum + demand.parts(c, WORK), 0);
   if (workerWork < plan.workerWork) {

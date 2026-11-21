@@ -13,7 +13,7 @@ function run(colony, block, reservations) {
   if (!territory.contains(colony.room.name, block)) return;
   const center = colony.controller.pos, terrain = colony.room.getTerrain(), origin = colony.spawns[0]?.pos;
   if (!origin) return;
-  const carriers = colony.workers.filter(c => !c.spawning && c.memory.role === 'hauler' &&
+  const carriers = colony.workers.filter(c => !c.spawning && (c.memory.role === 'hauler' || c.memory.role === 'distributor') &&
     c.memory.home === colony.room.name && c.pos.inRangeTo(center, 3)).sort((a, b) => a.name.localeCompare(b.name));
   if (!carriers.length) return;
   const key = (/** @type {{x: number, y: number}} */ p) => `${p.x},${p.y}`;

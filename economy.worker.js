@@ -74,7 +74,7 @@ function run(creep, colony, block, deliveries) {
   if (creep.spawning || deliveries.has(`traffic:${creep.id}`)) return;
   if (creep.room.name !== creep.memory.home) { creep.memory.task = 'OUTSIDE_HOME'; return; }
   if (creep.memory.role === 'miner') return miner.run(creep, colony, block);
-  if (creep.memory.role === 'hauler') return hauler.run(creep, colony, block, deliveries);
+  if (creep.memory.role === 'hauler' || creep.memory.role === 'distributor') return hauler.run(creep, colony, block, deliveries);
   const generalists = colony.workers.filter(c => !c.spawning && c.memory.role === 'bootstrap');
   const developed = demand.specialized(colony);
   const fed = colony.workers.some(c => !c.spawning && c.memory.role === 'miner') &&

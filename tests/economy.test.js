@@ -91,7 +91,7 @@ test('movement rejects cross-room targets and blocks edges on local paths', () =
 
 test('tower fire precedes worker actions against a hostile', () => {
   const h = harness(); const { room, objects } = h.addRoom();
-  const order = [], enemy = { id: 'enemy', hits: 100, pos: position(30, 30) };
+  const order = [], enemy = { id: 'enemy', body: [{type:'attack',hits:100}], hits: 100, pos: position(30, 30) };
   objects[h.constants.FIND_HOSTILE_CREEPS] = [enemy];
   objects[h.constants.FIND_STRUCTURES].push({ id: 'tower', pos: position(26, 25), structureType: 'tower', my: true, store: store(1000, 1000),
     attack: target => { assert.equal(target, enemy); order.push('tower'); } });

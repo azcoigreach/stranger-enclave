@@ -19,7 +19,7 @@ function move(creep, target, range, block) {
     ? last.stuck + 1 : 0;
   creep.memory.motion = { x: creep.pos.x, y: creep.pos.y, tick: Game.time, stuck };
   const controller = creep.room.controller;
-  const carrier = creep.memory.role === 'hauler' && controller && controller.my;
+  const carrier = (creep.memory.role === 'hauler' || creep.memory.role === 'distributor') && controller && controller.my;
   const nearFormation = carrier && creep.pos.inRangeTo(controller, 4);
   return creep.moveTo(target, {
     range, maxRooms: 1, maxOps: 1500, reusePath: stuck >= 2 || nearFormation ? 0 : 5,
