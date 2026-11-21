@@ -1,0 +1,223 @@
+{
+  "gameTime": 2226,
+  "room": "W5N1",
+  "profile": {
+    "assignedCpu": 100,
+    "gclProgress": 341
+  },
+  "code": [
+    {
+      "branch": "stranger-enclave",
+      "modules": [
+        "colony.snapshot",
+        "core.config",
+        "core.memory",
+        "core.runtime",
+        "defense.basic",
+        "economy.spawn",
+        "economy.worker",
+        "main",
+        "movement.local",
+        "planning.bootstrap",
+        "reporting.console",
+        "territory.policy"
+      ]
+    }
+  ],
+  "territory": {
+    "version": 2,
+    "home": "W5N1",
+    "block": {
+      "minX": -10,
+      "maxX": -2,
+      "minY": -10,
+      "maxY": -2
+    }
+  },
+  "colony": {
+    "lastSeen": 2225,
+    "level": 2,
+    "energy": 300,
+    "capacity": 300,
+    "workers": 4,
+    "desired": 4,
+    "reason": "WORKFORCE_READY",
+    "planning": "PLACED_extension_17_26",
+    "plannerCursor": 15
+  },
+  "alerts": {},
+  "cpu": {
+    "samples": 100,
+    "average": 1.6083058499999507,
+    "p95": 4.799637999999959,
+    "peak": 5.765059000000001,
+    "bucket": 10000
+  },
+  "objects": [
+    {
+      "type": "controller",
+      "level": 2,
+      "progress": 141,
+      "x": 11,
+      "y": 31
+    },
+    {
+      "type": "spawn",
+      "name": "Spawn1",
+      "spawning": null,
+      "store": {
+        "energy": 300
+      },
+      "x": 20,
+      "y": 27
+    },
+    {
+      "type": "creep",
+      "name": "worker-W5N1-1673-0",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "x": 15,
+      "y": 25,
+      "task": {
+        "role": "bootstrap",
+        "home": "W5N1",
+        "working": false,
+        "sourceId": "1983077378536b5",
+        "task": "HARVEST",
+        "lastAction": -9,
+        "motion": {
+          "x": 15,
+          "y": 26,
+          "tick": 2225,
+          "stuck": 0
+        },
+        "_move": {
+          "dest": {
+            "x": 6,
+            "y": 19,
+            "room": "W5N1"
+          },
+          "time": 2223,
+          "path": "1525111188887777",
+          "room": "W5N1"
+        }
+      }
+    },
+    {
+      "type": "creep",
+      "name": "worker-W5N1-1744-1",
+      "spawning": false,
+      "store": {
+        "energy": 50
+      },
+      "x": 25,
+      "y": 38,
+      "task": {
+        "role": "bootstrap",
+        "home": "W5N1",
+        "working": true,
+        "sourceId": "391a07737856592",
+        "task": "BUILD",
+        "lastAction": -9,
+        "motion": {
+          "x": 25,
+          "y": 38,
+          "tick": 2225,
+          "stuck": 0
+        },
+        "_move": {
+          "dest": {
+            "x": 17,
+            "y": 26,
+            "room": "W5N1"
+          },
+          "time": 2220,
+          "path": "25388888888888",
+          "room": "W5N1"
+        }
+      }
+    },
+    {
+      "type": "creep",
+      "name": "worker-W5N1-1834-2",
+      "spawning": false,
+      "store": {
+        "energy": 44
+      },
+      "x": 7,
+      "y": 18,
+      "task": {
+        "role": "bootstrap",
+        "home": "W5N1",
+        "working": false,
+        "sourceId": "1983077378536b5",
+        "task": "HARVEST",
+        "lastAction": 0,
+        "motion": {
+          "x": 8,
+          "y": 18,
+          "tick": 2203,
+          "stuck": 0
+        },
+        "_move": {
+          "dest": {
+            "x": 6,
+            "y": 19,
+            "room": "W5N1"
+          },
+          "time": 2203,
+          "path": "07187",
+          "room": "W5N1"
+        }
+      }
+    },
+    {
+      "type": "creep",
+      "name": "worker-W5N1-1913-3",
+      "spawning": false,
+      "store": {
+        "energy": 14
+      },
+      "x": 30,
+      "y": 46,
+      "task": {
+        "role": "bootstrap",
+        "home": "W5N1",
+        "working": false,
+        "sourceId": "391a07737856592",
+        "task": "HARVEST",
+        "lastAction": 0,
+        "motion": {
+          "x": 31,
+          "y": 45,
+          "tick": 2218,
+          "stuck": 0
+        },
+        "_move": {
+          "dest": {
+            "x": 29,
+            "y": 46,
+            "room": "W5N1"
+          },
+          "time": 2215,
+          "path": "30466",
+          "room": "W5N1"
+        }
+      }
+    },
+    {
+      "type": "constructionSite",
+      "progress": 27,
+      "x": 17,
+      "y": 24
+    },
+    {
+      "type": "constructionSite",
+      "progress": 0,
+      "x": 17,
+      "y": 26
+    }
+  ]
+}

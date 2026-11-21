@@ -1,0 +1,14 @@
+{
+  "colony.snapshot.js": "0e3d44fd24974820d5966bf69832e743fb12404ee225c2c67a1ba4a09ba32768",
+  "core.config.js": "782ef7cc3d7d1dc6cab90fede64acc03d57f286867edc1ee45ba164f931f8dad",
+  "core.memory.js": "7a1f361ed53c299f109e95b37bdc7374b63086ad0da7c71756b728439fc1d36e",
+  "core.runtime.js": "eb667ceb9193c690a82811a30aa4b345c50fefb901dc493ecf0b42558fb3acb9",
+  "defense.basic.js": "90602dde5cf58b98150a1783917c1625f1867b6401455d062460fbbbe1a44ab5",
+  "economy.spawn.js": "9c833de41067ca16cb97e6efdda8d601ec85e336d530e687184e10a11ff9e4fe",
+  "economy.worker.js": "5917df4b805d3b8c8def18d436df5fba2845583bf3470b44905290cf226b6fb9",
+  "main.js": "a12cf1028d04da3603945f1a5706c2ff082cf8091f382ddb00593b69893af6b0",
+  "movement.local.js": "ce69a20effb2cae51ce7d8fdd38c6b9299bcc816d2577a31d1eabbffb32fad00",
+  "planning.bootstrap.js": "12877ae14528da2064a37f6d260cf1f47a54553a3750a2ecd00e99672df2dc8f",
+  "reporting.console.js": "b71a4b33204b849c3c5fcbe342e7e81ad3538c0d47f857e06b0363da1c46343b",
+  "territory.policy.js": "10ba42c2e742abc7b835c18fb06e9b2b34ca6d77edc02772534c6ef7f656e594"
+}

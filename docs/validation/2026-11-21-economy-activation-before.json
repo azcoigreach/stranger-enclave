@@ -1,0 +1,196 @@
+{
+  "gameTime": 24632,
+  "room": "W5N1",
+  "profile": {
+    "assignedCpu": 100,
+    "gclProgress": 35220
+  },
+  "code": [
+    {
+      "branch": "stranger-enclave",
+      "modules": [
+        "colony.snapshot",
+        "core.config",
+        "core.memory",
+        "core.runtime",
+        "defense.basic",
+        "economy.demand",
+        "economy.hauler",
+        "economy.metrics",
+        "economy.miner",
+        "economy.production",
+        "economy.spawn",
+        "economy.worker",
+        "main",
+        "movement.local",
+        "planning.bootstrap",
+        "reporting.console",
+        "territory.policy"
+      ]
+    }
+  ],
+  "territory": {
+    "version": 2,
+    "home": "W5N1",
+    "block": {
+      "minX": -10,
+      "maxX": -2,
+      "minY": -10,
+      "maxY": -2
+    }
+  },
+  "colony": {
+    "lastSeen": 24631,
+    "level": 2,
+    "energy": 550,
+    "capacity": 550,
+    "workers": 4,
+    "desired": 4,
+    "reason": "WORKFORCE_READY",
+    "planning": "BOOTSTRAP_PHASE_COMPLETE",
+    "plannerCursor": 18
+  },
+  "alerts": {},
+  "cpu": {
+    "samples": 100,
+    "average": 1.0634729999999535,
+    "p95": 1.31225900000004,
+    "peak": 5.656348000000001,
+    "bucket": 10000
+  },
+  "objects": [
+    {
+      "type": "source",
+      "id": "1983077378536b5",
+      "energy": 3000,
+      "energyCapacity": 3000,
+      "regen": null,
+      "x": 6,
+      "y": 19
+    },
+    {
+      "type": "controller",
+      "id": "be770773785ba16",
+      "level": 2,
+      "progress": 35020,
+      "x": 11,
+      "y": 31
+    },
+    {
+      "type": "source",
+      "id": "391a07737856592",
+      "energy": 2800,
+      "energyCapacity": 3000,
+      "regen": 131,
+      "x": 29,
+      "y": 46
+    },
+    {
+      "type": "spawn",
+      "id": "f199f41e175322d",
+      "name": "Spawn1",
+      "spawning": null,
+      "store": {
+        "energy": 300
+      },
+      "x": 20,
+      "y": 27
+    },
+    {
+      "type": "creep",
+      "id": "6a17f745aec1e57",
+      "name": "worker-W5N1-23237-60",
+      "spawning": false,
+      "store": {
+        "energy": 30
+      },
+      "ttl": 122,
+      "body": {
+        "work": 2,
+        "carry": 2,
+        "move": 2
+      },
+      "x": 14,
+      "y": 30,
+      "task": {
+        "role": "bootstrap",
+        "sourceId": "391a07737856592",
+        "working": true,
+        "task": "UPGRADE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "60ddf747e16cb59",
+      "name": "worker-W5N1-23255-61",
+      "spawning": false,
+      "store": {
+        "energy": 50
+      },
+      "ttl": 131,
+      "body": {
+        "work": 1,
+        "carry": 1,
+        "move": 1
+      },
+      "x": 31,
+      "y": 42,
+      "task": {
+        "role": "bootstrap",
+        "sourceId": "391a07737856592",
+        "working": true,
+        "task": "UPGRADE",
+        "lastAction": -9
+      }
+    },
+    {
+      "type": "creep",
+      "id": "c388f75722b6aed",
+      "name": "worker-W5N1-23380-62",
+      "spawning": false,
+      "store": {
+        "energy": 92
+      },
+      "ttl": 265,
+      "body": {
+        "work": 2,
+        "carry": 2,
+        "move": 2
+      },
+      "x": 13,
+      "y": 28,
+      "task": {
+        "role": "bootstrap",
+        "sourceId": "1983077378536b5",
+        "working": true,
+        "task": "UPGRADE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "799df760c7b5788",
+      "name": "worker-W5N1-23450-63",
+      "spawning": false,
+      "store": {
+        "energy": 38
+      },
+      "ttl": 335,
+      "body": {
+        "work": 2,
+        "carry": 2,
+        "move": 2
+      },
+      "x": 14,
+      "y": 28,
+      "task": {
+        "role": "bootstrap",
+        "sourceId": "1983077378536b5",
+        "working": true,
+        "task": "UPGRADE",
+        "lastAction": 0
+      }
+    }
+  ]
+}

@@ -1,0 +1,40 @@
+[
+  {
+    "phase": "before",
+    "gameTime": 52373,
+    "towers": [
+      {
+        "type": "tower",
+        "id": "2837f8ad1898754",
+        "store": {
+          "energy": 500
+        },
+        "storeCapacityResource": {
+          "energy": 1000
+        },
+        "x": 19,
+        "y": 30
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "phase": "after",
+    "gameTime": 53233,
+    "towers": [
+      {
+        "type": "tower",
+        "id": "2837f8ad1898754",
+        "store": {
+          "energy": 1000
+        },
+        "storeCapacityResource": {
+          "energy": 1000
+        },
+        "x": 19,
+        "y": 30
+      }
+    ],
+    "alerts": {}
+  }
+]

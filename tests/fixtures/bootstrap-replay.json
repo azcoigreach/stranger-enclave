@@ -1,0 +1,44 @@
+{
+  "name": "bootstrap-shortage-and-recovery",
+  "room": "E23S47",
+  "steps": [
+    {
+      "tick": 1, "energy": 200,
+      "expect": { "spawnReason": "SPAWNING_RECOVERY_WORKER", "spawnBodies": [["work", "carry", "move"]], "actions": {} }
+    },
+    {
+      "tick": 2, "energy": 0, "spawning": "worker-E23S47-1-0",
+      "workers": { "worker-E23S47-1-0": { "energy": 0, "spawning": true } },
+      "expect": { "spawnReason": "SPAWN_BUSY", "spawnBodies": [], "actions": { "worker-E23S47-1-0": [] } }
+    },
+    {
+      "tick": 10, "energy": 199, "spawning": null,
+      "workers": { "worker-E23S47-1-0": { "spawning": false, "energy": 0 } },
+      "expect": { "spawnReason": "WAITING_FOR_200_ENERGY", "spawnBodies": [], "actions": { "worker-E23S47-1-0": ["harvest"] } }
+    },
+    {
+      "tick": 11, "energy": 199, "spawnEnergy": 0,
+      "workers": { "worker-E23S47-1-0": { "energy": 50, "actionResults": { "transfer": -9 } } },
+      "expect": { "spawnReason": "WAITING_FOR_200_ENERGY", "actions": { "worker-E23S47-1-0": ["transfer", "move"] }, "tasks": { "worker-E23S47-1-0": "REFILL" } }
+    },
+    {
+      "tick": 12, "energy": 199,
+      "workers": { "worker-E23S47-1-0": { "energy": 50, "actionResults": { "transfer": 0 } } },
+      "expect": { "actions": { "worker-E23S47-1-0": ["transfer"] } }
+    },
+    {
+      "tick": 13, "energy": 200, "spawnEnergy": 50, "spawnResult": -6,
+      "workers": { "worker-E23S47-1-0": { "energy": 0 } },
+      "expect": { "spawnReason": "SPAWN_FAILED_-6", "spawnBodies": [["work", "carry", "move"]], "actions": { "worker-E23S47-1-0": ["harvest"] } }
+    },
+    {
+      "tick": 14, "energy": 200, "spawnResult": 0,
+      "expect": { "spawnReason": "SPAWNING_RECOVERY_WORKER", "spawnBodies": [["work", "carry", "move"]] }
+    },
+    {
+      "tick": 30, "energy": 600, "spawning": null,
+      "workers": { "worker-E23S47-1-0": { "remove": true } },
+      "expect": { "spawnReason": "SPAWNING_RECOVERY_WORKER", "spawnBodies": [["work", "carry", "move"]], "actions": {}, "creepMemory": [] }
+    }
+  ]
+}

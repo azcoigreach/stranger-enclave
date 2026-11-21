@@ -1,0 +1,211 @@
+{
+  "gameTime": 23173,
+  "room": "W5N1",
+  "profile": {
+    "assignedCpu": 100,
+    "gclProgress": 31948
+  },
+  "code": [
+    {
+      "branch": "stranger-enclave",
+      "modules": [
+        "colony.snapshot",
+        "core.config",
+        "core.memory",
+        "core.runtime",
+        "defense.basic",
+        "economy.spawn",
+        "economy.worker",
+        "main",
+        "movement.local",
+        "planning.bootstrap",
+        "reporting.console",
+        "territory.policy"
+      ]
+    }
+  ],
+  "territory": {
+    "version": 2,
+    "home": "W5N1",
+    "block": {
+      "minX": -10,
+      "maxX": -2,
+      "minY": -10,
+      "maxY": -2
+    }
+  },
+  "colony": {
+    "lastSeen": 23172,
+    "level": 2,
+    "energy": 550,
+    "capacity": 550,
+    "workers": 4,
+    "desired": 4,
+    "reason": "WORKFORCE_READY",
+    "planning": "BOOTSTRAP_PHASE_COMPLETE",
+    "plannerCursor": 18
+  },
+  "alerts": {},
+  "cpu": {
+    "samples": 100,
+    "average": 1.0252259699989372,
+    "p95": 1.281459999998333,
+    "peak": 1.424724000000424,
+    "bucket": 10000
+  },
+  "objects": [
+    {
+      "type": "controller",
+      "level": 2,
+      "progress": 31748,
+      "x": 11,
+      "y": 31
+    },
+    {
+      "type": "spawn",
+      "name": "Spawn1",
+      "spawning": null,
+      "store": {
+        "energy": 300
+      },
+      "x": 20,
+      "y": 27
+    },
+    {
+      "type": "creep",
+      "name": "worker-W5N1-21797-56",
+      "spawning": false,
+      "store": {
+        "energy": 78
+      },
+      "x": 13,
+      "y": 28,
+      "task": {
+        "role": "bootstrap",
+        "home": "W5N1",
+        "working": true,
+        "sourceId": "1983077378536b5",
+        "task": "UPGRADE",
+        "lastAction": 0,
+        "motion": {
+          "x": 14,
+          "y": 27,
+          "tick": 23161,
+          "stuck": 2
+        },
+        "_move": {
+          "dest": {
+            "x": 11,
+            "y": 31,
+            "room": "W5N1"
+          },
+          "time": 23158,
+          "path": "14285",
+          "room": "W5N1"
+        }
+      }
+    },
+    {
+      "type": "creep",
+      "name": "worker-W5N1-21815-57",
+      "spawning": false,
+      "store": {
+        "energy": 26
+      },
+      "x": 30,
+      "y": 46,
+      "task": {
+        "role": "bootstrap",
+        "home": "W5N1",
+        "working": false,
+        "sourceId": "391a07737856592",
+        "task": "HARVEST",
+        "lastAction": 0,
+        "motion": {
+          "x": 31,
+          "y": 45,
+          "tick": 23159,
+          "stuck": 0
+        },
+        "_move": {
+          "dest": {
+            "x": 29,
+            "y": 46,
+            "room": "W5N1"
+          },
+          "time": 23157,
+          "path": "30466",
+          "room": "W5N1"
+        }
+      }
+    },
+    {
+      "type": "creep",
+      "name": "worker-W5N1-21940-58",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "x": 13,
+      "y": 20,
+      "task": {
+        "role": "bootstrap",
+        "home": "W5N1",
+        "working": false,
+        "sourceId": "1983077378536b5",
+        "task": "HARVEST",
+        "lastAction": -9,
+        "motion": {
+          "x": 14,
+          "y": 21,
+          "tick": 23172,
+          "stuck": 1
+        },
+        "_move": {
+          "dest": {
+            "x": 6,
+            "y": 19,
+            "room": "W5N1"
+          },
+          "time": 23170,
+          "path": "13208887777",
+          "room": "W5N1"
+        }
+      }
+    },
+    {
+      "type": "creep",
+      "name": "worker-W5N1-22010-59",
+      "spawning": false,
+      "store": {
+        "energy": 100
+      },
+      "x": 14,
+      "y": 21,
+      "task": {
+        "role": "bootstrap",
+        "home": "W5N1",
+        "working": true,
+        "sourceId": "1983077378536b5",
+        "task": "UPGRADE",
+        "lastAction": -9,
+        "motion": {
+          "x": 13,
+          "y": 20,
+          "tick": 23172,
+          "stuck": 1
+        },
+        "_move": {
+          "dest": {
+            "x": 11,
+            "y": 31,
+            "room": "W5N1"
+          },
+          "time": 23172,
+          "path": "142144556666",
+          "room": "W5N1"
+        }
+      }
+    }
+  ]
+}

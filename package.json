@@ -1,0 +1,14 @@
+{
+  "name": "stranger-enclave",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Root-module Screeps bot for a fixed 9x9 block",
+  "scripts": {
+    "check": "node tools/check.js && tsc --noEmit",
+    "test": "node --test --test-timeout=10000 tests/*.test.js",
+    "test:determinism": "node tools/check-determinism.js",
+    "validate": "npm run check && npm test && npm run test:determinism"
+  },
+  "engines": { "node": ">=22" },
+  "devDependencies": { "@types/screeps": "3.4.0", "typescript": "7.0.2" }
+}
