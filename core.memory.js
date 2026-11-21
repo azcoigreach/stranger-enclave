@@ -60,7 +60,7 @@ function initialize() {
   if (!Memory.creeps) Memory.creeps = {};
   const spawning = new Set(Object.values(Game.spawns).filter(s => s.spawning).map(s => s.spawning && s.spawning.name));
   for (const name of Object.keys(Memory.creeps)) {
-    if (['bootstrap', 'miner', 'hauler'].includes(Memory.creeps[name].role || '') && !Game.creeps[name] && !spawning.has(name)) {
+    if (['bootstrap', 'miner', 'hauler', 'distributor', 'scout', 'remoteMiner', 'remoteHauler', 'reserver'].includes(Memory.creeps[name].role || '') && !Game.creeps[name] && !spawning.has(name)) {
       delete Memory.creeps[name];
     }
   }

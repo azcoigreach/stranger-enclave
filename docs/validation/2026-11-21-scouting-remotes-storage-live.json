@@ -1,0 +1,1893 @@
+{
+  "gameTime": 48113,
+  "room": "W6N8",
+  "profile": {
+    "assignedCpu": 100,
+    "gclProgress": 319349
+  },
+  "code": [
+    {
+      "branch": "stranger-enclave",
+      "modules": [
+        "colony.snapshot",
+        "core.config",
+        "core.memory",
+        "core.runtime",
+        "defense.basic",
+        "economy.demand",
+        "economy.hauler",
+        "economy.metrics",
+        "economy.miner",
+        "economy.mining",
+        "economy.production",
+        "economy.spawn",
+        "economy.stations",
+        "economy.worker",
+        "main",
+        "movement.controller",
+        "movement.local",
+        "movement.remote",
+        "operations.remote",
+        "operations.roles",
+        "operations.scout",
+        "planning.bootstrap",
+        "planning.layout",
+        "reporting.console",
+        "territory.intel",
+        "territory.policy"
+      ]
+    }
+  ],
+  "territory": {
+    "version": 2,
+    "home": "W6N8",
+    "block": {
+      "minX": -10,
+      "maxX": -2,
+      "minY": -10,
+      "maxY": -2
+    }
+  },
+  "colony": {
+    "lastSeen": 48112,
+    "level": 4,
+    "energy": 1300,
+    "capacity": 1300,
+    "workers": 11,
+    "reason": "THROUGHPUT_READY",
+    "economy": {
+      "lastTick": 48112,
+      "ticks": 155,
+      "harvested": 3180,
+      "upgradeEnergy": 1601,
+      "bySource": {
+        "6bb50772cca441b": 1630,
+        "0d080772ccae8f2": 1550
+      },
+      "sources": {
+        "6bb50772cca441b": {
+          "energy": 1380,
+          "capacity": 3000,
+          "regen": 146,
+          "requiredPerTick": 10,
+          "unusedLastCycle": 0
+        },
+        "0d080772ccae8f2": {
+          "energy": 1460,
+          "capacity": 3000,
+          "regen": 146,
+          "requiredPerTick": 10,
+          "unusedLastCycle": 0
+        }
+      },
+      "actors": [
+        "2993ff4deb1a078",
+        "253dff5e8393355",
+        "fec9ff5f3f39ca7",
+        "6f53ff674d852dd",
+        "d0e0ff37390374a",
+        "201fffb56a7c95e",
+        "4301ff54dfb8fe6",
+        "bfbcff5b38928dc",
+        "4b5aff6bf0ede87",
+        "f718ff80ef153ff",
+        "7011ff868c80bfa"
+      ],
+      "lastWindow": {
+        "ticks": 300,
+        "harvested": 6000,
+        "upgradeEnergy": 3041,
+        "bySource": {
+          "6bb50772cca441b": 3000,
+          "0d080772ccae8f2": 3000
+        }
+      }
+    },
+    "planning": "BOOTSTRAP_PHASE_COMPLETE",
+    "plannerCursor": 140,
+    "routes": {
+      "6bb50772cca441b": {
+        "tick": 48058,
+        "roundTrip": 88,
+        "minerTravel": 210,
+        "reachable": true
+      },
+      "0d080772ccae8f2": {
+        "tick": 48058,
+        "roundTrip": 18,
+        "minerTravel": 35,
+        "reachable": true
+      }
+    },
+    "staffing": {
+      "minerWork": 10,
+      "haulCarry": 22,
+      "workerWork": 15,
+      "requiredMinerWork": 10,
+      "requiredHaulCarry": 22,
+      "requiredWorkerWork": 15
+    },
+    "miningSources": {
+      "6bb50772cca441b": {
+        "slots": 3,
+        "assigned": 1,
+        "waiting": 0
+      },
+      "0d080772ccae8f2": {
+        "slots": 1,
+        "assigned": 1,
+        "waiting": 0
+      }
+    },
+    "layout": {
+      "version": 1,
+      "buildings": [
+        {
+          "type": "spawn",
+          "x": 32,
+          "y": 19
+        },
+        {
+          "type": "tower",
+          "x": 35,
+          "y": 18
+        },
+        {
+          "type": "extension",
+          "x": 28,
+          "y": 17
+        },
+        {
+          "type": "extension",
+          "x": 29,
+          "y": 16
+        },
+        {
+          "type": "extension",
+          "x": 29,
+          "y": 18
+        },
+        {
+          "type": "extension",
+          "x": 31,
+          "y": 16
+        },
+        {
+          "type": "extension",
+          "x": 33,
+          "y": 16
+        },
+        {
+          "type": "extension",
+          "x": 35,
+          "y": 14
+        },
+        {
+          "type": "extension",
+          "x": 35,
+          "y": 16
+        },
+        {
+          "type": "extension",
+          "x": 35,
+          "y": 20
+        },
+        {
+          "type": "extension",
+          "x": 36,
+          "y": 15
+        },
+        {
+          "type": "extension",
+          "x": 36,
+          "y": 17
+        },
+        {
+          "type": "extension",
+          "x": 36,
+          "y": 19
+        },
+        {
+          "type": "extension",
+          "x": 37,
+          "y": 16
+        },
+        {
+          "type": "extension",
+          "x": 37,
+          "y": 18
+        },
+        {
+          "type": "extension",
+          "x": 37,
+          "y": 20
+        },
+        {
+          "type": "extension",
+          "x": 37,
+          "y": 26
+        },
+        {
+          "type": "extension",
+          "x": 38,
+          "y": 17
+        },
+        {
+          "type": "extension",
+          "x": 38,
+          "y": 19
+        },
+        {
+          "type": "extension",
+          "x": 38,
+          "y": 27
+        },
+        {
+          "type": "extension",
+          "x": 39,
+          "y": 20
+        },
+        {
+          "type": "extension",
+          "x": 39,
+          "y": 26
+        },
+        {
+          "type": "storage",
+          "x": 40,
+          "y": 17
+        }
+      ]
+    },
+    "expansion": {
+      "reason": "WAIT_STORAGE"
+    }
+  },
+  "alerts": {},
+  "intel": {
+    "W6N8": {
+      "lastSeen": 48112,
+      "kind": "owned",
+      "owner": "stranger",
+      "controller": {
+        "x": 38,
+        "y": 23
+      },
+      "exits": [
+        "W5N8",
+        "W6N7",
+        "W6N9",
+        "W7N8"
+      ],
+      "mineral": "O",
+      "hostileParts": {},
+      "npc": false,
+      "unsafeUntil": 0,
+      "sources": [
+        {
+          "id": "0d080772ccae8f2",
+          "x": 32,
+          "y": 13,
+          "capacity": 3000,
+          "slots": [
+            {
+              "x": 33,
+              "y": 14
+            }
+          ]
+        },
+        {
+          "id": "6bb50772cca441b",
+          "x": 16,
+          "y": 7,
+          "capacity": 3000,
+          "slots": [
+            {
+              "x": 15,
+              "y": 6
+            },
+            {
+              "x": 16,
+              "y": 6
+            },
+            {
+              "x": 17,
+              "y": 6
+            }
+          ]
+        }
+      ]
+    },
+    "W5N8": {
+      "lastSeen": 47492,
+      "kind": "controller",
+      "controller": {
+        "x": 40,
+        "y": 35
+      },
+      "exits": [
+        "W4N8",
+        "W5N7",
+        "W5N9",
+        "W6N8"
+      ],
+      "mineral": "K",
+      "hostileParts": {},
+      "npc": false,
+      "unsafeUntil": 0,
+      "sources": [
+        {
+          "id": "68050773313e4cb",
+          "x": 14,
+          "y": 13,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 13,
+              "y": 14
+            },
+            {
+              "x": 14,
+              "y": 14
+            },
+            {
+              "x": 15,
+              "y": 13
+            },
+            {
+              "x": 15,
+              "y": 14
+            }
+          ]
+        },
+        {
+          "id": "9fa9077331385d3",
+          "x": 11,
+          "y": 25,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 10,
+              "y": 24
+            },
+            {
+              "x": 11,
+              "y": 24
+            },
+            {
+              "x": 12,
+              "y": 24
+            }
+          ]
+        }
+      ]
+    },
+    "W4N8": {
+      "lastSeen": 47466,
+      "kind": "controller",
+      "controller": {
+        "x": 9,
+        "y": 44
+      },
+      "exits": [
+        "W5N8"
+      ],
+      "mineral": "H",
+      "hostileParts": {},
+      "npc": false,
+      "unsafeUntil": 0,
+      "sources": [
+        {
+          "id": "e13307739d94e83",
+          "x": 45,
+          "y": 33,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 44,
+              "y": 32
+            },
+            {
+              "x": 44,
+              "y": 33
+            },
+            {
+              "x": 44,
+              "y": 34
+            }
+          ]
+        }
+      ]
+    },
+    "W5N7": {
+      "lastSeen": 47527,
+      "kind": "controller",
+      "reservation": "Invader",
+      "reservationUntil": 52525,
+      "controller": {
+        "x": 12,
+        "y": 14
+      },
+      "exits": [
+        "W4N7",
+        "W5N6",
+        "W5N8",
+        "W6N7"
+      ],
+      "mineral": "O",
+      "hostileParts": {},
+      "npc": true,
+      "unsafeUntil": 49027,
+      "sources": [
+        {
+          "id": "1e1c077339bd115",
+          "x": 24,
+          "y": 35,
+          "capacity": 3000,
+          "slots": [
+            {
+              "x": 23,
+              "y": 34
+            },
+            {
+              "x": 23,
+              "y": 35
+            },
+            {
+              "x": 23,
+              "y": 36
+            },
+            {
+              "x": 24,
+              "y": 36
+            }
+          ]
+        }
+      ]
+    },
+    "W6N7": {
+      "lastSeen": 47562,
+      "kind": "controller",
+      "reservation": "Invader",
+      "reservationUntil": 52530,
+      "controller": {
+        "x": 44,
+        "y": 18
+      },
+      "exits": [
+        "W5N7",
+        "W6N6",
+        "W6N8",
+        "W7N7"
+      ],
+      "mineral": "O",
+      "hostileParts": {},
+      "npc": true,
+      "unsafeUntil": 49062,
+      "sources": [
+        {
+          "id": "c6ee0772d9884c3",
+          "x": 11,
+          "y": 32,
+          "capacity": 3000,
+          "slots": [
+            {
+              "x": 10,
+              "y": 31
+            },
+            {
+              "x": 11,
+              "y": 31
+            },
+            {
+              "x": 12,
+              "y": 31
+            }
+          ]
+        }
+      ]
+    },
+    "W6N9": {
+      "lastSeen": 47651,
+      "kind": "controller",
+      "controller": {
+        "x": 25,
+        "y": 30
+      },
+      "exits": [
+        "W6N10",
+        "W6N8",
+        "W7N9"
+      ],
+      "mineral": "U",
+      "hostileParts": {},
+      "npc": false,
+      "unsafeUntil": 0,
+      "sources": [
+        {
+          "id": "326f0772c17e747",
+          "x": 40,
+          "y": 44,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 39,
+              "y": 43
+            },
+            {
+              "x": 39,
+              "y": 44
+            },
+            {
+              "x": 40,
+              "y": 43
+            }
+          ]
+        }
+      ]
+    },
+    "W7N9": {
+      "lastSeen": 47671,
+      "kind": "controller",
+      "controller": {
+        "x": 8,
+        "y": 15
+      },
+      "exits": [
+        "W6N9",
+        "W7N10",
+        "W7N8",
+        "W8N9"
+      ],
+      "mineral": "H",
+      "hostileParts": {},
+      "npc": false,
+      "unsafeUntil": 0,
+      "sources": [
+        {
+          "id": "80fe077261d9126",
+          "x": 19,
+          "y": 16,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 18,
+              "y": 15
+            },
+            {
+              "x": 19,
+              "y": 15
+            },
+            {
+              "x": 20,
+              "y": 15
+            }
+          ]
+        },
+        {
+          "id": "fdc5077261d8ab4",
+          "x": 16,
+          "y": 28,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 16,
+              "y": 29
+            },
+            {
+              "x": 17,
+              "y": 28
+            },
+            {
+              "x": 17,
+              "y": 29
+            }
+          ]
+        }
+      ]
+    },
+    "W7N8": {
+      "lastSeen": 47722,
+      "kind": "controller",
+      "controller": {
+        "x": 11,
+        "y": 26
+      },
+      "exits": [
+        "W6N8",
+        "W7N7",
+        "W7N9",
+        "W8N8"
+      ],
+      "mineral": "K",
+      "hostileParts": {},
+      "npc": false,
+      "unsafeUntil": 0,
+      "sources": [
+        {
+          "id": "928807726f977c0",
+          "x": 16,
+          "y": 15,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 16,
+              "y": 16
+            },
+            {
+              "x": 17,
+              "y": 16
+            }
+          ]
+        }
+      ]
+    },
+    "W7N7": {
+      "lastSeen": 47771,
+      "kind": "controller",
+      "controller": {
+        "x": 22,
+        "y": 13
+      },
+      "exits": [
+        "W6N7",
+        "W7N6",
+        "W7N8",
+        "W8N7"
+      ],
+      "mineral": "K",
+      "hostileParts": {},
+      "npc": false,
+      "unsafeUntil": 0,
+      "sources": [
+        {
+          "id": "33bd077274d064f",
+          "x": 16,
+          "y": 11,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 15,
+              "y": 10
+            },
+            {
+              "x": 15,
+              "y": 11
+            },
+            {
+              "x": 16,
+              "y": 10
+            },
+            {
+              "x": 17,
+              "y": 10
+            }
+          ]
+        },
+        {
+          "id": "68a2077274dcb77",
+          "x": 3,
+          "y": 6,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 2,
+              "y": 5
+            }
+          ]
+        }
+      ]
+    },
+    "W7N6": {
+      "lastSeen": 47830,
+      "kind": "controller",
+      "controller": {
+        "x": 38,
+        "y": 13
+      },
+      "exits": [
+        "W6N6",
+        "W7N5",
+        "W7N7"
+      ],
+      "mineral": "U",
+      "hostileParts": {},
+      "npc": false,
+      "unsafeUntil": 0,
+      "sources": [
+        {
+          "id": "025e07727e00363",
+          "x": 32,
+          "y": 6,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 33,
+              "y": 5
+            }
+          ]
+        }
+      ]
+    },
+    "W6N6": {
+      "lastSeen": 47804,
+      "kind": "controllerless",
+      "exits": [
+        "W5N6",
+        "W6N5",
+        "W6N7",
+        "W7N6"
+      ],
+      "mineral": "H",
+      "hostileParts": {},
+      "npc": true,
+      "unsafeUntil": 49304,
+      "sources": [
+        {
+          "id": "3f1f0772e441162",
+          "x": 46,
+          "y": 6,
+          "capacity": 4000,
+          "slots": [
+            {
+              "x": 47,
+              "y": 5
+            },
+            {
+              "x": 47,
+              "y": 6
+            },
+            {
+              "x": 47,
+              "y": 7
+            }
+          ]
+        },
+        {
+          "id": "9acb0772e447f4b",
+          "x": 41,
+          "y": 43,
+          "capacity": 4000,
+          "slots": [
+            {
+              "x": 40,
+              "y": 44
+            },
+            {
+              "x": 41,
+              "y": 44
+            },
+            {
+              "x": 42,
+              "y": 44
+            }
+          ]
+        },
+        {
+          "id": "c2200772e44c3b2",
+          "x": 6,
+          "y": 40,
+          "capacity": 4000,
+          "slots": [
+            {
+              "x": 7,
+              "y": 39
+            }
+          ]
+        }
+      ]
+    },
+    "W7N5": {
+      "lastSeen": 47938,
+      "kind": "controller",
+      "controller": {
+        "x": 42,
+        "y": 15
+      },
+      "exits": [
+        "W6N5",
+        "W7N6",
+        "W8N5"
+      ],
+      "mineral": "H",
+      "hostileParts": {},
+      "npc": false,
+      "unsafeUntil": 0,
+      "sources": [
+        {
+          "id": "5f7c077288c0217",
+          "x": 21,
+          "y": 23,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 20,
+              "y": 24
+            },
+            {
+              "x": 21,
+              "y": 24
+            },
+            {
+              "x": 22,
+              "y": 23
+            },
+            {
+              "x": 22,
+              "y": 24
+            }
+          ]
+        }
+      ]
+    },
+    "W6N5": {
+      "lastSeen": 47889,
+      "kind": "controllerless",
+      "exits": [
+        "W5N5",
+        "W6N4",
+        "W6N6",
+        "W7N5"
+      ],
+      "mineral": "X",
+      "hostileParts": {},
+      "npc": true,
+      "unsafeUntil": 49389,
+      "sources": [
+        {
+          "id": "93ff0772eb2bcac",
+          "x": 5,
+          "y": 7,
+          "capacity": 4000,
+          "slots": [
+            {
+              "x": 4,
+              "y": 7
+            },
+            {
+              "x": 4,
+              "y": 8
+            },
+            {
+              "x": 5,
+              "y": 8
+            },
+            {
+              "x": 6,
+              "y": 8
+            }
+          ]
+        },
+        {
+          "id": "bd380772eb280d9",
+          "x": 15,
+          "y": 46,
+          "capacity": 4000,
+          "slots": [
+            {
+              "x": 14,
+              "y": 47
+            },
+            {
+              "x": 16,
+              "y": 45
+            },
+            {
+              "x": 16,
+              "y": 46
+            },
+            {
+              "x": 16,
+              "y": 47
+            }
+          ]
+        },
+        {
+          "id": "c9e30772eb27357",
+          "x": 33,
+          "y": 44,
+          "capacity": 4000,
+          "slots": [
+            {
+              "x": 32,
+              "y": 45
+            },
+            {
+              "x": 33,
+              "y": 45
+            },
+            {
+              "x": 34,
+              "y": 45
+            }
+          ]
+        }
+      ]
+    },
+    "W8N5": {
+      "lastSeen": 47953,
+      "kind": "controller",
+      "controller": {
+        "x": 41,
+        "y": 15
+      },
+      "exits": [
+        "W7N5",
+        "W8N4",
+        "W8N6",
+        "W9N5"
+      ],
+      "mineral": "O",
+      "hostileParts": {},
+      "npc": false,
+      "unsafeUntil": 0,
+      "sources": [
+        {
+          "id": "cd680772223fb65",
+          "x": 9,
+          "y": 6,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 10,
+              "y": 7
+            }
+          ]
+        }
+      ]
+    },
+    "W8N4": {
+      "lastSeen": 48003,
+      "kind": "controller",
+      "controller": {
+        "x": 30,
+        "y": 43
+      },
+      "exits": [
+        "W7N4",
+        "W8N5",
+        "W9N4"
+      ],
+      "mineral": "U",
+      "hostileParts": {},
+      "npc": false,
+      "unsafeUntil": 0,
+      "sources": [
+        {
+          "id": "c98d07722e910b6",
+          "x": 10,
+          "y": 39,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 11,
+              "y": 38
+            },
+            {
+              "x": 11,
+              "y": 39
+            },
+            {
+              "x": 11,
+              "y": 40
+            }
+          ]
+        },
+        {
+          "id": "f1cf07722e9627a",
+          "x": 34,
+          "y": 22,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 34,
+              "y": 23
+            },
+            {
+              "x": 35,
+              "y": 21
+            },
+            {
+              "x": 35,
+              "y": 22
+            },
+            {
+              "x": 35,
+              "y": 23
+            }
+          ]
+        }
+      ]
+    },
+    "W7N4": {
+      "lastSeen": 48077,
+      "kind": "controller",
+      "controller": {
+        "x": 39,
+        "y": 12
+      },
+      "exits": [
+        "W6N4",
+        "W7N3",
+        "W8N4"
+      ],
+      "mineral": "Z",
+      "hostileParts": {},
+      "npc": false,
+      "unsafeUntil": 0,
+      "sources": [
+        {
+          "id": "80d207728e6597b",
+          "x": 41,
+          "y": 46,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 40,
+              "y": 45
+            }
+          ]
+        },
+        {
+          "id": "c44207728e621fc",
+          "x": 12,
+          "y": 31,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 12,
+              "y": 30
+            },
+            {
+              "x": 12,
+              "y": 32
+            },
+            {
+              "x": 13,
+              "y": 30
+            },
+            {
+              "x": 13,
+              "y": 31
+            },
+            {
+              "x": 13,
+              "y": 32
+            }
+          ]
+        }
+      ]
+    },
+    "W6N4": {
+      "lastSeen": 48053,
+      "kind": "controllerless",
+      "exits": [
+        "W5N4",
+        "W6N3",
+        "W6N5",
+        "W7N4"
+      ],
+      "mineral": "Z",
+      "hostileParts": {
+        "tough": 68,
+        "move": 52,
+        "attack": 40,
+        "ranged_attack": 40
+      },
+      "npc": true,
+      "unsafeUntil": 49553,
+      "sources": [
+        {
+          "id": "828b0772f3abaa1",
+          "x": 32,
+          "y": 11,
+          "capacity": 4000,
+          "slots": [
+            {
+              "x": 31,
+              "y": 10
+            }
+          ]
+        },
+        {
+          "id": "cf560772f3a3b50",
+          "x": 15,
+          "y": 4,
+          "capacity": 4000,
+          "slots": [
+            {
+              "x": 14,
+              "y": 5
+            }
+          ]
+        },
+        {
+          "id": "df3d0772f3ad46f",
+          "x": 15,
+          "y": 43,
+          "capacity": 4000,
+          "slots": [
+            {
+              "x": 14,
+              "y": 42
+            },
+            {
+              "x": 15,
+              "y": 42
+            },
+            {
+              "x": 16,
+              "y": 42
+            },
+            {
+              "x": 16,
+              "y": 43
+            },
+            {
+              "x": 16,
+              "y": 44
+            }
+          ]
+        }
+      ]
+    },
+    "W7N3": {
+      "lastSeen": 48099,
+      "kind": "controller",
+      "controller": {
+        "x": 36,
+        "y": 18
+      },
+      "exits": [
+        "W6N3",
+        "W7N4",
+        "W8N3"
+      ],
+      "mineral": "L",
+      "hostileParts": {},
+      "npc": false,
+      "unsafeUntil": 0,
+      "sources": [
+        {
+          "id": "9263077296e02bb",
+          "x": 38,
+          "y": 6,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 37,
+              "y": 7
+            },
+            {
+              "x": 39,
+              "y": 7
+            }
+          ]
+        },
+        {
+          "id": "c12d077296e6ac9",
+          "x": 41,
+          "y": 3,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 41,
+              "y": 4
+            },
+            {
+              "x": 42,
+              "y": 3
+            },
+            {
+              "x": 42,
+              "y": 4
+            }
+          ]
+        }
+      ]
+    },
+    "W6N3": {
+      "lastSeen": 48112,
+      "kind": "controller",
+      "controller": {
+        "x": 43,
+        "y": 42
+      },
+      "exits": [
+        "W5N3",
+        "W6N4",
+        "W7N3"
+      ],
+      "mineral": "O",
+      "hostileParts": {},
+      "npc": false,
+      "unsafeUntil": 0,
+      "sources": [
+        {
+          "id": "70100773019e434",
+          "x": 28,
+          "y": 20,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 27,
+              "y": 19
+            }
+          ]
+        },
+        {
+          "id": "7cf80773019b1f1",
+          "x": 7,
+          "y": 43,
+          "capacity": 1500,
+          "slots": [
+            {
+              "x": 7,
+              "y": 42
+            },
+            {
+              "x": 8,
+              "y": 42
+            },
+            {
+              "x": 8,
+              "y": 43
+            },
+            {
+              "x": 8,
+              "y": 44
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "travelers": [
+    {
+      "name": "scout-W6N8-47394-390",
+      "room": "W6N3",
+      "x": 13,
+      "y": 16,
+      "ttl": 783,
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "memory": {
+        "role": "scout",
+        "home": "W6N8",
+        "working": false,
+        "scoutBlocked": {},
+        "targetRoom": "W5N3",
+        "scoutSince": 48100,
+        "task": "SCOUT_W5N3",
+        "_move": {
+          "dest": {
+            "x": 25,
+            "y": 25,
+            "room": "W5N3"
+          },
+          "time": 48112,
+          "path": "13163333343222233322223332222222344444433",
+          "room": "W6N3"
+        }
+      }
+    }
+  ],
+  "cpu": {
+    "samples": 100,
+    "average": 3.5524359699999906,
+    "p95": 4.312574999999981,
+    "peak": 13.611466999999998,
+    "bucket": 10000
+  },
+  "objects": [
+    {
+      "type": "source",
+      "id": "6bb50772cca441b",
+      "energy": 1370,
+      "energyCapacity": 3000,
+      "regen": 145,
+      "x": 16,
+      "y": 7
+    },
+    {
+      "type": "source",
+      "id": "0d080772ccae8f2",
+      "energy": 1450,
+      "energyCapacity": 3000,
+      "regen": 145,
+      "x": 32,
+      "y": 13
+    },
+    {
+      "type": "controller",
+      "id": "d9cf0772ccaa764",
+      "level": 4,
+      "progress": 139149,
+      "x": 38,
+      "y": 23
+    },
+    {
+      "type": "spawn",
+      "id": "066af9f43fefc16",
+      "name": "Spawn1",
+      "spawning": null,
+      "store": {
+        "energy": 300
+      },
+      "storeCapacityResource": {
+        "energy": 300
+      },
+      "x": 32,
+      "y": 19
+    },
+    {
+      "type": "extension",
+      "id": "8c3cfa28f78a8cf",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 31,
+      "y": 16
+    },
+    {
+      "type": "extension",
+      "id": "e93bfa31f96b29b",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 33,
+      "y": 16
+    },
+    {
+      "type": "extension",
+      "id": "6ce5fa3a3facdb4",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 35,
+      "y": 16
+    },
+    {
+      "type": "extension",
+      "id": "b7d2fa41adad4e4",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 29,
+      "y": 16
+    },
+    {
+      "type": "extension",
+      "id": "e041fa46ec27436",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 29,
+      "y": 18
+    },
+    {
+      "type": "tower",
+      "id": "8470fa768bc4772",
+      "store": {
+        "energy": 1000
+      },
+      "storeCapacityResource": {
+        "energy": 1000
+      },
+      "x": 35,
+      "y": 18
+    },
+    {
+      "type": "extension",
+      "id": "20cffa8907c070f",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 35,
+      "y": 20
+    },
+    {
+      "type": "extension",
+      "id": "cf6cfa8ae3e31e9",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 36,
+      "y": 15
+    },
+    {
+      "type": "extension",
+      "id": "24eafa8bd35d2bf",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 36,
+      "y": 17
+    },
+    {
+      "type": "extension",
+      "id": "9a1bfa8df786b2e",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 36,
+      "y": 19
+    },
+    {
+      "type": "extension",
+      "id": "fea7fa8f3aabe64",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 28,
+      "y": 17
+    },
+    {
+      "type": "extension",
+      "id": "9448fc3da0ecfc1",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 35,
+      "y": 14
+    },
+    {
+      "type": "extension",
+      "id": "8363fca427499f4",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 37,
+      "y": 18
+    },
+    {
+      "type": "extension",
+      "id": "c7f1fccede7edaa",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 37,
+      "y": 16
+    },
+    {
+      "type": "extension",
+      "id": "4741fcfde35210d",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 37,
+      "y": 20
+    },
+    {
+      "type": "extension",
+      "id": "8b44fd0e5cfbc98",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 38,
+      "y": 19
+    },
+    {
+      "type": "extension",
+      "id": "9e98fd20c2810d9",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 37,
+      "y": 26
+    },
+    {
+      "type": "extension",
+      "id": "55d8fd28435a609",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 39,
+      "y": 20
+    },
+    {
+      "type": "extension",
+      "id": "8e8afd38ffacfe2",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 39,
+      "y": 26
+    },
+    {
+      "type": "extension",
+      "id": "09fcfe5ff16ac0e",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 38,
+      "y": 27
+    },
+    {
+      "type": "extension",
+      "id": "09bdfea7217c4b1",
+      "store": {
+        "energy": 50
+      },
+      "storeCapacityResource": {
+        "energy": 50
+      },
+      "x": 38,
+      "y": 17
+    },
+    {
+      "type": "creep",
+      "id": "d0e0ff37390374a",
+      "name": "miner-W6N8-46818-382",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "storeCapacity": 0,
+      "ttl": 222,
+      "body": {
+        "work": 5,
+        "move": 1
+      },
+      "x": 33,
+      "y": 14,
+      "task": {
+        "role": "miner",
+        "sourceId": "0d080772ccae8f2",
+        "miningSpot": {
+          "x": 33,
+          "y": 14
+        },
+        "working": false,
+        "task": "MINE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "2993ff4deb1a078",
+      "name": "hauler-W6N8-47004-383",
+      "spawning": false,
+      "store": {
+        "energy": 50
+      },
+      "storeCapacity": 200,
+      "ttl": 414,
+      "body": {
+        "carry": 4,
+        "move": 4
+      },
+      "x": 36,
+      "y": 18,
+      "task": {
+        "role": "hauler",
+        "sourceId": "0d080772ccae8f2",
+        "working": true,
+        "task": "HAUL_DELIVER",
+        "lastAction": -9
+      }
+    },
+    {
+      "type": "creep",
+      "id": "4301ff54dfb8fe6",
+      "name": "worker-W6N8-47061-384",
+      "spawning": false,
+      "store": {
+        "energy": 147
+      },
+      "storeCapacity": 150,
+      "ttl": 474,
+      "body": {
+        "work": 3,
+        "carry": 3,
+        "move": 3
+      },
+      "x": 36,
+      "y": 20,
+      "task": {
+        "role": "bootstrap",
+        "working": true,
+        "task": "UPGRADE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "bfbcff5b38928dc",
+      "name": "worker-W6N8-47113-385",
+      "spawning": false,
+      "store": {
+        "energy": 6
+      },
+      "storeCapacity": 150,
+      "ttl": 526,
+      "body": {
+        "work": 3,
+        "carry": 3,
+        "move": 3
+      },
+      "x": 38,
+      "y": 20,
+      "task": {
+        "role": "bootstrap",
+        "working": true,
+        "task": "UPGRADE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "253dff5e8393355",
+      "name": "hauler-W6N8-47140-386",
+      "spawning": false,
+      "store": {
+        "energy": 50
+      },
+      "storeCapacity": 50,
+      "ttl": 532,
+      "body": {
+        "carry": 1,
+        "move": 1
+      },
+      "x": 41,
+      "y": 6,
+      "task": {
+        "role": "hauler",
+        "sourceId": "6bb50772cca441b",
+        "working": true,
+        "task": "HAUL_DELIVER",
+        "lastAction": -9
+      }
+    },
+    {
+      "type": "creep",
+      "id": "fec9ff5f3f39ca7",
+      "name": "hauler-W6N8-47146-387",
+      "spawning": false,
+      "store": {
+        "energy": 550
+      },
+      "storeCapacity": 550,
+      "ttl": 598,
+      "body": {
+        "carry": 11,
+        "move": 11
+      },
+      "x": 22,
+      "y": 6,
+      "task": {
+        "role": "hauler",
+        "sourceId": "6bb50772cca441b",
+        "working": true,
+        "task": "HAUL_DELIVER",
+        "lastAction": -9
+      }
+    },
+    {
+      "type": "creep",
+      "id": "6f53ff674d852dd",
+      "name": "hauler-W6N8-47212-388",
+      "spawning": false,
+      "store": {
+        "energy": 300
+      },
+      "storeCapacity": 300,
+      "ttl": 634,
+      "body": {
+        "carry": 6,
+        "move": 6
+      },
+      "x": 41,
+      "y": 15,
+      "task": {
+        "role": "hauler",
+        "sourceId": "6bb50772cca441b",
+        "working": true,
+        "task": "HAUL_DELIVER",
+        "lastAction": -9
+      }
+    },
+    {
+      "type": "creep",
+      "id": "4b5aff6bf0ede87",
+      "name": "worker-W6N8-47250-389",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "storeCapacity": 150,
+      "ttl": 663,
+      "body": {
+        "work": 3,
+        "carry": 3,
+        "move": 3
+      },
+      "x": 40,
+      "y": 20,
+      "task": {
+        "role": "bootstrap",
+        "working": false,
+        "task": "WAIT_HAUL_DELIVERY",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "constructionSite",
+      "id": "6f43ff7e20eeabb",
+      "progress": 4668,
+      "progressTotal": 30000,
+      "structureType": "storage",
+      "x": 40,
+      "y": 17
+    },
+    {
+      "type": "creep",
+      "id": "f718ff80ef153ff",
+      "name": "worker-W6N8-47422-391",
+      "spawning": false,
+      "store": {
+        "energy": 27
+      },
+      "storeCapacity": 150,
+      "ttl": 835,
+      "body": {
+        "work": 3,
+        "carry": 3,
+        "move": 3
+      },
+      "x": 40,
+      "y": 21,
+      "task": {
+        "role": "bootstrap",
+        "working": true,
+        "task": "UPGRADE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "7011ff868c80bfa",
+      "name": "worker-W6N8-47468-392",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "storeCapacity": 150,
+      "ttl": 881,
+      "body": {
+        "work": 3,
+        "carry": 3,
+        "move": 3
+      },
+      "x": 37,
+      "y": 19,
+      "task": {
+        "role": "bootstrap",
+        "working": false,
+        "task": "WAIT_HAUL_DELIVERY",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "201fffb56a7c95e",
+      "name": "miner-W6N8-47852-393",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "storeCapacity": 0,
+      "ttl": 1256,
+      "body": {
+        "work": 5,
+        "move": 1
+      },
+      "x": 16,
+      "y": 6,
+      "task": {
+        "role": "miner",
+        "sourceId": "6bb50772cca441b",
+        "miningSpot": {
+          "x": 16,
+          "y": 6
+        },
+        "working": false,
+        "task": "MINE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "energy",
+      "id": "e5b1ffd17c6e94c",
+      "energy": 61,
+      "x": 16,
+      "y": 6
+    },
+    {
+      "type": "energy",
+      "id": "759affd44b5384a",
+      "energy": 72,
+      "x": 33,
+      "y": 14
+    }
+  ]
+}

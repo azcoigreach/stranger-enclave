@@ -12,8 +12,11 @@ const tile = p => `${p.x},${p.y}`;
  */
 function slots(colony) {
   const structures = [...colony.structures, ...colony.sites];
+  // Surviving harvesters remain valid access origins while rebuilding the last spawn.
+  const origins = colony.spawns.length ? colony.spawns.map(s => s.pos) :
+    colony.workers.filter(c => !c.spawning && c.getActiveBodyparts(WORK) > 0).map(c => c.pos);
   const key = [...structures.map(s => `${s.id}:${s.structureType}:${tile(s.pos)}:${'my' in s && s.my}`),
-    ...colony.sources.map(s => `${s.id}:${tile(s.pos)}`), ...colony.spawns.map(s => tile(s.pos))].sort().join('|');
+    ...colony.sources.map(s => `${s.id}:${tile(s.pos)}`), ...origins.map(p => tile(p))].sort().join('|');
   const saved = cache.get(colony.room.name);
   if (saved && saved.key === key && Game.time - saved.tick < 100) return saved.slots;
   const blocked = new Set(structures.filter(s => s.structureType !== STRUCTURE_ROAD && s.structureType !== STRUCTURE_CONTAINER &&
@@ -24,10 +27,10 @@ function slots(colony) {
     const positions = [];
     for (let x = source.pos.x - 1; x <= source.pos.x + 1; x++) for (let y = source.pos.y - 1; y <= source.pos.y + 1; y++) {
       if (x <= 0 || y <= 0 || x >= 49 || y >= 49 || blocked.has(`${x},${y}`) || (terrain.get(x, y) & TERRAIN_MASK_WALL)) continue;
-      const reachable = colony.spawns.some(spawn => {
-        const path = spawn.pos.findPathTo(x, y, { range: 0, maxRooms: 1, ignoreCreeps: true, maxOps: 3000 });
+      const reachable = origins.some(origin => {
+        const path = origin.findPathTo(x, y, { range: 0, maxRooms: 1, ignoreCreeps: true, maxOps: 3000 });
         const end = path[path.length - 1];
-        return spawn.pos.getRangeTo(x, y) === 0 || Boolean(end && end.x === x && end.y === y);
+        return origin.getRangeTo(x, y) === 0 || Boolean(end && end.x === x && end.y === y);
       });
       if (reachable) positions.push({ x, y });
     }

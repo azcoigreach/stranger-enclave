@@ -1,5 +1,8 @@
 interface BlockBounds { minX: number; maxX: number; minY: number; maxY: number }
+interface BuildingPosition { type: BuildableStructureConstant; x: number; y: number }
 interface ColonyRecord {
+  expansion?: { reason: string; remote?: RemoteOperation; scoutRetry?: number };
+  layout?: { version: number; buildings: BuildingPosition[] };
   lastSeen: number;
   level: number;
   energy: number;
@@ -18,7 +21,7 @@ interface ColonyRecord {
 interface MiningAssignment { source: Source; pos: {x:number; y:number} }
 interface SourceDemand { slots: number; id: Id<Source>; work: number; carry: number; travel: number; reachable: boolean; income: number }
 interface EconomyDemand { specialized: boolean; sources: SourceDemand[]; workerWork: number; income: number }
-interface SpawnRequest { role: string; sourceId?: Id<Source>; body: BodyPartConstant[]; priority: number; reason: string }
+interface SpawnRequest { role: string; targetRoom?: string; sourceId?: Id<Source>; body: BodyPartConstant[]; priority: number; reason: string }
 interface EconomyWindow { ticks: number; harvested: number; upgradeEnergy: number; bySource: Record<string, number> }
 interface EconomyMetrics extends EconomyWindow {
   lastTick: number;
@@ -26,7 +29,15 @@ interface EconomyMetrics extends EconomyWindow {
   actors: string[];
   sources: Record<string, { energy: number; capacity: number; regen: number; requiredPerTick: number; unusedLastCycle?: number }>;
 }
-interface IntelRecord { lastSeen: number; kind: string; owner?: string; reservation?: string }
+interface IntelSource { id: Id<Source>; x: number; y: number; capacity: number; slots: {x:number; y:number}[] }
+interface IntelRecord { lastSeen: number; kind: string; owner?: string; reservation?: string;
+  reservationUntil?: number; controller?: {x:number; y:number}; sources?: IntelSource[];
+  exits?: string[]; mineral?: string; hostileParts?: Record<string,number>; unsafeUntil?: number; npc?: boolean;
+}
+interface RemoteOperation {
+  room: string; sourceId: Id<Source>; reason: string; travel: number; carry: number;
+  routeValid?: boolean; checked: number; delivered: number; spawnEnergy: number; actors?: string[]; measuredTick?: number;
+}
 interface AlertRecord { count: number; last: number; message: string }
 interface BotMemory {
   version: number;
@@ -42,6 +53,9 @@ interface BotMemory {
 interface Memory { enclave?: BotMemory }
 interface CreepMemory {
   role?: string;
+  targetRoom?: string;
+  scoutSince?: number;
+  scoutBlocked?: Record<string,number>;
   home?: string;
   working?: boolean;
   sourceId?: Id<Source>;

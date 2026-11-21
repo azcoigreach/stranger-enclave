@@ -30,22 +30,24 @@ function harness(savedMemory = {}, options = {}) {
   const violations = [];
   const constants = {
     OK: 0, ERR_NOT_IN_RANGE: -9, ERR_NO_PATH: -2, ERR_NOT_ENOUGH_ENERGY: -6,
-    WORK: 'work', CARRY: 'carry', MOVE: 'move', RESOURCE_ENERGY: 'energy',
-    STRUCTURE_SPAWN: 'spawn', STRUCTURE_EXTENSION: 'extension', STRUCTURE_TOWER: 'tower',
-    STRUCTURE_CONTAINER: 'container', STRUCTURE_STORAGE: 'storage', STRUCTURE_ROAD: 'road', STRUCTURE_RAMPART: 'rampart',
+    CLAIM: 'claim', ATTACK: 'attack', RANGED_ATTACK: 'ranged_attack', HEAL: 'heal', WORK: 'work', CARRY: 'carry', MOVE: 'move', RESOURCE_ENERGY: 'energy',
+    STRUCTURE_KEEPER_LAIR: 'keeperLair', STRUCTURE_INVADER_CORE: 'invaderCore', STRUCTURE_SPAWN: 'spawn', STRUCTURE_EXTENSION: 'extension', STRUCTURE_TOWER: 'tower',
+    STRUCTURE_WALL: 'constructedWall', STRUCTURE_CONTAINER: 'container', STRUCTURE_STORAGE: 'storage', STRUCTURE_ROAD: 'road', STRUCTURE_RAMPART: 'rampart',
     CREEP_SPAWN_TIME: 3, TOWER_ENERGY_COST: 10, MAX_CONSTRUCTION_SITES: 100, TERRAIN_MASK_WALL: 1, TERRAIN_MASK_SWAMP: 2,
-    BODYPART_COST: { work: 100, carry: 50, move: 50 }, ENERGY_REGEN_TIME: 300, HARVEST_POWER: 2,
+    BODYPART_COST: { work: 100, carry: 50, move: 50, claim: 600 }, ENERGY_REGEN_TIME: 300, HARVEST_POWER: 2,
     CARRY_CAPACITY: 50, CREEP_LIFE_TIME: 1500, UPGRADE_CONTROLLER_POWER: 1,
-    EVENT_HARVEST: 5, EVENT_UPGRADE_CONTROLLER: 9,
+    EVENT_TRANSFER: 12, EVENT_HARVEST: 5, EVENT_UPGRADE_CONTROLLER: 9,
     FIND_STRUCTURES: 1, FIND_SOURCES: 2, FIND_MY_CONSTRUCTION_SITES: 3, FIND_HOSTILE_CREEPS: 4,
     FIND_DROPPED_RESOURCES: 5, FIND_TOMBSTONES: 6, FIND_RUINS: 7, FIND_MINERALS: 8, FIND_EXIT: 9, FIND_CREEPS: 10, FIND_POWER_CREEPS: 11,
-    CONTROLLER_STRUCTURES: { extension: { 1: 0, 2: 5, 3: 10 }, tower: { 1: 0, 2: 0, 3: 1 } },
+    CONTROLLER_STRUCTURES: { storage: {1:0,2:0,3:0,4:1}, spawn: { 1: 1, 2: 1, 3: 1, 4: 1 }, road: { 1: 2500, 2: 2500, 3: 2500 }, container: { 1: 5, 2: 5, 3: 5 }, extension: { 1: 0, 2: 5, 3: 10, 4: 20 }, tower: { 1: 0, 2: 0, 3: 1, 4: 1 } },
   };
   const Game = { time: 1, creeps: {}, rooms: {}, spawns: {}, constructionSites: {},
+    map: { describeExits: () => ({}), findRoute: () => -2 },
     cpu: { bucket: 10000, limit: 100, tickLimit: 500, getUsed: () => 1 } };
   const cache = new Map();
   function createContext() {
-    const next = vm.createContext({ ...constants, Game, Memory: savedMemory,
+    const next = vm.createContext({ ...constants, Game, Memory: savedMemory, RoomPosition: function(x,y,roomName) {return position(x,y,roomName);},
+      PathFinder: {search: () => ({incomplete:true,path:[],cost:0}), CostMatrix: class {constructor(){this.values=new Map();} set(x,y,value){this.values.set(`${x},${y}`,value);} get(x,y){return this.values.get(`${x},${y}`)||0;} }},
       console: { log: message => logs.push(message) },
       nondeterministic(api) { violations.push(api); throw new Error(`Nondeterministic API in fixture: ${api}`); },
     });
@@ -102,7 +104,7 @@ function harness(savedMemory = {}, options = {}) {
       ticksToLive: 1000, fatigue: 0, spawning: false, calls: [],
       move(direction) { this.calls.push({ action: 'step', direction }); return 0; },
       moveTo(target, opts) { this.calls.push({ action: 'move', target, opts }); return 0; } };
-    for (const action of ['pickup', 'withdraw', 'harvest', 'upgradeController', 'transfer', 'build']) {
+    for (const action of ['reserveController', 'pickup', 'withdraw', 'harvest', 'upgradeController', 'transfer', 'build']) {
       creep[action] = function(target, resource, amount) { this.calls.push({ action, target, resource, amount }); return this.actionResults[action] ?? 0; };
     }
     Object.defineProperty(creep, 'memory', { get: () => savedMemory.creeps[name], set: value => { savedMemory.creeps[name] = value; } });

@@ -9,9 +9,13 @@ const spawning = require('economy.spawn');
 const workers = require('economy.worker');
 const defense = require('defense.basic');
 const planning = require('planning.bootstrap');
+const layout = require('planning.layout');
 const reporting = require('reporting.console');
 const economyMetrics = require('economy.metrics');
 const controllerTraffic = require('movement.controller');
+const intel = require('territory.intel');
+const travelers = require('operations.roles');
+const operations = require('operations.remote');
 
 /** Tick entry point. Critical work runs for every visible owned in-block room before
  * optional planning. Each system/worker is fault-isolated; game objects stay tick-local.
@@ -31,11 +35,7 @@ module.exports.loop = function loop() {
     if (!territory.contains(room.name, memory.block)) continue;
     runtime.guard(memory, `observe:${room.name}`, () => {
       const controller = room.controller;
-      memory.intel[room.name] = {
-        lastSeen: Game.time, kind: controller ? (controller.my ? 'owned' : 'controller') : 'controllerless',
-        owner: controller && controller.owner && controller.owner.username,
-        reservation: controller && controller.reservation && controller.reservation.username,
-      };
+      intel.observe(room, memory);
       if (controller && controller.my) colonies.push(snapshot.create(room));
     });
   }
@@ -47,6 +47,7 @@ module.exports.loop = function loop() {
       energy: colony.room.energyAvailable, capacity: colony.room.energyCapacityAvailable,
       workers: colony.workers.length, desired: 0, reason: 'TICK_STARTED',
     };
+    runtime.guard(memory, `layout:${name}`, () => layout.observe(colony, record));
     runtime.guard(memory, `defense:${name}`, () => defense.run(colony));
     runtime.guard(memory, `economy-metrics:${name}`, () => economyMetrics.record(colony, record));
     runtime.guard(memory, `spawn:${name}`, () => spawning.run(colony, memory, record));
@@ -55,6 +56,14 @@ module.exports.loop = function loop() {
     for (const creep of colony.workers) {
       runtime.guard(memory, `worker:${creep.name}`, () => workers.run(creep, colony, memory.block, deliveries));
     }
+  }
+  for (const colony of colonies) {
+    runtime.guard(memory, `operations:${colony.room.name}`, () => operations.update(colony,memory,memory.colonies[colony.room.name]));
+  }
+  const remoteReservations = new Map();
+  for (const creep of Object.values(Game.creeps).sort((a,b) => a.name.localeCompare(b.name))) {
+    if (!['scout','remoteMiner','remoteHauler','reserver'].includes(creep.memory.role || '')) continue;
+    runtime.guard(memory, `traveler:${creep.name}`, () => travelers.run(creep,memory,remoteReservations));
   }
   const spawns = colonies.reduce((sum, colony) => sum + colony.spawns.length, 0);
   if (!spawns) runtime.alert(memory, 'no-spawn', 'NO_SPAWN: bootstrap support is unavailable; setup/respawn is required if extinct');

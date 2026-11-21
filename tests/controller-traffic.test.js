@@ -89,3 +89,13 @@ test('traffic recovery respects the persisted block and creep home', () => {
   assert.equal(directMove(carrier).length, 0);
   assert.ok(ring.every(c => directMove(c).length === 0));
 });
+
+
+test('storage distributors receive the same formation escape protection as source haulers',()=>{
+  const {h,carrier,ring}=formation();carrier.memory.role='distributor';delete carrier.memory.sourceId;
+  h.tick();assert.equal(directMove(carrier).length,1);
+  const next=destination(carrier,directMove(carrier)[0]);
+  const yielding=ring.find(c=>c.pos.x===next[0] && c.pos.y===next[1]);
+  assert.ok(yielding);assert.equal(directMove(yielding).length,1);
+  assert.ok(!carrier.calls.some(c=>c.action==='move'),'distributor must not overwrite its escape');
+});
