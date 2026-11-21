@@ -1,0 +1,11 @@
+# Repository working rules
+
+- This directory is synchronized directly to the active localhost Screeps branch `stranger-enclave`. Root JavaScript edits affect the running server. Stage coordinated code changes outside the watched directory, validate them, and activate a compatible set. Git checkouts can also change the running code.
+- Keep all game modules in the repository root, using CommonJS and subsystem filenames such as `economy.spawn.js`. `main.js` owns the tick sequence. Do not introduce a required build/bundle step.
+- Keep tests, tooling, declarations, and documentation in `tests/`, `tools/`, `types/`, and `docs/`. Game modules must not import these or Node-only packages.
+- Develop on short-lived feature/fix/docs branches from `dev`. Feature PRs target `dev`; validated release PRs promote `dev` to `main`. `main` is the stable baseline. Do not commit directly to shared branches or rewrite their history. Human review owns approval and merging.
+- Discover home and its 9×9 sector from the initial owned spawn and persist them in bot memory. Never hardcode deployment room names, spawn names, account IDs, or shard names in game modules. Preserve the saved boundary through resets, expansion, and spawn loss. The current dev-world location is an observation, not configuration. Do not unclaim rooms or destroy working infrastructure automatically.
+- Read `docs/CORE_BOT.md` and `docs/IMPLEMENTATION_PLAN.md` before changing subsystem contracts. Keep milestone completion claims tied to recorded evidence.
+- Run `npm run validate` for game-code changes. Stage and test first, then verify localhost behavior when activation is part of the task. `python3 tools/observe-local.py --room <home-room>` provides a read-only CLI snapshot.
+- Follow `docs/TESTING.md`: reproduce bugs with a failing regression before fixing them; keep deterministic fixtures and meaningful outcome assertions. Validate stateful behavior across serialized memory and global resets. Explain deliberate expectation changes rather than weakening tests to make them pass. Mutation tests must remain in-memory and never modify live modules.
+- Keep credentials, server state, and generated logs out of tracked source. Never reset or reseed the user's running world as an incidental test.

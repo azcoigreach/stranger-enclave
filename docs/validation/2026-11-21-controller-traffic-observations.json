@@ -1,0 +1,434 @@
+[
+  {
+    "tick": 34391,
+    "controllerProgress": 78345,
+    "controllerPosition": [
+      11,
+      31
+    ],
+    "carriers": [
+      {
+        "name": "hauler-W5N1-33577-148",
+        "x": 10,
+        "y": 17,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-33625-149",
+        "x": 29,
+        "y": 39,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-33667-150",
+        "x": 32,
+        "y": 43,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-33717-151",
+        "x": 15,
+        "y": 25,
+        "task": "WAIT_MINER_OUTPUT"
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 34505,
+    "controllerProgress": 79782,
+    "controllerPosition": [
+      11,
+      31
+    ],
+    "carriers": [
+      {
+        "name": "hauler-W5N1-33577-148",
+        "x": 14,
+        "y": 29,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-33625-149",
+        "x": 31,
+        "y": 44,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-33667-150",
+        "x": 31,
+        "y": 43,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-33717-151",
+        "x": 15,
+        "y": 24,
+        "task": "HAUL_PICKUP"
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 34623,
+    "controllerProgress": 81480,
+    "controllerPosition": [
+      11,
+      31
+    ],
+    "carriers": [
+      {
+        "name": "hauler-W5N1-33577-148",
+        "x": 8,
+        "y": 17,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-33625-149",
+        "x": 30,
+        "y": 46,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-33667-150",
+        "x": 15,
+        "y": 29,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-33717-151",
+        "x": 13,
+        "y": 26,
+        "task": "WAIT_MINER_OUTPUT"
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 34741,
+    "controllerProgress": 83391,
+    "controllerPosition": [
+      11,
+      31
+    ],
+    "carriers": [
+      {
+        "name": "hauler-W5N1-33577-148",
+        "x": 8,
+        "y": 17,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-33625-149",
+        "x": 30,
+        "y": 41,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-33667-150",
+        "x": 24,
+        "y": 39,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-33717-151",
+        "x": 14,
+        "y": 21,
+        "task": "WAIT_MINER_OUTPUT"
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 34852,
+    "controllerProgress": 85377,
+    "controllerPosition": [
+      11,
+      31
+    ],
+    "carriers": [
+      {
+        "name": "hauler-W5N1-33577-148",
+        "x": 8,
+        "y": 17,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-33625-149",
+        "x": 31,
+        "y": 43,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-33667-150",
+        "x": 25,
+        "y": 38,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-33717-151",
+        "x": 18,
+        "y": 26,
+        "task": "HAUL_DELIVER"
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 34960,
+    "controllerProgress": 86776,
+    "controllerPosition": [
+      11,
+      31
+    ],
+    "carriers": [
+      {
+        "name": "hauler-W5N1-33577-148",
+        "x": 19,
+        "y": 28,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-33625-149",
+        "x": 31,
+        "y": 45,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-33667-150",
+        "x": 31,
+        "y": 44,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-33717-151",
+        "x": 15,
+        "y": 23,
+        "task": "HAUL_DELIVER"
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 35078,
+    "controllerProgress": 87131,
+    "controllerPosition": [
+      11,
+      31
+    ],
+    "carriers": [
+      {
+        "name": "hauler-W5N1-33577-148",
+        "x": 18,
+        "y": 26,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-33625-149",
+        "x": 18,
+        "y": 25,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-33667-150",
+        "x": 31,
+        "y": 43,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-33717-151",
+        "x": 16,
+        "y": 24,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-35016-160",
+        "x": 11,
+        "y": 19,
+        "task": "HAUL_DELIVER"
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 35185,
+    "controllerProgress": 87998,
+    "controllerPosition": [
+      11,
+      31
+    ],
+    "carriers": [
+      {
+        "name": "hauler-W5N1-33717-151",
+        "x": 8,
+        "y": 17,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-35016-160",
+        "x": 12,
+        "y": 27,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-35048-161",
+        "x": 29,
+        "y": 40,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-35096-162",
+        "x": 31,
+        "y": 47,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-35131-163",
+        "x": 8,
+        "y": 18,
+        "task": "HAUL_PICKUP"
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 35293,
+    "controllerProgress": 89805,
+    "controllerPosition": [
+      11,
+      31
+    ],
+    "carriers": [
+      {
+        "name": "hauler-W5N1-35016-160",
+        "x": 8,
+        "y": 17,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-35048-161",
+        "x": 31,
+        "y": 42,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-35096-162",
+        "x": 31,
+        "y": 45,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-35131-163",
+        "x": 14,
+        "y": 29,
+        "task": "HAUL_DELIVER"
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 35400,
+    "controllerProgress": 91711,
+    "controllerPosition": [
+      11,
+      31
+    ],
+    "carriers": [
+      {
+        "name": "hauler-W5N1-35016-160",
+        "x": 14,
+        "y": 21,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-35048-161",
+        "x": 31,
+        "y": 44,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-35096-162",
+        "x": 22,
+        "y": 29,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-35131-163",
+        "x": 17,
+        "y": 27,
+        "task": "HAUL_DELIVER"
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 35522,
+    "controllerProgress": 92237,
+    "controllerPosition": [
+      11,
+      31
+    ],
+    "carriers": [
+      {
+        "name": "hauler-W5N1-35016-160",
+        "x": 8,
+        "y": 17,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-35048-161",
+        "x": 31,
+        "y": 41,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-35096-162",
+        "x": 22,
+        "y": 29,
+        "task": "HAUL_DELIVER"
+      },
+      {
+        "name": "hauler-W5N1-35131-163",
+        "x": 15,
+        "y": 23,
+        "task": "WAIT_MINER_OUTPUT"
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 35638,
+    "controllerProgress": 93583,
+    "controllerPosition": [
+      11,
+      31
+    ],
+    "carriers": [
+      {
+        "name": "hauler-W5N1-35016-160",
+        "x": 8,
+        "y": 17,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-35048-161",
+        "x": 30,
+        "y": 41,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-35096-162",
+        "x": 20,
+        "y": 34,
+        "task": "HAUL_PICKUP"
+      },
+      {
+        "name": "hauler-W5N1-35131-163",
+        "x": 15,
+        "y": 23,
+        "task": "WAIT_MINER_OUTPUT"
+      }
+    ],
+    "alerts": {}
+  }
+]

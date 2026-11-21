@@ -4,17 +4,21 @@ Repository: https://github.com/azcoigreach/stranger-enclave
 
 Planning baseline: November 21, 2026. This is the implementation specification; milestones below are planned, not completed. Development and validation begin on a local server. Public shard selection follows evidence from those runs.
 
+Implementation update: the first [core bootstrap slice](CORE_BOT.md) targets the existing localhost colony in `W5N1`, within `W1N1`–`W9N9`. It adds root game modules, behavioral tests, static checking, and basic placement/reporting. The dev colony now runs dedicated source miners, route-sized haulers, controller consumers, event-based economy measurements, and controller traffic recovery, and has reached RCL 3. See the [economy validation](validation/2026-11-21-economy-throughput.md). Milestones 0–1 remain open pending reproducible server tooling and sustained progression/recovery evidence.
+
+Existing dev-world inventory was verified at tick 1899 on November 21, 2026: one 9×9 interior with 72 controller rooms, eight keeper rooms, and center `W5N5`, surrounded by 40 highway rooms (121 rooms total). Four other colonies occupy the interior corners. Future reproducible fixtures should account for this existing world; additional hostile staging rooms are not currently present outside its highway ring. See the [core bot guide](CORE_BOT.md#local-operation) for the dated observations.
+
 ## Objective and fixed requirements
 
 Stranger Enclave autonomously builds and manages colonies throughout one fixed 9×9 sector interior. It develops every claimable room, secures the keeper rooms and center, defends against players and NPCs, and removes competing players from its territory. Codex handles development, documentation, tests, and deployment preparation; ordinary colony operation requires no manual building placement, flags, workforce settings, or tactical orders.
 
-- Permanent expansion stays inside the selected 81 rooms. The target block is explicit configuration and cannot drift as colonies expand.
+- Permanent expansion stays inside the starting sector's 81 interior rooms. Discover the block from the initial owned spawn and persist it; do not hardcode deployment coordinates. The saved boundary cannot drift as colonies expand or spawns are lost/rebuilt.
 - Every controller room is a long-term colony target. Poor terrain or low source count changes priority and layout, not eligibility.
 - In a standard sector interior, the expected inventory is 72 controller rooms, eight keeper rooms, and one center room. Validate the actual generated map and room objects before relying on this inventory.
 - Controllerless rooms receive guarded resource outposts and permitted infrastructure; they cannot become owned spawn colonies.
 - Early versions keep creep travel and military operations within the block. Future highway Power expeditions are a narrowly scoped exception, with no highway colonies or general outside expansion.
 - No automatic abandonment of owned rooms or destructive base redesign. Recovery and support take precedence.
-- One-time setup selects the block and initial spawn location. The local harness performs this setup automatically. Total extinction with no surviving spawn or support colony requires a respawn/setup action and is reported explicitly.
+- One-time setup places the initial spawn; the bot derives the enclosing sector automatically. The local harness performs spawn placement automatically. With no saved territory and owned spawns in multiple sectors, report ambiguity instead of guessing. Total extinction with no surviving spawn or support colony requires a respawn/setup action and is reported explicitly; it does not silently move saved territory.
 
 ## Capacity and success definitions
 
@@ -36,24 +40,26 @@ Use accelerated development fixtures for late-game features, plus unassisted pro
 
 ## Code organization and contracts
 
-Use JavaScript modules with JSDoc contracts and static checking. Keep the game-facing main module readable. Source directories are packaging conveniences; the deployment step converts them into Screeps-compatible modules with deterministic names and validates imports.
+Keep all working game code directly in the repository root as Screeps-ready JavaScript modules with JSDoc contracts and static checking. `main.js` exports the core tick loop through `module.exports.loop`. Use CommonJS modules and exact Screeps module names for imports, for example `require('economy.mining')` for root file `economy.mining.js`. Organize subsystems with filename prefixes rather than source directories. No compilation, bundling, module renaming, or directory-flattening step is required to run the bot.
 
-| Source area | Responsibility |
+The repository root is the working Screeps script directory. Keep tests, fixtures, local server tooling, and documentation in their own subdirectories outside the game module set. Upload tooling, when needed, sends root game modules unchanged and validates that their imports resolve within that set. Game modules must not depend on tooling, Node-only APIs, or files in subdirectories. Keep the game-facing main module readable.
+
+| Root module pattern or support directory | Responsibility |
 | --- | --- |
-| src/main.js | Core tick sequence and top-level fault boundary |
-| src/core/ | Configuration, scheduling, memory migration, CPU budgets |
-| src/territory/ | Coordinates, fixed boundary, room classification, intelligence |
-| src/colony/ | Colony state, priorities, support between colonies |
-| src/economy/ | Mining, hauling, spawning, replacement, upgrades |
-| src/planning/ | Terrain analysis, layout generation, validation, construction |
-| src/movement/ | Route policy, path caching, traffic and stuck recovery |
-| src/defense/ | Threat assessment, towers, safe mode, evacuation |
-| src/operations/ | Claiming, remote mining, keeper outposts, combat campaigns |
-| src/industry/ | Minerals, reactions, boosts, terminal logistics; later factories |
-| src/reporting/ | Metrics, reason codes, alerts, console commands, visuals |
-| src/power/ | Deferred Power Bank, processing, and Power Creep functionality |
-| tests/ and tools/ | Behavioral tests, server harness, fixtures, packaging |
-| docs/ | Architecture, memory schema, mechanics ledger, operations guide |
+| `main.js` | Core tick sequence and top-level fault boundary |
+| `core.*.js` | Configuration, scheduling, memory migration, CPU budgets |
+| `territory.*.js` | Coordinates, fixed boundary, room classification, intelligence |
+| `colony.*.js` | Colony state, priorities, support between colonies |
+| `economy.*.js` | Mining, hauling, spawning, replacement, upgrades |
+| `planning.*.js` | Terrain analysis, layout generation, validation, construction |
+| `movement.*.js` | Route policy, path caching, traffic and stuck recovery |
+| `defense.*.js` | Threat assessment, towers, safe mode, evacuation |
+| `operations.*.js` | Claiming, remote mining, keeper outposts, combat campaigns |
+| `industry.*.js` | Minerals, reactions, boosts, terminal logistics; later factories |
+| `reporting.*.js` | Metrics, reason codes, alerts, console commands, visuals |
+| `power.*.js` | Deferred Power Bank, processing, and Power Creep functionality |
+| `tests/` and `tools/` | Behavioral tests, server harness, fixtures, upload and import validation |
+| `docs/` | Architecture, memory schema, mechanics ledger, operations guide |
 
 Aim for 100–250 lines per module; review files above approximately 300 lines for mixed responsibilities. Avoid giant role registries, broad prototype patches, hidden global dependencies, and premature generic frameworks. Each module documents inputs, outputs, memory ownership, scheduling, and failure behavior.
 
@@ -136,7 +142,7 @@ Provide status(), roomReport(name), territoryReport(), operationReport(id), and 
 
 | Milestone | Deliverables | Exit evidence |
 | --- | --- | --- |
-| 0 Local foundation | Pinned server, test world, upload tooling, packaging, static checks, mechanics ledger | Reproducible setup, working core loop, reset recovery, verified block coordinates |
+| 0 Local foundation | Pinned server, test world, direct root-module upload tooling, import validation, static checks, mechanics ledger | Reproducible setup, working core loop, reset recovery, verified block coordinates |
 | 1 Survival and reporting | Bootstrap economy, spawn priorities, bounded metrics, initial dynamic placements | Unassisted RCL 1–3 growth; recovery from miner/hauler loss; no manual building placement |
 | 2 Dynamic colony development | Full terrain planner, construction phases, transport, towers, links/storage as unlocked | Fixture layouts valid; unassisted path to RCL 6; difficult terrain handled explicitly |
 | 3 Resilience and remotes | Defense, reservations, route safety, support logistics | Raids, energy shortage, route blockage, lost vision, and CPU pressure pass recovery scenarios |
@@ -153,13 +159,19 @@ Milestone 8 remains a future priority and does not block initial live readiness.
 
 Unit tests cover boundary arithmetic, budgets, replacement timing, spawn arbitration, layout legality, and operation transitions. Tick-level tests cover intent arbitration, missing objects, errors, memory migration, and global resets. Local server scenarios exercise actual movement, spawning, construction, combat, and recovery.
 
+Keep regression tests deterministic: explicit game ticks and CPU inputs, isolated runtimes, saved state fixtures, and no network, wall-time, or unseeded-random dependencies. For bug fixes, retain a failing reproduction before changing code. `npm run validate` includes tick-replay equivalence and targeted mutation checks; the prepared CI workflow runs the same gate on pushes and PRs. See [testing discipline](TESTING.md) for fixture contracts and the distinction between mock evidence and engine scenarios.
+
 Use saved terrain fixtures and seeded test inputs where controllable; record randomized engine behavior rather than promise deterministic combat. Run sustained scenarios for at least three worker replacement cycles and a 50,000-tick milestone soak, extending when controller progression or combat objectives require it. These are initial acceptance windows, not claims that RCL 8 can be reached in 50,000 ticks.
 
 Initial performance target: peaceful average CPU below 70% of assigned budget, p95 below 90%, no unexplained sustained bucket decline, no unbounded memory growth, and no CPU-caused loss of critical staffing. Stress tests verify graceful degradation. Tune thresholds from measurements, preserving documented headroom for combat.
 
 Every report records code revision, engine version, fixture, GCL/CPU profile, starting state, duration, interventions, outcomes, and failures. No manual intervention may be hidden in an autonomous-success claim. Capture regressions before changing behavior. A milestone is complete only when its exit evidence exists.
 
-Keep changes small and reviewable through feature branches and pull requests. Human review owns merging. Maintain a known-good deployment artifact and memory compatibility policy; test rollback against migrations before release. Live deployment, shard choice, and disposition of existing colonies are later decisions.
+Use `feature → dev → main` as the branch flow. `main` holds the most stable, validated version; `dev` integrates ongoing development and stabilization. Create short-lived `feature/`, `fix/`, or `docs/` branches from the latest `dev`, keep changes small and reviewable, and target their PRs at `dev`. Do not commit or push directly to either shared branch, or rewrite their history. Initial creation of `dev` uses the current `main` baseline.
+
+Feature PRs include relevant checks and scenario evidence for their scope. Promote `dev` to `main` through a separate release PR only when the included scope passes its applicable milestone acceptance gates, regressions are resolved, and the validation evidence identifies the tested revision. If `dev` changes after validation, validate the new release candidate before promotion. Human review owns approval and merging for both feature and release PRs; passing checks alone do not authorize a merge. Until the first implementation passes its gates, `main` remains the planning baseline rather than a claim of a working bot.
+
+Maintain a known-good deployment artifact and memory compatibility policy; test rollback against migrations before release. Record the promoted revision and its evidence so the stable version can be reproduced. Live deployment, shard choice, and disposition of existing colonies are later decisions.
 
 ## Deferred Power scope
 

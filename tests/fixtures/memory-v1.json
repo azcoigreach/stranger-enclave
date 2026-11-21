@@ -1,0 +1,14 @@
+{
+  "enclave": {
+    "version": 1,
+    "block": { "minX": -10, "maxX": -2, "minY": -10, "maxY": -2 },
+    "colonies": {
+      "W5N1": { "lastSeen": 2000, "level": 1, "energy": 200, "capacity": 300, "workers": 4, "desired": 4, "reason": "WORKFORCE_READY", "plannerCursor": 12 }
+    },
+    "intel": { "W5N1": { "lastSeen": 2000, "kind": "owned", "owner": "fixture" } },
+    "alerts": {},
+    "samples": [{ "tick": 2000, "cpu": 2, "bucket": 10000 }],
+    "sequence": 4
+  },
+  "creeps": { "legacyWorker": { "role": "bootstrap", "home": "W5N1", "working": true, "task": "REFILL" } }
+}
