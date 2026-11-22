@@ -1,6 +1,10 @@
 ## Change
 
-Describe the problem and resulting behavior. Feature PRs target `dev`; release PRs promote tested `dev` to `main`.
+Describe the problem and resulting behavior. Feature PRs normally target `dev`; release preparation targets `release/<version>`, and release promotions target `main`.
+
+Tracking issue: Refs #…
+
+Version/changelog impact:
 
 ## Validation
 

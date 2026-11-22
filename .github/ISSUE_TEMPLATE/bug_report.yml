@@ -1,0 +1,36 @@
+name: Bug report
+description: Track a reproducible bot problem and its regression test.
+title: "Bug: "
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Bot version and revision
+      description: Copy the startup version and include the commit if available.
+      placeholder: "v0.1.0, commit …"
+    validations:
+      required: true
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Localhost or official shard, room level, and relevant colony conditions.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction and observed behavior
+      description: Steps, expected result, actual result, and relevant tick numbers.
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Evidence
+      description: Relevant console messages, task/movement diagnostics, or screenshots. Exclude credentials and full memory dumps.
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: What outcome and deterministic regression would demonstrate a fix?
