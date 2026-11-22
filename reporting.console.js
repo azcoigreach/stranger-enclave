@@ -16,7 +16,7 @@ function status() {
       p95: samples[Math.ceil(samples.length * 0.95) - 1], peak: samples[samples.length - 1],
       windowTicks: samples.length,
     } : null,
-    alerts: memory.alerts,
+    alerts: memory.alerts, defense: memory.defense,
   };
 }
 
@@ -24,7 +24,8 @@ function status() {
 function roomReport(name) {
   const memory = Memory.enclave;
   const record = memory && memory.colonies[name];
-  return record ? { room: name, ...record, observationAge: Game.time - record.lastSeen } : { room: name, reason: 'UNKNOWN_ROOM' };
+  const defense=memory?.defense?.rooms[name];
+  return record ? { room: name, defense, ...record, observationAge: Game.time - record.lastSeen } : { room: name, defense, reason: defense ? 'DEFENDED_REMOTE' : 'UNKNOWN_ROOM' };
 }
 
 function territoryReport() {

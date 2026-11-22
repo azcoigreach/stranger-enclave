@@ -23,6 +23,7 @@ function observe(room, memory) {
     exits: Object.values(Game.map.describeExits(room.name) || {}).sort(),
     mineral: room.find(FIND_MINERALS)[0] && room.find(FIND_MINERALS)[0].mineralType,
     hostileParts, npc,
+    hostiles: hostiles.map(c => require('defense.threat').profile(c)).sort((a,b)=>a.id.localeCompare(b.id)),
     unsafeUntil: hostiles.length || npc ? Game.time + 1500 : (previous && previous.unsafeUntil || 0),
     sources: room.find(FIND_SOURCES).map(source => {
       const slots = [];

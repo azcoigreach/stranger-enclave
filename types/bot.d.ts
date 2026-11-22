@@ -28,7 +28,7 @@ interface ColonyRecord {
 interface MiningAssignment { source: Source; pos: {x:number; y:number} }
 interface SourceDemand { slots: number; id: Id<Source>; work: number; carry: number; travel: number; reachable: boolean; income: number }
 interface EconomyDemand { specialized: boolean; sources: SourceDemand[]; workerWork: number; income: number }
-interface SpawnRequest { role: string; targetRoom?: string; sourceId?: Id<Source>; body: BodyPartConstant[]; priority: number; reason: string }
+interface SpawnRequest { defenseRoom?:string; sponsor?:string; role: string; targetRoom?: string; sourceId?: Id<Source>; body: BodyPartConstant[]; priority: number; reason: string }
 interface EconomyWindow { ticks: number; harvested: number; upgradeEnergy: number; bySource: Record<string, number> }
 interface EconomyMetrics extends EconomyWindow {
   lastTick: number;
@@ -37,7 +37,7 @@ interface EconomyMetrics extends EconomyWindow {
   sources: Record<string, { energy: number; capacity: number; regen: number; requiredPerTick: number; unusedLastCycle?: number }>;
 }
 interface IntelSource { id: Id<Source>; x: number; y: number; capacity: number; slots: {x:number; y:number}[] }
-interface IntelRecord { lastSeen: number; kind: string; owner?: string; reservation?: string;
+interface IntelRecord { hostiles?:CombatProfile[]; lastSeen: number; kind: string; owner?: string; reservation?: string;
   reservationUntil?: number; controller?: {x:number; y:number}; sources?: IntelSource[];
   exits?: string[]; mineral?: string; hostileParts?: Record<string,number>; unsafeUntil?: number; npc?: boolean;
 }
@@ -54,6 +54,7 @@ interface RemoteOperation {
 }
 interface AlertRecord { count: number; last: number; message: string }
 interface BotMemory {
+  defense?: {tick:number;rooms:Record<string,DefenseIncident>};
   version: number;
   /** Required by schema 2; absent only in legacy schema 1 before migration. */
   home?: string;
@@ -66,6 +67,8 @@ interface BotMemory {
 }
 interface Memory { enclave?: BotMemory }
 interface CreepMemory {
+  defenseRoom?:string;
+  evacuation?:{room:string;incident:string;fallback?:string};
     feedingLink?: boolean;
     parkingSpot?: {x:number;y:number;roomName:string};
     moveGoal?: {x:number;y:number;roomName:string;range:number;tick:number};
@@ -134,4 +137,14 @@ interface PerimeterMigration {
  legacyWalls:Array<{x:number;y:number}>; conversions:Array<{x:number;y:number}>;
  guard?:{x:number;y:number;creep?:string}; completedAt?:number;
  lastAction?:{tick:number;x:number;y:number;action:string;result:number};
+}
+
+interface CombatProfile {
+ id:string;owner:string;kind:string;x:number;y:number;parts:Record<string,number>;boosts:Record<string,number>;
+ attack:number;ranged:number;heal:number;dismantle:number;move:number;weight:number;reduction:number;effectiveHits:number;maxHits:number;hits:number;ttl:number;fatigue:number;
+}
+interface DefenseIncident {
+ since:number;lastThreat:number;mode:'clear'|'evacuate'|'escort'|'intercept'|'tower';reason:string;
+ assigned:string[];roster:Array<{name:string;readyAt:number;lost?:boolean}>;spawned:number;spent:number;losses:number;
+ clearance:string;clearSince?:number;lastClear?:number;age?:number;eta?:number;contactIn?:number;request?:SpawnRequest;fallbacks:string[];
 }

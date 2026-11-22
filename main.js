@@ -44,6 +44,13 @@ module.exports.loop = function loop() {
       if (controller && controller.my) colonies.push(snapshot.create(room));
     });
   }
+  for(const colony of colonies)runtime.guard(memory, `defense:${colony.room.name}`,()=>defense.run(colony));
+  runtime.guard(memory, 'defense-dispatch', () => require('defense.dispatch').update(colonies,memory));
+  const evacuated=new Set();
+  for(const creep of Object.values(Game.creeps).sort((a,b)=>a.name.localeCompare(b.name))) {
+    runtime.guard(memory, `evacuation:${creep.name}`,()=>{if(require('defense.civilian').run(creep,memory)){evacuated.add(creep.name);require('movement.yield').hold(creep);}});
+  }
+  for(const creep of Object.values(Game.creeps))if(creep.memory.role==='defender')require('movement.yield').hold(creep);
   for (const colony of colonies) {
     const name = colony.room.name;
     const previous = memory.colonies[name];
@@ -53,11 +60,11 @@ module.exports.loop = function loop() {
       workers: colony.workers.length, desired: 0, reason: 'TICK_STARTED',
     };
     runtime.guard(memory, `layout:${name}`, () => layout.observe(colony, record));
-    runtime.guard(memory, `defense:${name}`, () => defense.run(colony));
     runtime.guard(memory, `economy-metrics:${name}`, () => economyMetrics.record(colony, record));
     runtime.guard(memory, `budget:${name}`, () => budget.update(colony,record));
     runtime.guard(memory, `links:${name}`, () => links.run(colony,record));
     runtime.guard(memory, `spawn:${name}`, () => spawning.run(colony, memory, record));
+    colony.workers=colony.workers.filter(c=>!evacuated.has(c.name));
     const deliveries = new Map();
     runtime.guard(memory, `controller-traffic:${name}`, () => controllerTraffic.run(colony, memory.block, deliveries));
     for (const creep of colony.workers) {
@@ -69,6 +76,8 @@ module.exports.loop = function loop() {
   }
   const remoteReservations = new Map();
   for (const creep of Object.values(Game.creeps).sort((a,b) => a.name.localeCompare(b.name))) {
+    if(evacuated.has(creep.name))continue;
+    if(creep.memory.role==='defender'){runtime.guard(memory, `defender:${creep.name}`,()=>require('defense.roles').run(creep,memory));continue;}
     if (!['scout','remoteMiner','remoteHauler','reserver'].includes(creep.memory.role || '')) continue;
     runtime.guard(memory, `traveler:${creep.name}`, () => travelers.run(creep,memory,remoteReservations));
   }
