@@ -42,7 +42,7 @@ test('rampart targets respect actual RCL hit limits and decay is budgeted indepe
 test('only active measured remote income funds spending and zero delivery is not positive profit',()=>{
  const w=world();w.barrier('wall',1);w.record.expansion={remotes:[{room:'E22S31',reason:'ACTIVE',travel:25,carry:12,deliverySample:{rate:8}},{room:'E20S31',reason:'UNSAFE_REMOTE',travel:25,carry:12,deliverySample:{rate:10}}]};w.budget();
  assert.ok(w.record.budget.activeRemoteIncome>0&&w.record.budget.activeRemoteIncome<8);
- assert.equal(w.h.load('economy.budget').remoteNet({travel:25,carry:12,deliverySample:{rate:0}}),0);
+ assert.ok(w.h.load('economy.budget').remoteNet({travel:25,carry:12,deliverySample:{rate:0}})<0);
 });
 test('defense funding is stable across serialized memory and global resets',()=>{
  const run=reset=>{const w=world(7);w.barrier('wall',100000);const trace=[];

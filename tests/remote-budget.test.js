@@ -1,9 +1,9 @@
 'use strict';
 const test=require('node:test'),assert=require('node:assert/strict');
 const {harness,position,store}=require('./harness');
-function world() {
+function world(twoSources=false) {
  const h=harness(),home=h.addRoom('E23S47',{level:5}),a=h.addRoom('E24S47'),b=h.addRoom('E22S47');
- for(const away of [a,b]){delete h.Game.spawns[away.spawn.name];away.controller.my=false;delete away.controller.owner;away.objects[h.constants.FIND_STRUCTURES]=[];}
+ for(const away of [a,b]){if(!twoSources)away.objects[h.constants.FIND_SOURCES].splice(1);delete h.Game.spawns[away.spawn.name];away.controller.my=false;delete away.controller.owner;away.objects[h.constants.FIND_STRUCTURES]=[];}
  home.room.energyAvailable=home.room.energyCapacityAvailable=1800;
  home.room.storage={id:'bank',my:true,structureType:'storage',pos:position(24,24,home.room.name),store:store(220000,1000000)};
  home.objects[h.constants.FIND_STRUCTURES].push(home.room.storage);
@@ -55,7 +55,7 @@ test('remote budget uses delivered rates and includes replacement and reservatio
  const h=harness(),net=h.load('economy.budget').remoteNet,op={travel:25,carry:12};
  const estimate=net(op);assert.ok(estimate>5&&estimate<10);
  op.deliverySample={rate:7};assert.ok(net(op)<estimate);assert.ok(net(op)<7);
- op.deliverySample.rate=0;assert.equal(net(op),0);
+ op.deliverySample.rate=0;assert.ok(net(op)<0);
 });
 
 test('remote capacity failures remain visible between survey ticks',()=>{
@@ -124,4 +124,71 @@ test('missing remote transport or miner recovery precedes optional reservation e
  delete w.h.Game.creeps.hauler1;assert.equal(w.request().role,'remoteHauler');assert.equal(w.request().targetRoom,two.room);
  const c=w.role('newHauler','remoteHauler',two);c.body=[{type:'carry',hits:100}];delete w.h.Game.creeps.miner1;
  assert.equal(w.request().role,'remoteMiner');assert.equal(w.request().targetRoom,two.room);
+});
+
+test('rank all eligible sources before admitting the most profitable route',()=>{
+ const w=world(true);
+ w.h.load('movement.remote').distance=(_,p)=>p.roomName===w.b.room.name ? 90 : p.x===35 ? null : 20;
+ w.update(19);
+ const state=w.record.expansion;
+ assert.equal(state.remote.room,w.a.room.name);
+ assert.equal(state.ranking.length,4);
+ assert.equal(state.ranking[0].sourceId,state.remote.sourceId);
+ assert.ok(state.ranking[0].netIncome>state.ranking[1].netIncome);
+ assert.ok(state.ranking.some(c=>c.travel===null && c.reason==='NO_ECONOMIC_ROUTE'));
+});
+test('a shared reservation makes the second source preferable and both crews stay independent',()=>{
+ const w=world(true);w.update(19);w.update(1019);
+ const [one,two]=w.record.expansion.remotes;
+ assert.equal(one.room,two.room);assert.notEqual(one.sourceId,two.sourceId);
+ assert.equal(w.record.expansion.candidate.costs.reservation,0);
+ const haul=w.role('haul','remoteHauler',one);w.role('miner','remoteMiner',one);
+ w.role('reserve','reserver',one);w.h.addWorker(w.home.room,'scout').memory.role='scout';
+ const request=w.h.load('operations.remote').request(w.colony(),w.mem,w.record);
+ assert.equal(request.sourceId,two.sourceId);assert.equal(request.role,'remoteHauler');
+ w.update(1020);w.home.room.getEventLog=()=>[{event:12,objectId:haul.id,data:{targetId:'bank',resourceType:'energy',amount:75}}];
+ w.update(1021);assert.equal(one.delivered,75);assert.equal(two.delivered,0);
+});
+test('equal scores sort stably across reset and a foreign sponsor owns its remote room',()=>{
+ const run=reset=>{
+  const w=world(true);
+  w.h.addRoom('E23S46');
+  w.mem.colonies.E23S46={expansion:{remote:{room:w.b.room.name,sourceId:'existing'}}};
+  if(reset) {w.a.objects[w.h.constants.FIND_SOURCES].reverse();w.h.reset();}
+  w.update(19);
+  const state=w.h.Memory.enclave.colonies[w.home.room.name].expansion;
+  assert.equal(state.remote.room,w.a.room.name);
+  return state.remote.sourceId;
+ };
+ assert.equal(run(true),run(false));
+});
+test('an incomplete CPU-limited survey resumes without admitting a partial winner',()=>{
+ const w=world(true);
+ const runtime=w.h.load('core.runtime');
+ let paths=0;
+ w.h.load('movement.remote').distance=(_,p)=>{paths++;return p.roomName===w.a.room.name ? 20 : 80;};
+ runtime.optionalWorkAllowed=()=>paths<1;
+ w.update(19);
+ assert.equal(w.record.expansion.remotes.length,0);
+ assert.equal(w.record.expansion.capacityReason,'DEFERRED_CPU');
+ runtime.optionalWorkAllowed=()=>true;
+ w.update(44);
+ assert.equal(paths,4);
+ assert.equal(w.record.expansion.remote.room,w.a.room.name);
+});
+test('the scout is asked to refresh missing intel and unreserved income uses neutral capacity',()=>{
+ const w=world();w.home.room.energyCapacityAvailable=1000;
+ w.h.Game.time=19; delete w.mem.intel[w.b.room.name];
+ w.h.load('operations.remote').update(w.colony(),w.mem,w.record);
+ assert.deepEqual(Array.from(w.record.expansion.resurvey),[w.b.room.name]);
+ assert.equal(w.record.expansion.remote.grossIncome,5);
+ assert.equal(w.record.expansion.candidate.costs.reservation,0);
+});
+test('a room reserver keeps working when its original source retires',()=>{
+ const w=world(true);w.update(19);w.update(1019);
+ const [one,two]=w.record.expansion.remotes;
+ one.retiring=true;one.reason='RETIRING_SURPLUS';
+ const c=w.role('keeper','reserver',one,w.h.Game.rooms[two.room]);
+ w.h.load('operations.roles').run(c,w.mem,new Map());
+ assert.equal(c.calls[0].action,'reserveController');
 });

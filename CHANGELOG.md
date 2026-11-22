@@ -4,6 +4,7 @@ Changes are tracked by GitHub issue and summarized here for each release. Versio
 
 ## [Unreleased]
 
+- [#9](https://github.com/azcoigreach/stranger-enclave/issues/9) ranks eligible adjacent remote sources by estimated net energy delivered. Multiple sources can share one room reservation. Source crews, deposits and measured losses are tracked separately.
 - Scouts and other travelers can pass an engineer waiting for defense funding or reserves ([#21](https://github.com/azcoigreach/stranger-enclave/issues/21)).
 
 ## [0.1.0]

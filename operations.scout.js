@@ -28,7 +28,8 @@ function run(creep,memory) {
     const ops=state && (state.remotes || (state.remote ? [state.remote] : [])) || [];
     const needsRemote=record && record.budget && record.budget.remoteTarget>ops.filter(op=>!op.retiring).length;
     const neighbors=new Set(Object.values(Game.map.describeExits(home)||{}));
-    const priority=(/** @type {string} */ name)=>needsRemote && neighbors.has(name) && !ops.some(op=>op.room===name) &&
+    const requested=new Set(Object.values(memory.colonies).reduce((/** @type {string[]} */ names,c)=>names.concat(c.expansion?.resurvey || []),[]));
+    const priority=(/** @type {string} */ name)=>(requested.has(name) || needsRemote && neighbors.has(name)) &&
       (!memory.intel[name] || Game.time-memory.intel[name].lastSeen>250) ? 0 : 1;
     const candidates=territory.rooms(memory.block).filter(name => name !== creep.room.name && !blocked[name] &&
       (!memory.intel[name] || intel.safe(memory.intel[name],username,false)))
