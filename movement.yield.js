@@ -63,6 +63,10 @@ function pass(creep,next){
   const other=own.find(c=>c!==creep && c.pos.x===next.x && c.pos.y===next.y);
   if(!other||other.spawning||other.fatigue||held(other)||!other.getActiveBodyparts(MOVE))return false;
   const goal=other.memory.moveGoal;
+  // A follower must not replace the leader's outbound move with a sideways step.
+  const outbound=creep.memory.moveGoal;
+  if(outbound && outbound.tick===Game.time && outbound.roomName!==creep.room.name &&
+    goal && goal.roomName===outbound.roomName && Game.time-goal.tick<=2)return false;
   const idleEngineer=other.memory.role==='engineer' &&
     (other.memory.task==='ENGINEER_FUNDING_PAUSE' || other.memory.task==='ENGINEER_RESERVE_PAUSE');
   if(['miner','remoteMiner','reserver'].includes(other.memory.role||''))return false;

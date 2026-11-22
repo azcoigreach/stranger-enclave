@@ -115,3 +115,17 @@ test('a scout can leave a one-tile passage blocked by a funding-paused engineer'
   assert.equal(engineer.calls.at(-1).action,'step');
   assert.ok(w.h.load('movement.yield').held(engineer));
 });
+
+test('a scout following a hauler toward the same exit leaves the lead creep free to advance',()=>{
+  const w=world(), scout=w.h.addWorker(w.room,'scout'), leader=w.h.addWorker(w.room,'lead');
+  scout.memory.role='scout';leader.memory.role='remoteHauler';
+  scout.pos=position(2,35,w.room.name);leader.pos=position(1,35,w.room.name);
+  const goal={x:25,y:25,range:23,roomName:'E22S47',tick:w.h.Game.time};
+  scout.memory.moveGoal={...goal};leader.memory.moveGoal={...goal};
+  const yielding=w.h.load('movement.yield');
+  assert.equal(yielding.pass(scout,leader.pos),false);
+  assert.equal(leader.calls.length,0);
+  assert.equal(yielding.held(leader),false);
+  leader.memory.moveGoal.roomName='E24S47';
+  assert.equal(yielding.pass(scout,leader.pos),true);
+});
