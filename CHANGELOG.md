@@ -4,6 +4,8 @@ Changes are tracked by GitHub issue and summarized here for each release. Versio
 
 ## [Unreleased]
 
+- [#9](https://github.com/azcoigreach/stranger-enclave/issues/9) ranks eligible adjacent remote sources by estimated net energy delivered. Multiple sources can share one room reservation. Source crews, deposits and measured losses are tracked separately.
+
 ## [0.1.0]
 
 First versioned release candidate. Release tracking: [#5](https://github.com/azcoigreach/stranger-enclave/issues/5).

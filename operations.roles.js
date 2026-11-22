@@ -9,14 +9,17 @@ function run(creep,memory,reservations) {
   if (creep.memory.role === 'scout') {scout.run(creep,memory);return;}
   const home=creep.memory.home || '', record=memory.colonies[home];
   const state=record && record.expansion;
-  const op=state && (state.remotes || (state.remote ? [state.remote] : [])).find(o=>o.room===creep.memory.targetRoom && o.sourceId===creep.memory.sourceId);
+  const ops=state?.remotes ?? (state?.remote ? [state.remote] : []);
+  const op=creep.memory.role==='reserver'
+    ? ops.find(o=>o.room===creep.memory.targetRoom && o.reason==='ACTIVE' && !o.retiring)
+    : ops.find(o=>o.room===creep.memory.targetRoom && o.sourceId===creep.memory.sourceId);
   const homeRoom=Game.rooms[home];
   if (!homeRoom || !homeRoom.controller || !homeRoom.controller.my) {creep.memory.task='REMOTE_HOME_UNAVAILABLE';return;}
   const storage=homeRoom.storage;
   const energy=creep.store.getUsedCapacity(RESOURCE_ENERGY);
   if (creep.memory.role === 'remoteHauler' && !creep.store.getFreeCapacity(RESOURCE_ENERGY)) creep.memory.working=true;
   const returning=creep.memory.role === 'remoteHauler' && (creep.memory.working || !creep.store.getFreeCapacity(RESOURCE_ENERGY));
-  const active=op && op.reason === 'ACTIVE' && op.room === creep.memory.targetRoom && op.sourceId === creep.memory.sourceId &&
+  const active=op && op.reason === 'ACTIVE' && op.room === creep.memory.targetRoom && !op.retiring &&
     territory.contains(op.room,memory.block);
   if (!active || returning) {
     creep.memory.task=active ? 'REMOTE_RETURN' : 'REMOTE_RETREAT';
