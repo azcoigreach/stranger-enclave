@@ -128,15 +128,15 @@ test('scout retreats on newly observed threats and does not count unseen rooms a
   assert.equal(memory.intel.E22S47,undefined);
 });
 
-test('spawn requests fund transport then mining then reservation, counting pending creeps',()=> {
+test('spawn requests fund first transport, mining, reservation, then extra transport, counting pending creeps',()=> {
   const {h,home,role,colony,record,memory,activate}=setup();activate();role('scout','scout');
   const req=()=>h.load('operations.remote').request(colony(),memory,record);
   assert.equal(req().role,'remoteHauler');assert.equal(req().body.length,24);
   const first=role('haul','remoteHauler');first.spawning=true;first.body=Array.from({length:12},()=>({type:'carry',hits:100}));
-  assert.equal(req().role,'remoteMiner');role('miner','remoteMiner');assert.equal(req().body.length,16);
+  assert.equal(req().role,'remoteMiner');role('miner','remoteMiner');assert.equal(req().role,'reserver');
+  const reserver=role('reserve','reserver');assert.equal(req().body.length,16);
   const second=role('haul2','remoteHauler');second.body=Array.from({length:8},()=>({type:'carry',hits:100}));
-  assert.equal(req().role,'reserver');
-  const reserver=role('reserve','reserver');assert.equal(req(),null);reserver.ticksToLive=60;assert.equal(req().role,'reserver');
+  assert.equal(req(),null);reserver.ticksToLive=60;assert.equal(req().role,'reserver');
   home.room.storage.store.energy=1999;assert.equal(req(),null);
 });
 
@@ -162,15 +162,15 @@ test('remote roles harvest, collect, deliver and reserve without claiming',()=> 
   const haul=role('haul','remoteHauler',away.room);const source=away.objects[h.constants.FIND_SOURCES][0];
   away.objects[h.constants.FIND_DROPPED_RESOURCES]=[{id:'drop',amount:50,resourceType:'energy',pos:position(source.pos.x+1,source.pos.y,away.room.name)}];
   run(haul);assert.equal(haul.calls[0].action,'pickup');haul.calls=[];haul.store.energy=50;
-  run(haul);assert.equal(haul.calls[0].target.roomName,home.room.name);
+  run(haul);assert.equal(haul.calls[0].path.at(-1).roomName,home.room.name);
   haul.room=home.room;haul.pos=position(27,26,home.room.name);haul.calls=[];run(haul);assert.equal(haul.calls[0].action,'transfer');assert.equal(haul.calls[0].target.id,'bank');
-  haul.store.energy=0;haul.calls=[];run(haul);assert.equal(haul.calls[0].target.roomName,away.room.name);
+  haul.store.energy=0;haul.calls=[];run(haul);assert.equal(haul.calls[0].path.at(-1).roomName,away.room.name);
 });
 
 test('paused miners retreat and haulers bring cargo home, including after serialization',()=> {
   const {h,away,home,memory,role,activate}=setup();const op=activate();op.reason='UNSAFE_REMOTE';memory.intel[away.room.name].unsafeUntil=2000;
   const miner=role('miner','remoteMiner',away.room),hauler=role('haul','remoteHauler',away.room,25);
-  h.reset();for(const c of [miner,hauler]) {h.load('operations.roles').run(c,h.Memory.enclave,new Map());assert.equal(c.calls[0].target.roomName,home.room.name);assert.ok(!c.calls.some(x=>x.action==='harvest'));}
+  h.reset();h.context.PathFinder.search=(origin,goal)=>({incomplete:false,cost:45,path:[position(19,20,goal.pos.roomName)]});for(const c of [miner,hauler]) {h.load('operations.roles').run(c,h.Memory.enclave,new Map());assert.equal(c.calls[0].path.at(-1).roomName,home.room.name);assert.ok(!c.calls.some(x=>x.action==='harvest'));}
   hauler.room=home.room;hauler.pos=position(27,26,home.room.name);hauler.calls=[];
   h.load('operations.roles').run(hauler,h.Memory.enclave,new Map());assert.equal(hauler.calls[0].action,'transfer');
 });
@@ -238,13 +238,14 @@ function resetReplay(reset) {
   for(let i=0;i<6;i++) {
     h.Game.time=20+i;
     if(reset) h.reset();
+    h.context.PathFinder.search=(origin,goal)=>({incomplete:false,cost:45,path:[position(19,20,goal.pos.roomName)]});
     const mem=h.Memory.enclave,rec=mem.colonies[home.room.name];
     if(i===2)mem.intel[away.room.name].unsafeUntil=100;
     if(i===3){c.room=home.room;c.store.energy=25;}
     if(i===4)c.store.energy=0;
     h.load('operations.remote').update(colony(),mem,rec);c.calls=[];
     h.load('operations.roles').run(c,mem,new Map());
-    trace.push(JSON.parse(JSON.stringify({memory:mem,creep:c.memory,actions:c.calls.map(call=>({action:call.action,target:call.target?.id||call.target?.roomName,amount:call.amount}))})));
+    trace.push(JSON.parse(JSON.stringify({memory:mem,creep:c.memory,actions:c.calls.map(call=>({action:call.action,target:call.target?.id||call.target?.roomName||call.path?.at(-1)?.roomName,amount:call.amount}))})));
   }
   return trace;
 }
@@ -254,7 +255,7 @@ test('outbound collectors wait near storage until a miner reaches the remote sou
   const {h,home,away,memory,role,activate}=setup();activate();const c=role('haul','remoteHauler');
   h.load('operations.roles').run(c,memory,new Map());assert.equal(c.memory.task,'REMOTE_WAIT_PRODUCER');assert.equal(c.calls[0].target.roomName,home.room.name);
   const miner=role('miner','remoteMiner',away.room);miner.pos=position(21,20,away.room.name);c.calls=[];
-  h.load('operations.roles').run(c,memory,new Map());assert.equal(c.calls[0].target.roomName,away.room.name);
+  h.load('operations.roles').run(c,memory,new Map());assert.equal(c.calls[0].path.at(-1).roomName,away.room.name);
 });
 
 test('a failed optional remote survey cannot suppress emergency home spawning',()=> {

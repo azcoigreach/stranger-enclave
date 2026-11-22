@@ -10,6 +10,8 @@ module.exports = Object.freeze({
   downgradeUrgency: 3000,
   storageWorkerRefillTicks: 15,
   storageWorkerBufferTicks: 30,
+  linkRefillLow: 400,
+  linkRefillTarget: 800,
   defenseMinimumLevel: 4,
   buildingWallClearance: 3,
   buildingExitClearance: 5,
@@ -29,4 +31,5 @@ module.exports = Object.freeze({
   maxEngineerWork: 10,
   maxRemoteRooms: 4,
   remoteResizeInterval: 1000,
+  reservationLeadTicks: 1000,
 });

@@ -28,7 +28,7 @@ function moveToWork(creep,target,options,transitOptions,staticOptions) {
     const blocker=occupants.find(c=>c!==creep && c.pos.x===next.x && c.pos.y===next.y);
     if(blocker){
       const step=creep.room.getPositionAt(next.x,next.y);
-      if(step && yielding.access(creep,step,0,snapshot.create(creep.room))){creep.memory.moveReason='YIELD_TRAFFIC';return OK;}
+      if(step && (yielding.access(creep,step,0,snapshot.create(creep.room)) || yielding.pass(creep,step))){creep.memory.moveReason='YIELD_TRAFFIC';return OK;}
       creep.memory.moveReason='WAIT_TRAFFIC';return ERR_BUSY;
     }
     creep.memory.moveReason='FOLLOW_ROUTE';return creep.moveByPath(path);
@@ -65,11 +65,13 @@ function move(creep, target, range, block) {
     return ERR_NO_PATH;
   }
   if(yielding.held(creep)) return OK;
+  creep.memory.moveGoal={x:target.x,y:target.y,roomName:target.roomName,range,tick:Game.time};
   if(range<=1 && yielding.access(creep,target,range,snapshot.create(creep.room))) return OK;
   const last = creep.memory.motion;
-  const stuck = last && last.tick === Game.time - 1 && last.x === creep.pos.x && last.y === creep.pos.y && !creep.fatigue
+  const stuck = last && last.tick === Game.time - 1 && ((last.x === creep.pos.x && last.y === creep.pos.y) || (last.previousX===creep.pos.x && last.previousY===creep.pos.y)) && !creep.fatigue
     ? last.stuck + 1 : 0;
-  creep.memory.motion = { x: creep.pos.x, y: creep.pos.y, tick: Game.time, stuck };
+  const recoverUntil=stuck>=2 ? Game.time+100 : last?.recoverUntil || 0;
+  creep.memory.motion = { x: creep.pos.x, y: creep.pos.y, previousX:last?.x,previousY:last?.y,recoverUntil,tick: Game.time, stuck };
   const controller = creep.room.controller;
   const carrier = (creep.memory.role === 'hauler' || creep.memory.role === 'distributor' || creep.memory.role === 'engineer' || creep.memory.role === 'remoteHauler') && controller && controller.my;
   const nearFormation = carrier && creep.pos.inRangeTo(controller, 4);
@@ -89,7 +91,7 @@ function move(creep, target, range, block) {
   /** @type {MoveToOpts} */
   const options = {range,maxRooms:1,maxOps:1500,reusePath:stuck>=2 || nearFormation ? 0 : 5,
     ignoreCreeps:!carrier && stuck<2,costCallback:costs};
-  const result=creep.memory.role==='engineer' ? moveToWork(creep,target,options,{...options,costCallback:(room,matrix)=>costs(room,matrix,true)},
+  const result=(creep.memory.role==='engineer' || recoverUntil>=Game.time) ? moveToWork(creep,target,options,{...options,costCallback:(room,matrix)=>costs(room,matrix,true)},
     {...options,ignoreCreeps:true,costCallback:(room,matrix)=>costs(room,matrix,true,true)}) : creep.moveTo(target,options);
   creep.memory.lastMove=result;
   return result;

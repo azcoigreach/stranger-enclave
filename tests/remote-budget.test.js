@@ -93,3 +93,35 @@ test('an established remote pauses when a longer replacement route becomes uneco
  w.h.load('movement.remote').distance=()=>190;w.update(119);
  assert.equal(op.routeValid,false);assert.equal(op.reason,'NO_ECONOMIC_ROUTE');
 });
+
+function reservationWorld(){
+ const w=world();w.update(19);w.update(1019);
+ const scout=w.h.addWorker(w.home.room,'scout');scout.memory.role='scout';
+ for(const [i,op] of w.record.expansion.remotes.entries()){
+  op.reserve=true;op.carry=52;op.delivered=100;
+  w.role(`miner${i}`,'remoteMiner',op);const haul=w.role(`hauler${i}`,'remoteHauler',op);
+  haul.body=Array.from({length:12},()=>({type:'carry',hits:100}));
+ }
+ const request=()=>w.h.load('operations.remote').request(w.colony(),w.h.Memory.enclave,w.h.Memory.enclave.colonies[w.home.room.name]);
+ return {...w,request};
+}
+test('an unreserved established remote gets its reserver before filling the reserved-output hauling fleet',()=>{
+ const w=reservationWorld(),[first,second]=w.record.expansion.remotes;
+ w.mem.intel[first.room].reservation='test';w.mem.intel[first.room].reservationUntil=w.h.Game.time+3000;
+ assert.equal(w.request().role,'reserver');assert.equal(w.request().targetRoom,second.room);
+ w.h.reset();assert.equal(w.request().targetRoom,second.room);
+});
+test('reservation surplus defers replacement while an expiring buffer requests one without duplicating pending crews',()=>{
+ const w=reservationWorld(),op=w.record.expansion.remotes[0];w.record.expansion.remotes=[op];
+ const info=w.mem.intel[op.room];info.reservation='test';info.reservationUntil=w.h.Game.time+3000;
+ assert.equal(w.request().role,'remoteHauler');
+ op.carry=12;assert.equal(w.request(),null);
+ info.reservationUntil=w.h.Game.time+100;assert.equal(w.request().role,'reserver');
+ const c=w.role('pending','reserver',op);c.spawning=true;assert.equal(w.request(),null);
+});
+test('missing remote transport or miner recovery precedes optional reservation elsewhere',()=>{
+ const w=reservationWorld(),[one,two]=w.record.expansion.remotes;
+ delete w.h.Game.creeps.hauler1;assert.equal(w.request().role,'remoteHauler');assert.equal(w.request().targetRoom,two.room);
+ const c=w.role('newHauler','remoteHauler',two);c.body=[{type:'carry',hits:100}];delete w.h.Game.creeps.miner1;
+ assert.equal(w.request().role,'remoteMiner');assert.equal(w.request().targetRoom,two.room);
+});

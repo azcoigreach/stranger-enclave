@@ -140,6 +140,8 @@ function request(colony,memory,record) {
   const ops=state && (state.remotes || (state.remote ? [state.remote] : [])) || [];
   const storage=colony.room.storage;
   if(!storage || !storage.my || storage.store.getUsedCapacity(RESOURCE_ENERGY)<2000) return null;
+  /** @type {SpawnRequest[]} */
+  const requests=[];
   for(const op of ops) {
   if(op.reason!=='ACTIVE' || op.retiring) continue;
   // Existing income must survive lengthy barricade work. A new operation still waits for ordinary buildings.
@@ -153,14 +155,31 @@ function request(colony,memory,record) {
   const capacity=colony.room.energyCapacityAvailable;
   const common={targetRoom:op.room,sourceId:op.sourceId,priority:11};
   const carry=haulers.reduce((sum,c) => sum+c.getActiveBodyparts(CARRY),0);
-  // A collector first, then its producer; don't drop an entire source while the first hauler spawns.
-  if (carry > 0 && !miners.length && capacity >= 750) return {...common,role:'remoteMiner',body:[WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE],reason:'REMOTE_SOURCE'};
+  // Bootstrap transport and production before optional reservation, across all rooms.
+  if (carry > 0 && !miners.length && capacity >= 750) {
+    requests.push({...common,role:'remoteMiner',body:[WORK,WORK,WORK,WORK,WORK,MOVE,MOVE,MOVE,MOVE,MOVE],reason:'REMOTE_SOURCE'});continue;
+  }
+  if(carry===0){
+    const pairs=Math.min(op.carry,12,Math.floor(capacity/100));
+    if(pairs)requests.push({...common,role:'remoteHauler',body:carryBody(pairs),reason:'REMOTE_TRANSPORT'});
+    continue;
+  }
+  const username=colony.controller.owner?.username;
+  const remaining=observation.reservation===username ? Math.max(0,(observation.reservationUntil||0)-Game.time) : 0;
+  const lead=Math.max(config.reservationLeadTicks,op.travel+4*CREEP_SPAWN_TIME+20);
+  // Hauling demand assumes reserved output. Do not wait to fill that whole fleet
+  // before enabling the source output it was sized for. Banked reservation lasts
+  // beyond a reserver's lifetime, so replacements follow expiry, not presence alone.
+  if (miners.length && op.reserve!==false && !reservers.length && capacity >= 1300 && remaining<=lead) {
+    requests.push({...common,priority:12,role:'reserver',body:[CLAIM,CLAIM,MOVE,MOVE],reason:'REMOTE_RESERVATION'});continue;
+  }
   if (carry < op.carry) {
     const pairs=Math.min(op.carry-carry,12,Math.floor(capacity/100));
-    if (pairs) return {...common,role:'remoteHauler',body:carryBody(pairs),reason:'REMOTE_TRANSPORT'};
+    if (pairs) requests.push({...common,priority:13,role:'remoteHauler',body:carryBody(pairs),reason:'REMOTE_TRANSPORT'});
   }
-  if (op.reserve!==false && !reservers.length && capacity >= 1300) return {...common,role:'reserver',body:[CLAIM,CLAIM,MOVE,MOVE],reason:'REMOTE_RESERVATION'};
   }
-  return null;
+  requests.sort((a,b)=>a.priority-b.priority || (a.targetRoom||'').localeCompare(b.targetRoom||''));
+  return requests[0] || null;
 }
+
 module.exports = {update,request,population};

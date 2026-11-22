@@ -2,6 +2,7 @@
 const territory = require('territory.policy');
 
 const stations = require('economy.stations');
+const yielding = require('movement.yield');
 
 /** Recover carriers already enclosed by a formation (including old cached paths).
  * Before role execution, reserve one step toward an externally reachable range-4
@@ -26,7 +27,11 @@ function run(colony, block, reservations) {
   for (const creep of colony.room.find(FIND_POWER_CREEPS)) blocked.add(key(creep.pos));
   const reserved = new Set();
   for (const carrier of carriers) {
-    if (carrier.fatigue || !carrier.getActiveBodyparts(MOVE)) continue;
+    if (carrier.fatigue || !carrier.getActiveBodyparts(MOVE) || yielding.held(carrier)) continue;
+    // A recent explicit destination owns transit, even across a reserved station.
+    // Evicting it here would send it back to the tile it left last tick.
+    const goal=carrier.memory.moveGoal;
+    if(goal && carrier.memory.lastMove!==ERR_NO_PATH && Game.time-goal.tick<=2 && goal.roomName===colony.room.name && !carrier.pos.inRangeTo(new RoomPosition(goal.x,goal.y,goal.roomName),goal.range))continue;
     const reservedStations = new Set(stations.layout(colony).positions.map(key));
     const search = (/** @type {boolean} */ allowSwap) => {
       const queue = [{ x: carrier.pos.x, y: carrier.pos.y, first: /** @type {{x:number, y:number} | null} */ (null) }];
@@ -50,7 +55,7 @@ function run(colony, block, reservations) {
           if (!allowSwap && (occupant || reservedStations.has(tile))) continue;
           if (occupant && (!colony.workers.includes(occupant) ||
               occupant.memory.role !== 'bootstrap' || occupant.memory.home !== colony.room.name || occupant.spawning ||
-              occupant.fatigue || !occupant.getActiveBodyparts(MOVE) || reservations.has(`traffic:${occupant.id}`))) continue;
+              occupant.fatigue || yielding.held(occupant) || !occupant.getActiveBodyparts(MOVE) || reservations.has(`traffic:${occupant.id}`))) continue;
           seen.add(tile); queue.push({ ...next, first: current.first || next });
         }
       }
@@ -68,9 +73,11 @@ function run(colony, block, reservations) {
     const occupant = occupied.get(key(step));
     if (occupant) {
       reservations.set(`traffic:${occupant.id}`, 1);
+      yielding.hold(occupant);
       occupant.memory.task = 'YIELD_CONTROLLER_EXIT';
       occupant.memory.lastAction = occupant.move(occupant.pos.getDirectionTo(carrier.pos));
     }
+    yielding.hold(carrier);
     carrier.memory.task = 'EXIT_CONTROLLER';
     carrier.memory.lastAction = carrier.move(carrier.pos.getDirectionTo(target));
     reserved.add(key(carrier.pos)); reserved.add(key(step));

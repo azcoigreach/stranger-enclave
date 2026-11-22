@@ -145,3 +145,48 @@ test('new engineers can sustain loaded movement on plains within the available s
   assert.ok(request.body.reduce((sum,p)=>sum+h.constants.BODYPART_COST[p],0)<=capacity);
  }
 });
+
+test('busy spawn deficits cannot indefinitely starve the controller link distributor',()=>{
+ for(const reset of [false,true]){
+  const w=world(),hub=w.link('hub',24,23),receiver=w.link('receiver',11,10);
+  w.record.links={hub:{x:24,y:23},controller:{x:11,y:10},status:'BUILT'};
+  w.spawn.spawning={name:'replacement'};w.spawn.store.energy=0;w.room.energyAvailable=0;
+  const carrier=w.h.addWorker(w.room,'carrier',50);carrier.memory.role='hauler';carrier.memory.sourceId=w.objects[w.h.constants.FIND_SOURCES][0].id;
+  const d=w.h.addWorker(w.room,'distributor',50);d.memory.role='distributor';
+  if(reset)w.h.reset();
+  const run=()=>w.h.load('economy.hauler').run(d,w.colony(),w.h.Memory.enclave.block,new Map());
+  run();assert.equal(d.calls[0].target,hub);
+  hub.store.energy=300;receiver.store.energy=200;if(reset)w.h.reset();d.calls=[];run();assert.equal(d.calls[0].target,hub,'complete a buffer refill instead of oscillating between priorities');
+  receiver.store.energy=600;d.calls=[];run();assert.equal(d.calls[0].target,w.spawn,'resume ordinary logistics once the combined buffer is ready');
+ }
+});
+test('link service yields to spawn recovery, tower emergencies, low reserves and missing source haulers',()=>{
+ for(const condition of ['idleSpawn','tower','hostiles','reserve','noHauler','noReceiver']){
+  const w=world(),hub=w.link('hub',24,23),receiver=w.link('receiver',11,10);
+  w.record.links={hub:{x:24,y:23},controller:{x:11,y:10},status:'BUILT'};
+  w.spawn.spawning={name:'replacement'};w.spawn.store.energy=0;w.room.energyAvailable=0;
+  const c=w.h.addWorker(w.room,'carrier',50);c.memory.role='hauler';
+  const d=w.h.addWorker(w.room,'distributor',50);d.memory.role='distributor';d.memory.feedingLink=true;
+  if(condition==='idleSpawn')w.spawn.spawning=null;
+  if(condition==='noHauler')delete w.h.Game.creeps[c.name];
+  if(condition==='reserve')w.bank.store.energy=0;
+  if(condition==='noReceiver')receiver.my=false;
+  if(condition==='tower'||condition==='hostiles'){
+   w.objects[w.h.constants.FIND_STRUCTURES].push({id:'tower',my:true,structureType:'tower',pos:w.at(26,25),store:store(condition==='tower'?100:900,1000)});
+   if(condition==='hostiles')w.objects[w.h.constants.FIND_HOSTILE_CREEPS]=[{id:'enemy'}];
+  }
+  w.h.load('economy.hauler').run(d,w.colony(),w.memory.block,new Map());assert.notEqual(d.calls[0].target,hub,condition);
+ }
+});
+
+
+test('source haulers still refill the spawn while distributors share link delivery reservations',()=>{
+ const w=world(),hub=w.link('hub',24,23);w.link('receiver',11,10);
+ w.record.links={hub:{x:24,y:23},controller:{x:11,y:10},status:'BUILT'};
+ w.spawn.spawning={name:'replacement'};w.spawn.store.energy=0;w.room.energyAvailable=0;
+ const carrier=w.h.addWorker(w.room,'carrier',50);carrier.memory.role='hauler';carrier.memory.sourceId=w.objects[w.h.constants.FIND_SOURCES][0].id;
+ const a=w.h.addWorker(w.room,'a',500),b=w.h.addWorker(w.room,'b',500);a.memory.role=b.memory.role='distributor';a.store=store(500,500);b.store=store(500,500);
+ const jobs=new Map(),run=c=>w.h.load('economy.hauler').run(c,w.colony(),w.memory.block,jobs);
+ run(a);run(b);assert.equal(a.calls[0].target,hub);assert.equal(a.calls[0].amount,500);assert.equal(b.calls[0].amount,300);
+ run(carrier);assert.equal(carrier.calls[0].target,w.spawn);
+});

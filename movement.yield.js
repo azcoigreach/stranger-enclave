@@ -42,11 +42,44 @@ function access(creep,target,range,colony) {
     candidates.push({p,swap});
   }
   candidates.sort((a,b)=>Number(a.swap)-Number(b.swap)||b.p.getRangeTo(target)-a.p.getRangeTo(target)||a.p.x-b.p.x||a.p.y-b.p.y);
-  const choice=candidates[0];if(!choice)return false;
+  const choice=candidates[0];if(!choice || reservedTiles.has(key(worker.pos)))return false;
+  heldNames.add(creep.name);
   heldNames.add(worker.name);reservedTiles.add(key(choice.p));reservedTiles.add(key(worker.pos));
   worker.memory.yieldUntil=Game.time+5;worker.memory.task='YIELD_ADJACENT_ACCESS';
   worker.memory.lastMove=worker.move(worker.pos.getDirectionTo(choice.p));
   creep.memory.lastMove=creep.move(creep.pos.getDirectionTo(worker.pos));
   return true;
 }
-module.exports={held,access};
+/** Reserve externally coordinated movement against later role intents.
+ * @param {Creep} creep */
+function hold(creep){reset();heldNames.add(creep.name);}
+/** Let mobile travelers pass one another without displacing stationary miners,
+ * reservers, fatigued creeps or ranged workers outside their work range.
+ * @param {Creep} creep @param {RoomPosition} next */
+function pass(creep,next){
+  reset();
+  if(held(creep)||creep.fatigue||!creep.getActiveBodyparts(MOVE)||reservedTiles.has(key(next))||!creep.pos.inRangeTo(next,1))return false;
+  const own=Object.values(Game.creeps).filter(c=>c.room.name===creep.room.name);
+  const other=own.find(c=>c!==creep && c.pos.x===next.x && c.pos.y===next.y);
+  if(!other||other.spawning||other.fatigue||held(other)||!other.getActiveBodyparts(MOVE))return false;
+  const goal=other.memory.moveGoal;
+  if(!goal || Game.time-goal.tick>2 || ['miner','remoteMiner','reserver'].includes(other.memory.role||'') ||
+    other.pos.inRangeTo(new RoomPosition(goal.x,goal.y,goal.roomName),goal.range))return false;
+  const room=creep.room,terrain=room.getTerrain();
+  const blocked=new Set([...room.find(FIND_STRUCTURES),...room.find(FIND_MY_CONSTRUCTION_SITES)].filter(s=>
+    s.structureType!==STRUCTURE_ROAD&&s.structureType!==STRUCTURE_CONTAINER&&!(s.structureType===STRUCTURE_RAMPART&&'my' in s&&s.my)).map(s=>key(s.pos)));
+  for(const s of [...room.find(FIND_SOURCES),...room.find(FIND_MINERALS),...(room.controller?[room.controller]:[])])blocked.add(key(s.pos));
+  const occupants=[...own,...room.find(FIND_CREEPS),...room.find(FIND_POWER_CREEPS)],choices=[];
+  for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++){
+    const x=next.x+dx,y=next.y+dy;if((!dx&&!dy)||x<=0||y<=0||x>=49||y>=49||(terrain.get(x,y)&TERRAIN_MASK_WALL))continue;
+    const p=room.getPositionAt(x,y);if(!p||blocked.has(key(p))||reservedTiles.has(key(p)))continue;
+    if(occupants.some(c=>c!==other&&c!==creep&&c.pos.x===x&&c.pos.y===y))continue;
+    choices.push(p);
+  }
+  choices.sort((a,b)=>Number(a.inRangeTo(creep,0))-Number(b.inRangeTo(creep,0))||a.getRangeTo(goal.x,goal.y)-b.getRangeTo(goal.x,goal.y)||a.x-b.x||a.y-b.y);
+  const p=choices[0];if(!p)return false;
+  hold(creep);hold(other);reservedTiles.add(key(p));reservedTiles.add(key(next));
+  other.memory.lastMove=other.move(other.pos.getDirectionTo(p));other.memory.moveReason='YIELD_TRANSIT';
+  creep.memory.lastMove=creep.move(creep.pos.getDirectionTo(next));return true;
+}
+module.exports={held,hold,access,pass};

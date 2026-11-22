@@ -86,3 +86,16 @@ The engineer transit follow-up adds regressions for a distant temporary blocker,
 See [engineer transit live evidence](validation/2026-11-21-engineer-transit.md) for the sampled movement outcomes and the distinction between existing fatigue-limited bodies and the tested new spawn design.
 
 `defense-scale.test.js` verifies RCL 4–8 targets, actual hit caps, shared strength milestones, reserve-limited spending, active measured income, existing-engineer funding pauses, emergency bypass, and reset equivalence. Remote regressions cover profitable routes beyond the former cutoff, unprofitable routes, spawn headroom, and existing-route reevaluation. Scout regression rejects incomplete routes while preserving authorized destinations and threat retreat. The intentionally changed historical assertions now use the new RCL 5 goal/floor and a route beyond the new maximum; four distinct ramparts replace an impossible same-tile fixture, and zero delivery expects zero net income. Startup remotes cannot fund repairs before a measured delivery window. Staged and installed validation pass 226 tests.
+
+
+`traffic-progress.test.js` reproduces controller-station transit reversal, remote crews accepting incomplete paths, opposing engineer blockage, and stalled carrier retries. Additional cases protect immobile/work-position occupants, verify holds across resets and check blocked cached-path rerouting. Existing movement tests now inspect checked-path options and explicit path destinations, with the same simulated search outcomes reinstalled after a global reset. Parking/reset and two-tile oscillation recovery add two further cases. Validation passes 234 tests; replay expectations were not regenerated. The new replay digest reflects persisted movement-goal diagnostics.
+
+See [traffic progress live evidence](validation/2026-11-21-traffic-progress.md) for the observed controller oscillation, remote recovery, and final movement sample.
+
+
+Link-starvation regressions reproduce continuous spawn deficits suppressing distributor hub refills. They cover the persisted 400/800 combined-buffer refill cycle, spawn recovery, tower emergencies, storage reserves, missing infrastructure/haulers, and shared link delivery reservations while source haulers keep spawn priority. Staged and installed validation pass 237 tests with the previous deterministic replay digest unchanged.
+
+See [link feeding evidence](validation/2026-11-21-link-feeding.md) for observed sender/receiver energy and controller progress.
+
+
+Remote reservation scheduling adds three regressions: an unreserved second operation precedes extra hauling in the first; banked reservation defers replacement until expiry approaches without duplicating pending reservers; missing essential remote transport/mining beats optional reservation across rooms. The existing sequence assertion intentionally changes to first hauler → miner → reserver → additional haulers. Staged and installed validation pass 240 tests; deterministic replay digest is unchanged. See [reservation evidence](validation/2026-11-21-remote-reservation.md).

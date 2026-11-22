@@ -61,6 +61,9 @@ interface BotMemory {
 }
 interface Memory { enclave?: BotMemory }
 interface CreepMemory {
+    feedingLink?: boolean;
+    parkingSpot?: {x:number;y:number;roomName:string};
+    moveGoal?: {x:number;y:number;roomName:string;range:number;tick:number};
   role?: string;
   targetRoom?: string;
   scoutSince?: number;
@@ -70,12 +73,12 @@ interface CreepMemory {
   sourceId?: Id<Source>;
   workTarget?: string;
   lastMove?: number;
-  moveReason?: 'FATIGUE' | 'IN_RANGE' | 'WAIT_TRAFFIC' | 'YIELD_TRAFFIC' | 'FOLLOW_ROUTE' | 'NO_COMPLETE_ROUTE';
+  moveReason?: 'FATIGUE' | 'IN_RANGE' | 'WAIT_TRAFFIC' | 'YIELD_TRAFFIC' | 'YIELD_TRANSIT' | 'FOLLOW_ROUTE' | 'NO_COMPLETE_ROUTE';
   yieldUntil?: number;
   miningSpot?: {x:number; y:number};
   task?: string;
   lastAction?: number;
-  motion?: { x: number; y: number; tick: number; stuck: number };
+  motion?: { previousX?:number;previousY?:number;recoverUntil?:number; x: number; y: number; tick: number; stuck: number };
 }
 interface ColonySnapshot {
   mining?: Map<string, MiningAssignment>;
