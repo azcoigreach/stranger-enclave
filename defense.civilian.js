@@ -6,7 +6,7 @@ const roles=['bootstrap','miner','hauler','distributor','engineer','remoteMiner'
  * @param {Creep} creep @param {BotMemory} memory @returns {boolean} */
 function run(creep,memory){
   if(creep.spawning||!roles.includes(creep.memory.role||''))return false;
-  const home=creep.memory.home||'',username=memory.intel[home]?.owner||'';
+  const home=creep.memory.home||'',username=movement.username(creep,memory);
   const work=creep.memory.targetRoom||home,states=memory.defense?.rooms||{};
   const blocked=(/** @type {string} */ name)=>states[name]&&states[name].mode!=='clear'&&states[name].mode!=='tower';
   const nearbyTowerThreat=states[creep.room.name]?.mode==='tower'&&creep.room.find(FIND_HOSTILE_CREEPS).some(c=>creep.pos.inRangeTo(c,5));

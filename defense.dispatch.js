@@ -39,7 +39,7 @@ function update(colonies,memory){
       if(!creep&&!pending&&Game.time>entry.readyAt+5){entry.lost=true;s.losses++;}
     }
     if(s.mode==='clear')continue;
-    const username=colonies[0]?.controller.owner?.username||memory.intel[memory.home||'']?.owner||'';
+    const username=colonies[0]?.controller.owner?.username||Object.values(Game.creeps).find(c=>c.owner)?.owner.username||'';
     if(info?.lastSeen===Game.time&&!profiles.length&&!info.npc&&(!info.owner||info.owner===username)&&
       (!info.reservation||info.reservation===username||(info.reservationUntil||0)<=Game.time)){
       if(s.lastClear!==Game.time-1)s.clearSince=Game.time;

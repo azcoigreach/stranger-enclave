@@ -2,6 +2,13 @@
 const territory=require('territory.policy');
 const intel=require('territory.intel');
 
+/** Never infer our identity from a home controller that may have been captured.
+ * @param {Creep} creep @param {BotMemory} memory */
+function username(creep,memory){
+  const home=memory.intel[creep.memory.home||''];
+  return creep.owner?.username||(home?.kind==='owned'?home.owner||'':'');
+}
+
 /** Defensive permits are narrow: a safe observed corridor plus the threatened
  * destination for combat, or a threatened origin for evacuation. No home bypass.
  * @param {string} name @param {BotMemory} memory @param {string} username */
@@ -48,10 +55,9 @@ function path(origin,target,range,memory,username,combat=false){
 function move(creep,target,range,memory,combat=false){
   if(creep.fatigue){creep.memory.moveReason='FATIGUE';return ERR_TIRED;}
   if(creep.pos.roomName===target.roomName&&creep.pos.inRangeTo(target,range))return OK;
-  const username=memory.intel[creep.memory.home||'']?.owner||'';
-  const result=path(creep.pos,target,range,memory,username,combat);
+  const result=path(creep.pos,target,range,memory,username(creep,memory),combat);
   creep.memory.moveGoal={x:target.x,y:target.y,roomName:target.roomName,range,tick:Game.time};
   if(!result||!result.path.length){creep.memory.moveReason='NO_COMPLETE_ROUTE';return ERR_NO_PATH;}
   creep.memory.moveReason='FOLLOW_ROUTE';return creep.moveByPath(result.path);
 }
-module.exports={safe,path,move};
+module.exports={safe,path,move,username};

@@ -248,3 +248,12 @@ test('defense decisions and evacuation memory replay identically across resets a
   }
   assert.deepEqual(replay(true,true),replay(false,false));
 });
+
+test('losing home ownership never changes the defender identity or permits evacuation into enemy territory',()=>{
+  const w=world();enemy(w,w.remote);const c=defender(w,['ranged_attack','heal','move','move'],'guard',w.remote);
+  c.owner={username:'test'};c.memory.defenseRoom=w.remote.room.name;
+  w.home.controller.my=false;w.home.controller.owner={username:'enemy'};w.observe();
+  w.h.context.PathFinder.search=()=>({incomplete:false,path:[position(25,25,w.home.room.name)],cost:10});
+  const result=w.h.load('defense.movement').move(c,position(25,25,w.home.room.name),20,w.h.Memory.enclave);
+  assert.equal(result,-2);assert.equal(c.calls.length,0);
+});

@@ -36,7 +36,7 @@ function run(creep,memory){
 }
 /** @param {Creep} creep @param {BotMemory} memory */
 function retreat(creep,memory){
-  const home=creep.memory.home||'',username=memory.intel[home]?.owner||'';
+  const home=creep.memory.home||'',username=movement.username(creep,memory);
   const room=[home,...Object.values(Game.map.describeExits(creep.room.name)||{}).sort()]
     .find(n=>movement.safe(n,memory,username));
   if(room&&room!==creep.room.name)creep.memory.lastMove=movement.move(creep,new RoomPosition(25,25,room),20,memory);
