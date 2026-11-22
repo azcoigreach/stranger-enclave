@@ -10,7 +10,7 @@ function create(room) {
     spawns: Object.values(Game.spawns).filter(s => s.room.name === room.name).sort((a, b) => a.name.localeCompare(b.name)),
     structures: room.find(FIND_STRUCTURES), sources: room.find(FIND_SOURCES),
     sites: room.find(FIND_MY_CONSTRUCTION_SITES), hostiles: room.find(FIND_HOSTILE_CREEPS),
-    workers: Object.values(Game.creeps).filter(c => ['bootstrap', 'miner', 'hauler', 'distributor'].includes(c.memory.role || '') &&
+    workers: Object.values(Game.creeps).filter(c => ['bootstrap', 'miner', 'hauler', 'distributor', 'engineer'].includes(c.memory.role || '') &&
       c.memory.home === room.name && c.room.name === room.name).sort((a, b) => a.name.localeCompare(b.name)),
   };
 }

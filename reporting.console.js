@@ -47,6 +47,7 @@ function explain(name) {
 }
 
 function install() {
+  global.approvePerimeter = require('planning.migration').approve;
   global.status = status;
   global.roomReport = roomReport;
   global.territoryReport = territoryReport;

@@ -7,6 +7,9 @@ const miner = require('economy.miner');
 const hauler = require('economy.hauler');
 const stations = require('economy.stations');
 const mining = require('economy.mining');
+const engineer = require('economy.engineer');
+const links = require('economy.links');
+const yielding = require('movement.yield');
 
 /** Issue one work/carry intent and, if needed, one movement intent.
  * @param {Creep} creep @param {{pos: RoomPosition}} target @param {number} range
@@ -71,10 +74,12 @@ function gather(creep, colony, block) {
  * @param {Map<string, number>} deliveries Tick-local reservations, shared by the colony.
  */
 function run(creep, colony, block, deliveries) {
+  if (yielding.held(creep)) return;
   if (creep.spawning || deliveries.has(`traffic:${creep.id}`)) return;
   if (creep.room.name !== creep.memory.home) { creep.memory.task = 'OUTSIDE_HOME'; return; }
   if (creep.memory.role === 'miner') return miner.run(creep, colony, block);
   if (creep.memory.role === 'hauler' || creep.memory.role === 'distributor') return hauler.run(creep, colony, block, deliveries);
+  if (creep.memory.role === 'engineer') return engineer.run(creep,colony,block,deliveries);
   const generalists = colony.workers.filter(c => !c.spawning && c.memory.role === 'bootstrap');
   const developed = demand.specialized(colony);
   const fed = colony.workers.some(c => !c.spawning && c.memory.role === 'miner') &&
@@ -84,7 +89,9 @@ function run(creep, colony, block, deliveries) {
   if (fed && creep.store.getUsedCapacity(RESOURCE_ENERGY) > 0) creep.memory.working = true;
   const builder = fed && generalists[generalists.length - 1]?.name === creep.name && colony.sites.length > 0;
   const station = fed && !builder ? stations.forWorker(creep, colony) : null;
-  if (station && !creep.pos.inRangeTo(station, 0)) {
+  const receiver=fed ? links.network(colony).controller : undefined;
+  const seekingLink=!creep.memory.working && receiver && receiver.store.getUsedCapacity(RESOURCE_ENERGY)>(deliveries.get(`pickup:${receiver.id}`)||0);
+  if (station && !seekingLink && !(creep.memory.yieldUntil && creep.memory.yieldUntil>=Game.time && creep.pos.inRangeTo(colony.controller,3)) && !creep.pos.inRangeTo(station, 0)) {
     creep.memory.task = 'MOVE_UPGRADE_STATION';
     movement.move(creep, station, 0, block);
     if (creep.memory.working && creep.pos.inRangeTo(colony.controller, 3)) {
@@ -94,6 +101,12 @@ function run(creep, colony, block, deliveries) {
   }
   if (!creep.memory.working) {
     if (!fed) return gather(creep, colony, block);
+    if (receiver) {
+      const reserved=deliveries.get(`pickup:${receiver.id}`)||0;
+      const amount=Math.min(creep.store.getFreeCapacity(RESOURCE_ENERGY),receiver.store.getUsedCapacity(RESOURCE_ENERGY)-reserved);
+      if(amount>0) {deliveries.set(`pickup:${receiver.id}`,reserved+amount);
+        return perform(creep,receiver,1,'LINK_WITHDRAW',()=>creep.withdraw(receiver,RESOURCE_ENERGY,amount),block);}
+    }
     const nearby = reachable(creep, colony.room.find(FIND_DROPPED_RESOURCES).filter(r =>
       r.resourceType === RESOURCE_ENERGY && creep.pos.inRangeTo(r, 3)), 1);
     if (nearby) return perform(creep, nearby, 1, 'PICKUP', () => creep.pickup(nearby), block);

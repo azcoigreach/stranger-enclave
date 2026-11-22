@@ -40,6 +40,16 @@ function request(colony, plan) {
     for (let i = 0; i < pairs; i++) body.push(CARRY, MOVE);
     if (body.length) requests.push({role:'distributor', body, priority:3, reason:'STORAGE_DELIVERY'});
   }
+  const budget=Memory.enclave && Memory.enclave.colonies[colony.room.name]?.budget;
+  const engineers=colony.workers.filter(c=>c.memory.role==='engineer' && viable(c,50));
+  const engineering=engineers.reduce((sum,c)=>sum+demand.parts(c,WORK),0);
+  if (budget && engineering<budget.engineerWork) {
+    const units=Math.min(5,budget.engineerWork-engineering,Math.floor(capacity/250));
+    /** @type {BodyPartConstant[]} */
+    const body=[];
+    for(let i=0;i<units;i++) body.push(WORK,CARRY,MOVE,MOVE);
+    if(body.length) requests.push({role:'engineer',body,priority:3.5,reason:'DEFENSE_WORK_DEFICIT'});
+  }
   const workers = colony.workers.filter(c => c.memory.role === 'bootstrap' && viable(c, 50));
   const workerWork = workers.reduce((sum, c) => sum + demand.parts(c, WORK), 0);
   if (workerWork < plan.workerWork) {

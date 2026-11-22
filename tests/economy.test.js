@@ -85,8 +85,9 @@ test('movement rejects cross-room targets and blocks edges on local paths', () =
   const matrix = new Map(); opts.costCallback('W5N1', { set: (x, y, cost) => matrix.set(`${x},${y}`, cost) });
   assert.equal(matrix.get('0,25'), 255); assert.equal(matrix.get('49,25'), 255);
   h.Game.time++; movement.move(creep, position(20, 20), 1, block);
+  const searches=[];creep.pos.findPathTo=(target,options)=>{searches.push(options);return [{x:23,y:24},{x:22,y:23},{x:21,y:22},{x:21,y:21}];};
   h.Game.time++; movement.move(creep, position(20, 20), 1, block);
-  assert.equal(creep.calls[2].opts.reusePath, 0);
+  assert.equal(searches[0].reusePath,0);assert.equal(creep.calls[2].action,'path');
 });
 
 test('tower fire precedes worker actions against a hostile', () => {

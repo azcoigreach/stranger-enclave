@@ -5,10 +5,11 @@ const territory=require('territory.policy');
 
 /** @param {Creep} creep @param {BotMemory} memory @param {Map<string,number>} reservations */
 function run(creep,memory,reservations) {
-  if (creep.spawning) return;
+  if (creep.spawning || require('movement.yield').held(creep)) return;
   if (creep.memory.role === 'scout') {scout.run(creep,memory);return;}
   const home=creep.memory.home || '', record=memory.colonies[home];
-  const op=record && record.expansion && record.expansion.remote;
+  const state=record && record.expansion;
+  const op=state && (state.remotes || (state.remote ? [state.remote] : [])).find(o=>o.room===creep.memory.targetRoom && o.sourceId===creep.memory.sourceId);
   const homeRoom=Game.rooms[home];
   if (!homeRoom || !homeRoom.controller || !homeRoom.controller.my) {creep.memory.task='REMOTE_HOME_UNAVAILABLE';return;}
   const storage=homeRoom.storage;
@@ -42,10 +43,11 @@ function run(creep,memory,reservations) {
         room && room.find(FIND_DROPPED_RESOURCES).some(r => r.resourceType === RESOURCE_ENERGY && r.pos.inRangeTo(source,2)));
       if (!ready) {
         creep.memory.task='REMOTE_WAIT_PRODUCER';
-        if (storage) movement.approach(creep,storage.pos,2,memory);
+        if (storage) movement.park(creep,storage.pos,memory);
         return;
       }
     }
+    delete creep.memory.parkingSpot;
     creep.memory.task='REMOTE_TRAVEL';movement.travel(creep,op.room,memory);return;
   }
   const source=creep.room.find(FIND_SOURCES).find(s => s.id === op.sourceId);

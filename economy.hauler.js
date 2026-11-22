@@ -1,14 +1,19 @@
 'use strict';
 const movement = require('movement.local');
 const config = require('core.config');
+const links = require('economy.links');
 
 /** Consumer refill hysteresis leaves time to bank cargo between worker deliveries.
  * Builders and controller emergencies keep full refills. Without usable storage, retain bootstrap behavior.
- * @param {StructureSpawn | StructureExtension | StructureTower | StructureStorage | Creep} target
+ * @param {StructureSpawn | StructureExtension | StructureTower | StructureLink | StructureStorage | Creep} target
  * @param {ColonySnapshot} colony
  */
 function deliveryNeed(target, colony) {
   const free = target.store.getFreeCapacity(RESOURCE_ENERGY);
+  if ('body' in target) {
+    const receiver=links.network(colony).controller;
+    if(receiver && target.pos.inRangeTo(receiver,1) && receiver.store.getUsedCapacity(RESOURCE_ENERGY)>0) return 0;
+  }
   if (!('body' in target)) return free;
   const storage = colony.room.storage;
   const generalists = colony.workers.filter(c => !c.spawning && c.memory.role === 'bootstrap');
@@ -22,18 +27,41 @@ function deliveryNeed(target, colony) {
   return energy < low ? Math.max(0, desired - energy) : 0;
 }
 
-/** @param {ColonySnapshot} colony
- * @returns {Array<StructureSpawn | StructureExtension | StructureTower | Creep>}
+/** A storage distributor services the controller buffer during active spawning.
+ * Source haulers retain ordinary spawn/tower priority; recovery can interrupt service.
+ * @param {Creep | undefined} creep @param {ColonySnapshot} colony */
+function serviceLink(creep,colony){
+  if(!creep || creep.memory.role!=='distributor')return undefined;
+  const {hub,controller}=links.network(colony),storage=colony.room.storage;
+  const floor=Memory.enclave?.colonies[colony.room.name]?.budget?.reserveFloor ?? config.reserveFloor;
+  const sourceHauler=colony.workers.some(c=>!c.spawning&&c.memory.role==='hauler'&&c.getActiveBodyparts(CARRY)>0&&c.getActiveBodyparts(MOVE)>0);
+  const recovery=colony.spawns.some(s=>!s.spawning)&&colony.room.energyAvailable<colony.room.energyCapacityAvailable;
+  const urgentTower=colony.structures.some(s=>s.structureType===STRUCTURE_TOWER&&s.my&&
+    (s.store.getUsedCapacity(RESOURCE_ENERGY)<500 || colony.hostiles.length>0&&s.store.getFreeCapacity(RESOURCE_ENERGY)>0));
+  if(!hub||!controller||hub===controller||!storage?.my||storage.store.getUsedCapacity(RESOURCE_ENERGY)<=floor||!sourceHauler||recovery||urgentTower){
+    creep.memory.feedingLink=false;return undefined;
+  }
+  const buffered=hub.store.getUsedCapacity(RESOURCE_ENERGY)+controller.store.getUsedCapacity(RESOURCE_ENERGY);
+  if(buffered<config.linkRefillLow)creep.memory.feedingLink=true;
+  if(buffered>=config.linkRefillTarget)creep.memory.feedingLink=false;
+  return creep.memory.feedingLink ? hub : undefined;
+}
+
+/** @param {ColonySnapshot} colony @param {Creep} [creep]
+ * @returns {Array<StructureSpawn | StructureExtension | StructureTower | StructureLink | Creep>}
  */
-function recipients(colony) {
-  /** @type {Array<StructureSpawn | StructureExtension | StructureTower | Creep>} */
+function recipients(colony,creep) {
+  /** @type {Array<StructureSpawn | StructureExtension | StructureTower | StructureLink | Creep>} */
   const targets = [];
+  const service=serviceLink(creep,colony);if(service)targets.push(service);
   for (const structure of colony.structures) {
     if ((structure.structureType === STRUCTURE_SPAWN || structure.structureType === STRUCTURE_EXTENSION) && structure.my) targets.push(structure);
   }
   for (const structure of colony.structures) {
     if (structure.structureType === STRUCTURE_TOWER && structure.my) targets.push(structure);
   }
+  const network=links.network(colony);
+  if(network.hub && network.controller && network.hub!==service) targets.push(network.hub);
   targets.push(...colony.workers.filter(c => !c.spawning && c.memory.role === 'bootstrap').sort((a, b) =>
     a.store.getUsedCapacity(RESOURCE_ENERGY) - b.store.getUsedCapacity(RESOURCE_ENERGY) || a.name.localeCompare(b.name)));
   return targets;
@@ -47,7 +75,7 @@ function recipients(colony) {
 function withdrawForDemand(creep, colony, block, reservations) {
   const storage = colony.room.storage;
   if (!storage || !storage.my) return false;
-  const neededEnergy = recipients(colony).reduce((sum, target) =>
+  const neededEnergy = recipients(colony,creep).reduce((sum, target) =>
     sum + Math.max(0, deliveryNeed(target, colony) - (reservations.get(target.id) || 0)), 0);
   const reserved = reservations.get(`pickup:${storage.id}`) || 0;
   if (neededEnergy <= reserved) return false;
@@ -122,8 +150,8 @@ function run(creep, colony, block, reservations) {
 /** @param {Creep} creep @param {ColonySnapshot} colony @param {BlockBounds} block @param {Map<string,number>} reservations */
 function deliver(creep, colony, block, reservations) {
   const energy = creep.store.getUsedCapacity(RESOURCE_ENERGY);
-  /** @type {Array<StructureSpawn | StructureExtension | StructureTower | StructureStorage | Creep>} */
-  const targets = recipients(colony);
+  /** @type {Array<StructureSpawn | StructureExtension | StructureTower | StructureLink | StructureStorage | Creep>} */
+  const targets = recipients(colony,creep);
   if (creep.memory.role !== 'distributor' && colony.room.storage && colony.room.storage.my) targets.push(colony.room.storage);
   const target = targets.find(t => deliveryNeed(t, colony) > (reservations.get(t.id) || 0));
   if (!target) { creep.memory.task = creep.memory.role === 'distributor' ? 'DISTRIBUTOR_WAIT_DEMAND' : 'WAIT_ENERGY_DEMAND'; return; }

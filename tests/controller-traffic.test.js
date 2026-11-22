@@ -99,3 +99,14 @@ test('storage distributors receive the same formation escape protection as sourc
   assert.ok(yielding);assert.equal(directMove(yielding).length,1);
   assert.ok(!carrier.calls.some(c=>c.action==='move'),'distributor must not overwrite its escape');
 });
+
+test('engineers avoid reserved upgrader stations and can escape an enclosed formation',()=>{
+  const {h,room,carrier,ring}=formation();carrier.memory.role='engineer';delete carrier.memory.sourceId;
+  const searches=[];carrier.pos.findPathTo=(target,opts)=>{searches.push(opts);return [];};
+  assert.equal(h.load('movement.local').move(carrier,position(10,5,room.name),1,h.load('territory.policy').blockFor(room.name)),-2);
+  const options=searches.find(o=>o.costCallback && !o.ignoreCreeps),costs=new Map();options.costCallback(room.name,{set(x,y,cost){costs.set(`${x},${y}`,cost);}});
+  assert.equal(options.ignoreCreeps,false);
+  for(const c of ring)assert.equal(costs.get(`${c.pos.x},${c.pos.y}`),255);
+  carrier.calls=[];h.tick();assert.equal(directMove(carrier).length,1);
+  assert.ok(!carrier.calls.some(c=>c.action==='move'||c.action==='path'),'role must not overwrite traffic recovery');
+});

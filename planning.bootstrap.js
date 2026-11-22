@@ -1,5 +1,8 @@
 'use strict';
 const layout = require('planning.layout');
+const perimeter = require('planning.perimeter');
+const links = require('planning.links');
+const mature = require('planning.mature');
 
 /** Incremental bootstrap extension/tower placement, not the full mature planner.
  * Stores cursor/status plus the established layout in the colony record. At most 12 candidates and one site
@@ -58,6 +61,7 @@ function preservesAccess(colony, x, y) {
 function run(colony, record, allowed) {
   layout.observe(colony, record);
   if (colony.hostiles.length) { record.planning = 'HOSTILES_PRESENT'; return; }
+
   if (colony.sites.length >= 3 || Object.keys(Game.constructionSites).length >= MAX_CONSTRUCTION_SITES) {
     record.planning = 'CONSTRUCTION_BACKLOG'; return;
   }
@@ -66,7 +70,20 @@ function run(colony, record, allowed) {
   const existing = [...colony.structures, ...colony.sites];
   const type = [STRUCTURE_TOWER, STRUCTURE_STORAGE, STRUCTURE_EXTENSION].find(t =>
     existing.filter(s => s.structureType === t).length < (CONTROLLER_STRUCTURES[t][colony.controller.level] || 0));
-  if (!type) { record.planning = 'BOOTSTRAP_PHASE_COMPLETE'; return; }
+  if (!type) {
+    if(links.run(colony,record,preservesAccess,allowed)) return;
+    if(perimeter.build(colony,record,allowed)) return;
+    record.planning = 'BOOTSTRAP_PHASE_COMPLETE'; return;
+  }
+  if(record.perimeterProposal) {record.planning='WAIT_VALIDATED_PERIMETER';return;}
+  if(record.perimeter?.version===2) {
+    if(record.mature?.status!=='RESERVED' || record.mature.policyKey!==mature.policyKey()){record.planning='WAIT_VALIDATED_CAPACITY';return;}
+    const target=record.mature.buildings.find(b=>b.type===type && !existing.some(s=>s.structureType===type && s.pos.x===b.x && s.pos.y===b.y));
+    if(!target || !mature.safePosition(target,record.perimeter)){record.planning='NO_SAFE_RESERVED_POSITION';return;}
+    const result=colony.room.createConstructionSite(target.x,target.y,type);
+    if(result===OK)layout.rememberSite(record,target);
+    record.planning=result===OK ? `PLACED_RESERVED_${type}` : `RESERVED_SITE_FAILED_${result}`;return;
+  }
   const anchor = colony.spawns[0].pos;
   const terrain = colony.room.getTerrain();
   // Parity spacing leaves walkways; ordered by distance without assuming a fixed footprint.
@@ -81,6 +98,7 @@ function run(colony, record, allowed) {
     record.plannerCursor = index + 1;
     const { x, y } = candidates[index];
     if (terrain.get(x, y) & TERRAIN_MASK_WALL) continue;
+    if(!mature.safePosition({x,y},record.perimeter)) continue;
     if (existing.some(s => s.pos.x === x && s.pos.y === y)) continue;
     if ([...colony.sources, colony.controller, ...colony.room.find(FIND_MINERALS), ...colony.spawns].some(s =>
       Math.max(Math.abs(s.pos.x - x), Math.abs(s.pos.y - y)) <= 2)) continue;

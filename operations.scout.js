@@ -24,9 +24,15 @@ function run(creep,memory) {
     if (!require('core.runtime').optionalWorkAllowed()) {creep.memory.task='SCOUT_DEFERRED_CPU';return;}
     const here=territory.coordinates(creep.room.name);
     const distance=(/** @type {string} */ name) => {const p=territory.coordinates(name);return Math.abs(p.x-here.x)+Math.abs(p.y-here.y);};
+    const record=memory.colonies[home], state=record && record.expansion;
+    const ops=state && (state.remotes || (state.remote ? [state.remote] : [])) || [];
+    const needsRemote=record && record.budget && record.budget.remoteTarget>ops.filter(op=>!op.retiring).length;
+    const neighbors=new Set(Object.values(Game.map.describeExits(home)||{}));
+    const priority=(/** @type {string} */ name)=>needsRemote && neighbors.has(name) && !ops.some(op=>op.room===name) &&
+      (!memory.intel[name] || Game.time-memory.intel[name].lastSeen>250) ? 0 : 1;
     const candidates=territory.rooms(memory.block).filter(name => name !== creep.room.name && !blocked[name] &&
       (!memory.intel[name] || intel.safe(memory.intel[name],username,false)))
-      .sort((a,b) => (memory.intel[a] ? memory.intel[a].lastSeen : -1000000) -
+      .sort((a,b) => priority(a)-priority(b) || (memory.intel[a] ? memory.intel[a].lastSeen : -1000000) -
         (memory.intel[b] ? memory.intel[b].lastSeen : -1000000) || distance(a)-distance(b) || a.localeCompare(b));
     // Prefer nearby unseen rooms without doing 81 expensive tile searches.
     let bestLength=Infinity;
@@ -35,7 +41,7 @@ function run(creep,memory) {
       const route=movement.route(creep.room.name,name,memory,home,true);
       if (!route) {blocked[name]=Game.time+500;continue;}
       if (route.length < bestLength) {target=name;bestLength=route.length;}
-      if (memory.intel[name] || bestLength === 1) break;
+      if (priority(name)===0 || memory.intel[name] || bestLength === 1) break;
     }
     creep.memory.targetRoom=target;
     creep.memory.scoutSince=Game.time;

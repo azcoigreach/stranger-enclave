@@ -37,16 +37,17 @@ command = r'''
     colony:bot && bot.colonies[ROOM], alerts:bot && bot.alerts,
     intel:bot && bot.intel,
     travelers:accountCreeps.filter(c=>memory.creeps && memory.creeps[c.name] && ['scout','remoteMiner','remoteHauler','reserver'].includes(memory.creeps[c.name].role)).map(c=>({
-      name:c.name,room:c.room,x:c.x,y:c.y,ttl:c.ageTime && c.ageTime-gameTime,spawning:c.spawning,store:c.store,memory:memory.creeps[c.name]})),
+      name:c.name,room:c.room,x:c.x,y:c.y,ttl:c.ageTime && c.ageTime-gameTime,spawning:c.spawning,fatigue:c.fatigue,store:c.store,memory:memory.creeps[c.name]})),
     cpu:samples.length ? {samples:samples.length,average:samples.reduce((a,b)=>a+b,0)/samples.length,
       p95:samples[Math.ceil(samples.length*0.95)-1],peak:samples[samples.length-1],
       bucket:bot.samples[bot.samples.length-1].bucket} : null,
-    objects:objects.filter(o=>['source','spawn','controller','creep','constructionSite','energy','container','tower','extension','road','rampart','constructedWall','storage','link','lab','terminal','observer','powerSpawn','nuker','factory','extractor'].includes(o.type)).map(o=>{
+    objects:objects.filter(o=>['source','mineral','spawn','controller','creep','constructionSite','energy','container','tower','extension','road','rampart','constructedWall','storage','link','lab','terminal','observer','powerSpawn','nuker','factory','extractor'].includes(o.type)).map(o=>{
       const cm=memory.creeps && memory.creeps[o.name];
-      return {type:o.type,id:o._id,name:o.name,level:o.level,progress:o.progress,progressTotal:o.progressTotal,structureType:o.structureType,spawning:o.spawning,
+      return {type:o.type,id:o._id,name:o.name,mineralType:o.mineralType,level:o.level,progress:o.progress,progressTotal:o.progressTotal,structureType:o.structureType,spawning:o.spawning,
+        hits:o.hits,hitsMax:o.hitsMax,isPublic:o.isPublic,cooldown:o.cooldown,decay:o.nextDecayTime && o.nextDecayTime-gameTime,
         store:o.store,storeCapacity:o.storeCapacity,storeCapacityResource:o.storeCapacityResource,energy:o.energy,energyCapacity:o.energyCapacity,regen:o.nextRegenerationTime && o.nextRegenerationTime-gameTime,
         ttl:o.ageTime && o.ageTime-gameTime,body:o.body && o.body.reduce((counts,p)=>{if(p.hits>0)counts[p.type]=(counts[p.type]||0)+1;return counts;},{}),
-        x:o.x,y:o.y,task:cm && {role:cm.role,sourceId:cm.sourceId,miningSpot:cm.miningSpot,working:cm.working,task:cm.task,lastAction:cm.lastAction}};
+        x:o.x,y:o.y,fatigue:o.fatigue,task:cm && {role:cm.role,lastMove:cm.lastMove,moveReason:cm.moveReason,moveGoal:cm.moveGoal,yieldUntil:cm.yieldUntil,destination:cm._move && cm._move.dest,workTarget:cm.workTarget,motion:cm.motion,sourceId:cm.sourceId,miningSpot:cm.miningSpot,working:cm.working,task:cm.task,lastAction:cm.lastAction}};
     })
   };
   const encoded=encodeURIComponent(JSON.stringify(report)).replace(/'/g,'%27');

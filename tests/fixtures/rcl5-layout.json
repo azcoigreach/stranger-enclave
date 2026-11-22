@@ -1,0 +1,188 @@
+{
+  "sources": [
+    [
+      16,
+      7
+    ],
+    [
+      32,
+      13
+    ]
+  ],
+  "buildings": [
+    {
+      "type": "spawn",
+      "x": 32,
+      "y": 19
+    },
+    {
+      "type": "extension",
+      "x": 31,
+      "y": 16
+    },
+    {
+      "type": "extension",
+      "x": 33,
+      "y": 16
+    },
+    {
+      "type": "extension",
+      "x": 35,
+      "y": 16
+    },
+    {
+      "type": "extension",
+      "x": 29,
+      "y": 16
+    },
+    {
+      "type": "extension",
+      "x": 29,
+      "y": 18
+    },
+    {
+      "type": "tower",
+      "x": 35,
+      "y": 18
+    },
+    {
+      "type": "extension",
+      "x": 35,
+      "y": 20
+    },
+    {
+      "type": "extension",
+      "x": 36,
+      "y": 15
+    },
+    {
+      "type": "extension",
+      "x": 36,
+      "y": 17
+    },
+    {
+      "type": "extension",
+      "x": 36,
+      "y": 19
+    },
+    {
+      "type": "extension",
+      "x": 28,
+      "y": 17
+    },
+    {
+      "type": "extension",
+      "x": 35,
+      "y": 14
+    },
+    {
+      "type": "extension",
+      "x": 37,
+      "y": 18
+    },
+    {
+      "type": "extension",
+      "x": 37,
+      "y": 16
+    },
+    {
+      "type": "extension",
+      "x": 37,
+      "y": 20
+    },
+    {
+      "type": "extension",
+      "x": 38,
+      "y": 19
+    },
+    {
+      "type": "extension",
+      "x": 37,
+      "y": 26
+    },
+    {
+      "type": "extension",
+      "x": 39,
+      "y": 20
+    },
+    {
+      "type": "extension",
+      "x": 39,
+      "y": 26
+    },
+    {
+      "type": "extension",
+      "x": 38,
+      "y": 27
+    },
+    {
+      "type": "extension",
+      "x": 38,
+      "y": 17
+    },
+    {
+      "type": "storage",
+      "x": 40,
+      "y": 17
+    },
+    {
+      "type": "tower",
+      "x": 40,
+      "y": 19
+    },
+    {
+      "type": "extension",
+      "x": 41,
+      "y": 16
+    },
+    {
+      "type": "extension",
+      "x": 41,
+      "y": 18
+    },
+    {
+      "type": "extension",
+      "x": 41,
+      "y": 20
+    },
+    {
+      "type": "extension",
+      "x": 41,
+      "y": 22
+    },
+    {
+      "type": "extension",
+      "x": 29,
+      "y": 28
+    },
+    {
+      "type": "extension",
+      "x": 41,
+      "y": 24
+    },
+    {
+      "type": "extension",
+      "x": 37,
+      "y": 28
+    },
+    {
+      "type": "extension",
+      "x": 28,
+      "y": 29
+    },
+    {
+      "type": "extension",
+      "x": 30,
+      "y": 29
+    },
+    {
+      "type": "extension",
+      "x": 26,
+      "y": 29
+    }
+  ],
+  "mineral": [
+    6,
+    17
+  ]
+}

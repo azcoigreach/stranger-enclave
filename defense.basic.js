@@ -1,4 +1,5 @@
 'use strict';
+const config=require('core.config');
 
 /** Basic tower fire only; threat sizing, safe mode, and evacuation are future work.
  * Uses no persistent state; caller isolates errors. Never targets outside the room.
@@ -6,10 +7,14 @@
  */
 function run(colony) {
   const target = colony.hostiles.slice().sort((a, b) => a.hits - b.hits || a.id.localeCompare(b.id))[0];
-  if (!target) return;
+  const critical=colony.structures.filter(s=>s.structureType===STRUCTURE_RAMPART && s.my && s.hits<config.defenseEmergencyHits)
+    .sort((a,b)=>a.hits-b.hits || a.id.localeCompare(b.id))[0];
   for (const structure of colony.structures) {
     if (structure.structureType === STRUCTURE_TOWER && structure.my &&
-        structure.store.getUsedCapacity(RESOURCE_ENERGY) >= TOWER_ENERGY_COST) structure.attack(target);
+        structure.store.getUsedCapacity(RESOURCE_ENERGY) >= TOWER_ENERGY_COST) {
+      if(target) structure.attack(target);
+      else if(critical && structure.store.getUsedCapacity(RESOURCE_ENERGY)>=500) structure.repair(critical);
+    }
   }
 }
 

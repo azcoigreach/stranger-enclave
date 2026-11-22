@@ -16,6 +16,10 @@ const controllerTraffic = require('movement.controller');
 const intel = require('territory.intel');
 const travelers = require('operations.roles');
 const operations = require('operations.remote');
+const budget = require('economy.budget');
+const links = require('economy.links');
+const envelope = require('planning.envelope');
+const migration = require('planning.migration');
 
 /** Tick entry point. Critical work runs for every visible owned in-block room before
  * optional planning. Each system/worker is fault-isolated; game objects stay tick-local.
@@ -50,6 +54,8 @@ module.exports.loop = function loop() {
     runtime.guard(memory, `layout:${name}`, () => layout.observe(colony, record));
     runtime.guard(memory, `defense:${name}`, () => defense.run(colony));
     runtime.guard(memory, `economy-metrics:${name}`, () => economyMetrics.record(colony, record));
+    runtime.guard(memory, `budget:${name}`, () => budget.update(colony,record));
+    runtime.guard(memory, `links:${name}`, () => links.run(colony,record));
     runtime.guard(memory, `spawn:${name}`, () => spawning.run(colony, memory, record));
     const deliveries = new Map();
     runtime.guard(memory, `controller-traffic:${name}`, () => controllerTraffic.run(colony, memory.block, deliveries));
@@ -69,6 +75,11 @@ module.exports.loop = function loop() {
   if (!spawns) runtime.alert(memory, 'no-spawn', 'NO_SPAWN: bootstrap support is unavailable; setup/respawn is required if extinct');
   for (const colony of colonies) {
     const record = memory.colonies[colony.room.name];
+    if(record.perimeterMigration && record.perimeterMigration.phase!=='COMPLETE'){
+      runtime.guard(memory, `perimeter-migration:${colony.room.name}`,()=>migration.run(colony,record,runtime.optionalWorkAllowed));
+      continue;
+    }
+    if(runtime.optionalWorkAllowed())runtime.guard(memory, `envelope:${colony.room.name}`, ()=>envelope.run(colony,record,runtime.optionalWorkAllowed));
     const offset = Math.abs(territory.coordinates(colony.room.name).x * 31 + territory.coordinates(colony.room.name).y);
     if ((Game.time + offset) % config.planningInterval !== 0) continue;
     if (!runtime.optionalWorkAllowed()) { record.planning = 'DEFERRED_CPU'; continue; }

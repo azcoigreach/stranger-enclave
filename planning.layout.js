@@ -14,9 +14,20 @@ function initialize(record) {
   if (record.layout.version !== 1) throw new Error(`Unsupported layout version: ${record.layout.version}`);
   return record.layout;
 }
+/** The adopted perimeter, or its explicitly approved replacement, owns barrier
+ * reconstruction. Retain historical records without resurrecting off-plan walls/ramparts
+ * that the player removes. Ordinary buildings retain their established positions.
+ * @param {ColonyRecord} record @param {BuildingPosition} building */
+function retained(record, building) {
+  if (building.type !== STRUCTURE_WALL && building.type !== STRUCTURE_RAMPART) return true;
+  const proposal = record.perimeterProposal;
+  const plan = proposal && record.perimeterMigration?.plannedAt === proposal.plannedAt ? proposal : record.perimeter;
+  return !plan || plan.version !== 2 || plan.tiles.some(p => p.type === building.type && p.x === building.x && p.y === building.y);
+}
 /** @param {ColonyRecord} record @param {BuildingPosition} building */
 function rememberSite(record, building) {
   const layout = initialize(record);
+  if (!retained(record, building)) return;
   if (layout.buildings.some(b => key(b) === key(building))) return;
   layout.buildings.push({ ...building });
   layout.buildings.sort((a, b) => priority(a) - priority(b) || a.type.localeCompare(b.type) || a.x - b.x || a.y - b.y);
@@ -51,6 +62,7 @@ function rebuild(colony, record, allowed) {
   const layout = initialize(record), existing = [...colony.structures, ...colony.sites];
   const own = (/** @type {AnyStructure | ConstructionSite} */ object) => !('my' in object) || object.my;
   for (const building of layout.buildings) {
+    if (!retained(record, building)) continue;
     if (existing.some(s => own(s) && s.structureType === building.type && s.pos.x === building.x && s.pos.y === building.y)) continue;
     if (!allowed()) { record.planning = 'REBUILD_DEFERRED_CPU'; return true; }
     const limit = CONTROLLER_STRUCTURES[building.type][colony.controller.level] || 0;
