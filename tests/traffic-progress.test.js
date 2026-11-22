@@ -85,3 +85,33 @@ test('two-tile oscillation triggers complete routing and recovery persists after
  assert.equal(c.calls.at(-1).action,'path');
  put(22);movement.move(c,goal,1,w.block);assert.equal(c.calls.at(-1).action,'path');
 });
+
+test('a scout can leave a one-tile passage blocked by a funding-paused engineer',()=>{
+  const w=world();
+  const scout=w.h.addWorker(w.room,'scout'), engineer=w.h.addWorker(w.room,'engineer');
+  scout.memory.role='scout';
+  engineer.memory.role='engineer';
+  engineer.memory.task='ENGINEER_FUNDING_PAUSE';
+  engineer.memory.moveGoal={x:30,y:20,roomName:w.room.name,range:1,tick:1};
+  w.h.Game.time=150;
+  scout.pos=position(20,22,w.room.name);
+  engineer.pos=position(21,22,w.room.name);
+  w.objects[w.h.constants.FIND_CREEPS]=[scout,engineer];
+  w.room.getTerrain=()=>({get:(x,y)=>y===22 && x<=21 ? 0 : 1});
+  w.h.Game.map.findRoute=()=>[{room:'E24S47',exit:3}];
+  w.h.context.PathFinder.search=(_origin,_goal,opts)=>{
+    const occupied=opts.roomCallback(w.room.name).get(21,22)===255;
+    return {incomplete:occupied,cost:10,path:occupied?[]:[engineer.pos,position(2,20,'E24S47')]};
+  };
+  const memory={block:w.block,intel:{},colonies:{}};
+  const travel=()=>w.h.load('movement.remote').travel(scout,'E24S47',memory,true);
+  engineer.fatigue=1;
+  assert.equal(travel(),w.h.constants.ERR_BUSY);
+  assert.equal(engineer.calls.length,0);
+  engineer.fatigue=0;
+  w.h.Game.time++;
+  assert.equal(travel(),w.h.constants.OK);
+  assert.equal(scout.calls.at(-1).action,'step');
+  assert.equal(engineer.calls.at(-1).action,'step');
+  assert.ok(w.h.load('movement.yield').held(engineer));
+});

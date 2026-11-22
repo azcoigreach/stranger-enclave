@@ -4,6 +4,8 @@ Changes are tracked by GitHub issue and summarized here for each release. Versio
 
 ## [Unreleased]
 
+- Scouts and other travelers can pass an engineer waiting for defense funding or reserves ([#21](https://github.com/azcoigreach/stranger-enclave/issues/21)).
+
 ## [0.1.0]
 
 First versioned release candidate. Release tracking: [#5](https://github.com/azcoigreach/stranger-enclave/issues/5).
