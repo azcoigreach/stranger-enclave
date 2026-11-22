@@ -63,8 +63,15 @@ function pass(creep,next){
   const other=own.find(c=>c!==creep && c.pos.x===next.x && c.pos.y===next.y);
   if(!other||other.spawning||other.fatigue||held(other)||!other.getActiveBodyparts(MOVE))return false;
   const goal=other.memory.moveGoal;
-  if(!goal || Game.time-goal.tick>2 || ['miner','remoteMiner','reserver'].includes(other.memory.role||'') ||
-    other.pos.inRangeTo(new RoomPosition(goal.x,goal.y,goal.roomName),goal.range))return false;
+  // A follower must not replace the leader's outbound move with a sideways step.
+  const outbound=creep.memory.moveGoal;
+  if(outbound && outbound.tick===Game.time && outbound.roomName!==creep.room.name &&
+    goal && goal.roomName===outbound.roomName && Game.time-goal.tick<=2)return false;
+  const idleEngineer=other.memory.role==='engineer' &&
+    (other.memory.task==='ENGINEER_FUNDING_PAUSE' || other.memory.task==='ENGINEER_RESERVE_PAUSE');
+  if(['miner','remoteMiner','reserver'].includes(other.memory.role||''))return false;
+  if(!idleEngineer && (!goal || Game.time-goal.tick>2 ||
+    other.pos.inRangeTo(new RoomPosition(goal.x,goal.y,goal.roomName),goal.range)))return false;
   const room=creep.room,terrain=room.getTerrain();
   const blocked=new Set([...room.find(FIND_STRUCTURES),...room.find(FIND_MY_CONSTRUCTION_SITES)].filter(s=>
     s.structureType!==STRUCTURE_ROAD&&s.structureType!==STRUCTURE_CONTAINER&&!(s.structureType===STRUCTURE_RAMPART&&'my' in s&&s.my)).map(s=>key(s.pos)));
@@ -76,7 +83,13 @@ function pass(creep,next){
     if(occupants.some(c=>c!==other&&c!==creep&&c.pos.x===x&&c.pos.y===y))continue;
     choices.push(p);
   }
-  choices.sort((a,b)=>Number(a.inRangeTo(creep,0))-Number(b.inRangeTo(creep,0))||a.getRangeTo(goal.x,goal.y)-b.getRangeTo(goal.x,goal.y)||a.x-b.x||a.y-b.y);
+  choices.sort((a,b)=>{
+    const swap=Number(a.inRangeTo(creep,0))-Number(b.inRangeTo(creep,0));
+    // Park an idle engineer behind the traveler even if its old work goal is stale.
+    if(idleEngineer)return -swap || a.x-b.x || a.y-b.y;
+    const towardGoal=goal ? a.getRangeTo(goal.x,goal.y)-b.getRangeTo(goal.x,goal.y) : 0;
+    return swap || towardGoal || a.x-b.x || a.y-b.y;
+  });
   const p=choices[0];if(!p)return false;
   hold(creep);hold(other);reservedTiles.add(key(p));reservedTiles.add(key(next));
   other.memory.lastMove=other.move(other.pos.getDirectionTo(p));other.memory.moveReason='YIELD_TRANSIT';

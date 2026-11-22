@@ -85,3 +85,47 @@ test('two-tile oscillation triggers complete routing and recovery persists after
  assert.equal(c.calls.at(-1).action,'path');
  put(22);movement.move(c,goal,1,w.block);assert.equal(c.calls.at(-1).action,'path');
 });
+
+test('a scout can leave a one-tile passage blocked by a funding-paused engineer',()=>{
+  const w=world();
+  const scout=w.h.addWorker(w.room,'scout'), engineer=w.h.addWorker(w.room,'engineer');
+  scout.memory.role='scout';
+  engineer.memory.role='engineer';
+  engineer.memory.task='ENGINEER_FUNDING_PAUSE';
+  engineer.memory.moveGoal={x:30,y:20,roomName:w.room.name,range:1,tick:1};
+  w.h.Game.time=150;
+  scout.pos=position(20,22,w.room.name);
+  engineer.pos=position(21,22,w.room.name);
+  w.objects[w.h.constants.FIND_CREEPS]=[scout,engineer];
+  w.room.getTerrain=()=>({get:(x,y)=>y===22 && x<=21 ? 0 : 1});
+  w.h.Game.map.findRoute=()=>[{room:'E24S47',exit:3}];
+  w.h.context.PathFinder.search=(_origin,_goal,opts)=>{
+    const occupied=opts.roomCallback(w.room.name).get(21,22)===255;
+    return {incomplete:occupied,cost:10,path:occupied?[]:[engineer.pos,position(2,20,'E24S47')]};
+  };
+  const memory={block:w.block,intel:{},colonies:{}};
+  const travel=()=>w.h.load('movement.remote').travel(scout,'E24S47',memory,true);
+  engineer.fatigue=1;
+  assert.equal(travel(),w.h.constants.ERR_BUSY);
+  assert.equal(engineer.calls.length,0);
+  engineer.fatigue=0;
+  w.h.Game.time++;
+  assert.equal(travel(),w.h.constants.OK);
+  assert.equal(scout.calls.at(-1).action,'step');
+  assert.equal(engineer.calls.at(-1).action,'step');
+  assert.ok(w.h.load('movement.yield').held(engineer));
+});
+
+test('a scout following a hauler toward the same exit leaves the lead creep free to advance',()=>{
+  const w=world(), scout=w.h.addWorker(w.room,'scout'), leader=w.h.addWorker(w.room,'lead');
+  scout.memory.role='scout';leader.memory.role='remoteHauler';
+  scout.pos=position(2,35,w.room.name);leader.pos=position(1,35,w.room.name);
+  const goal={x:25,y:25,range:23,roomName:'E22S47',tick:w.h.Game.time};
+  scout.memory.moveGoal={...goal};leader.memory.moveGoal={...goal};
+  const yielding=w.h.load('movement.yield');
+  assert.equal(yielding.pass(scout,leader.pos),false);
+  assert.equal(leader.calls.length,0);
+  assert.equal(yielding.held(leader),false);
+  leader.memory.moveGoal.roomName='E24S47';
+  assert.equal(yielding.pass(scout,leader.pos),true);
+});
