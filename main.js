@@ -25,6 +25,7 @@ const migration = require('planning.migration');
  * optional planning. Each system/worker is fault-isolated; game objects stay tick-local.
  */
 module.exports.loop = function loop() {
+  runtime.startup();
   reporting.install();
   /** @type {BotMemory} */
   let memory;

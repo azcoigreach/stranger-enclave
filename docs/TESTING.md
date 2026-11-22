@@ -99,3 +99,6 @@ See [link feeding evidence](validation/2026-11-21-link-feeding.md) for observed 
 
 
 Remote reservation scheduling adds three regressions: an unreserved second operation precedes extra hauling in the first; banked reservation defers replacement until expiry approaches without duplicating pending reservers; missing essential remote transport/mining beats optional reservation across rooms. The existing sequence assertion intentionally changes to first hauler → miner → reserver → additional haulers. Staged and installed validation pass 240 tests; deterministic replay digest is unchanged. See [reservation evidence](validation/2026-11-21-remote-reservation.md).
+
+
+`version.test.js` covers one banner per runtime, repeated banners after global reset, persistence through Memory serialization, visibility on initialization failure and use of the deployed version module. Metadata checks reject mismatched runtime/package/lock versions. Operational replay excludes only `[enclave:startup]` banners because their frequency intentionally depends on reset frequency; all other logs and prior expected game actions remain compared.
