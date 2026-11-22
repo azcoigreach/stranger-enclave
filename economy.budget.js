@@ -2,21 +2,33 @@
 const config=require('core.config');
 const policy=require('defense.policy');
 /** @param {RemoteOperation} op */
-function remoteCosts(op){
-  const life=Math.max(300,CREEP_LIFE_TIME-op.travel);
-  return (750+op.carry*100)/life + (op.reserve===false ? 0 : 1300/Math.max(100,CREEP_CLAIM_LIFE_TIME-op.travel));
+function costBreakdown(op){
+  // Travel reduces the productive lifetime available to repay each replacement.
+  const life = Math.max(1, CREEP_LIFE_TIME - op.travel);
+  const claimLife = Math.max(1, CREEP_CLAIM_LIFE_TIME - op.travel);
+  const share = op.reserve === false ? 0 : op.reservationShare ?? 1;
+  return {
+    mining: 750 / life,
+    hauling: op.carry * 100 / life,
+    reservation: share * 1300 / claimLife,
+    // Drop mining uses no maintained structures. Guarded routes are ineligible.
+    infrastructure: 0, guard: 0,
+  };
 }
-/** Measured delivery minus replacement cost. No positive floor hides a loss.
- * @param {RemoteOperation} op */
+/** @param {RemoteOperation} op */
+function remoteCosts(op){
+  return Object.values(costBreakdown(op)).reduce((sum,cost)=>sum+cost,0);
+}
+/** @param {RemoteOperation} op */
 function remoteNet(op){
-  const expected=op.grossIncome===undefined ? 10 : op.grossIncome;
-  const gross=op.deliverySample && op.deliverySample.rate>=0 ? Math.min(expected,op.deliverySample.rate) : expected;
-  return Math.max(0,gross-remoteCosts(op));
+  const expected = op.grossIncome ?? 10;
+  const gross = op.deliverySample && op.deliverySample.rate >= 0 ? op.deliverySample.rate : expected;
+  return gross - remoteCosts(op);
 }
 /** Conservative fraction of one spawn needed for a remote's replacements.
  * @param {RemoteOperation} op */
 function remoteSpawnLoad(op){return (10+op.carry*2)*CREEP_SPAWN_TIME/Math.max(300,CREEP_LIFE_TIME-op.travel)+
-  (op.reserve===false ? 0 : 4*CREEP_SPAWN_TIME/Math.max(100,CREEP_CLAIM_LIFE_TIME-op.travel));}
+  (op.reserve===false ? 0 : (op.reservationShare ?? 1)*4*CREEP_SPAWN_TIME/Math.max(100,CREEP_CLAIM_LIFE_TIME-op.travel));}
 /** @param {ColonySnapshot} colony @param {ColonyRecord} record */
 function update(colony,record){
   const storage=colony.room.storage,level=colony.controller.level;
@@ -50,7 +62,11 @@ function update(colony,record){
   const replacement=colony.workers.filter(c=>c.memory.role!=='engineer').reduce((sum,c)=>sum+c.body.reduce((n,b)=>n+BODYPART_COST[b.type],0)/CREEP_LIFE_TIME,0);
   const localNetIncome=Math.max(0,income-replacement);
   const ops=record.expansion && (record.expansion.remotes || (record.expansion.remote ? [record.expansion.remote] : [])) || [];
-  for(const op of ops)op.netIncome=remoteNet(op);
+  for(const op of ops){
+    const peers=ops.filter(other=>other.room===op.room && !other.retiring && other.reason==='ACTIVE' && other.reserve!==false);
+    op.reservationShare=1/Math.max(1,peers.length);
+    op.netIncome=remoteNet(op);
+  }
   const productive=ops.filter(op=>!op.retiring && op.reason==='ACTIVE');
   const activeRemoteIncome=colony.hostiles.length ? 0 : productive.reduce((sum,op)=>sum+(op.deliverySample && op.deliverySample.rate>=0 ? op.netIncome||0 : 0),0);
   const estimates=ops.filter(op=>!op.retiring && (op.netIncome||0)>=config.minimumRemoteNet);
@@ -73,4 +89,4 @@ function update(colony,record){
     fortificationStage:policy.tier(colony,record,barriers),
     reason:stored<=reserveFloor ? 'RESERVE_RECOVERY' : engineerWork<desiredEngineerWork ? 'DEFENSE_INCOME_LIMITED' : needed ? 'FUND_DEFENSES' : 'MAINTAIN_RESERVES'};
 }
-module.exports={update,remoteNet,remoteCosts,remoteSpawnLoad};
+module.exports={update,costBreakdown,remoteNet,remoteCosts,remoteSpawnLoad};

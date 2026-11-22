@@ -66,9 +66,9 @@ function approach(creep,target,range,memory) {
   return creep.moveTo(target,{range,maxRooms:1,reusePath:3,ignoreCreeps:false});
 }
 /** Actual terrain route, used before committing a remote. Impassable structures affect the estimate.
- * @param {RoomPosition} origin @param {RoomPosition} target @param {number} range @param {boolean} [occupied]
+ * @param {RoomPosition} origin @param {RoomPosition} target @param {number} range @param {boolean} [occupied] @param {{x:number,y:number}[]} [slots]
  */
-function search(origin,target,range,occupied=false) {
+function search(origin,target,range,occupied=false,slots) {
   const allowed = new Set([origin.roomName,target.roomName]);
   return PathFinder.search(origin,{pos:target,range},{maxRooms:2,maxOps:20000,plainCost:1,swampCost:5,
     roomCallback:name => {
@@ -85,12 +85,20 @@ function search(origin,target,range,occupied=false) {
           if(c.pos.roomName!==origin.roomName||c.pos.x!==origin.x||c.pos.y!==origin.y)matrix.set(c.pos.x,c.pos.y,255);
         }
       }
+      // A recently scouted but invisible room still has known mining obstacles.
+      if (slots && name===target.roomName) {
+        for(let x=Math.max(0,target.x-1);x<=Math.min(49,target.x+1);x++){
+          for(let y=Math.max(0,target.y-1);y<=Math.min(49,target.y+1);y++){
+            if(!slots.some(p=>p.x===x && p.y===y)) matrix.set(x,y,255);
+          }
+        }
+      }
       return matrix;
     }});
 }
-/** @param {RoomPosition} origin @param {RoomPosition} target @returns {number|null} */
-function distance(origin,target){
-  const result=search(origin,target,1);
+/** @param {RoomPosition} origin @param {RoomPosition} target @param {{x:number,y:number}[]} [slots] @returns {number|null} */
+function distance(origin,target,slots){
+  const result=search(origin,target,1,false,slots);
   return result.incomplete || !result.path.length ? null : Math.max(result.cost,result.path.length);
 }
 /** Keep waiting crews off storage access and narrow work corridors. Parking is

@@ -5,7 +5,7 @@ interface ColonyRecord {
   perimeterProposal?: PerimeterPlan;
   mature?: MaturePlan;
   controllerStations?: Array<{x:number;y:number}>;
-  expansion?: { reason: string; remote?: RemoteOperation; remotes?: RemoteOperation[]; scoutRetry?: number; capacityReason?: string; capacityChanged?: number; candidate?: {room:string;sourceId:string;travel:number|null;netIncome?:number;spawnLoad?:number;reason:string} };
+  expansion?: { reason: string; remote?: RemoteOperation; remotes?: RemoteOperation[]; scoutRetry?: number; capacityReason?: string; capacityChanged?: number; candidate?: RemoteCandidate; ranking?: RemoteCandidate[]; surveyedAt?: number; resurvey?: string[] };
   perimeter?: PerimeterPlan;
   links?: LinkPlan;
   budget?: ColonyBudget;
@@ -41,9 +41,14 @@ interface IntelRecord { lastSeen: number; kind: string; owner?: string; reservat
   reservationUntil?: number; controller?: {x:number; y:number}; sources?: IntelSource[];
   exits?: string[]; mineral?: string; hostileParts?: Record<string,number>; unsafeUntil?: number; npc?: boolean;
 }
+interface RemoteCandidate {
+  room: string; sourceId: Id<Source>; travel: number|null; reason: string;
+  grossIncome?: number; netIncome?: number; spawnLoad?: number;
+  costs?: { mining:number; hauling:number; reservation:number; infrastructure:number; guard:number };
+}
 interface RemoteOperation {
   room: string; sourceId: Id<Source>; reason: string; travel: number; carry: number;
-  grossIncome?:number; reserve?:boolean;
+  grossIncome?:number; reserve?:boolean; reservationShare?:number;
   retiring?: boolean; netIncome?: number; deliverySample?: {tick:number; delivered:number; rate:number};
   routeValid?: boolean; checked: number; delivered: number; spawnEnergy: number; actors?: string[]; measuredTick?: number;
 }
