@@ -14,4 +14,6 @@ for (const file of files) {
   }
 }
 if (!modules.has('main')) throw new Error('Missing main.js');
+const version=require('./check-version').check(root);
+console.log(`Validated release version ${version}.`);
 console.log(`Validated syntax and root imports for ${files.length} game modules.`);

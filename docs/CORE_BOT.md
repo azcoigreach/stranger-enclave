@@ -1,4 +1,4 @@
-# Core bot v0.1
+# Core bot v0.1.0
 
 This is the first bootstrap slice of milestones 0–1, not completion of either milestone. Game modules live directly in the repository root and run without a build step.
 
@@ -193,3 +193,8 @@ Waiting remote haulers reserve plain-coordinate parking tiles 3–7 tiles from s
 After home production and survey requests, remote spawn selection compares eligible operations together. Missing first transport and miners take priority, then needed reservers, then additional hauling capacity. The first hauler/miner may still be spawning; pending crews count, preventing duplicates. A reserved-output hauling target no longer has to be fully staffed before its first reserver is requested.
 
 A viable or spawning reserver covers its operation. When none is viable, a new reserver is requested only if owned reservation has at most `max(reservationLeadTicks, sourceTravel + spawnTime + 20)` ticks remaining; `reservationLeadTicks` defaults to 1,000. An unreserved room has zero remaining. This uses observed reservation expiry rather than replacing every dead reserver despite a large banked reservation. Safety, affordability, storage and home-recovery gates remain; the lead window is a scheduling policy, not guaranteed reservation continuity under prolonged spawn contention.
+
+
+### Software version and startup
+
+Root `version.js` exports the software release version, independent of Memory schema 2 and planner schema versions. `core.runtime.startup()` prints `[enclave:startup] Stranger Enclave v0.1.0 (tick …)` on the first loop of every loaded runtime, before Memory initialization. A module-local flag suppresses later ticks; global reset or a new runtime permits a fresh banner even when the version is unchanged. No persistent Memory marker suppresses startup messages. The build-free game module set includes `version.js`.

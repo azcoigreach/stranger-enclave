@@ -1,6 +1,17 @@
 'use strict';
 
 const config = require('core.config');
+const version = require('version');
+let announced = false;
+
+/** Runtime-local marker: every global reset announces the deployed version again.
+ * Never use persistent Memory to suppress a restart banner. */
+function startup() {
+  if (announced) return;
+  console.log(`[enclave:startup] Stranger Enclave v${version} (tick ${Game.time})`);
+  announced = true;
+}
+
 
 /** Bounded, deduplicated fault/event history. Owns only memory.alerts.
  * @param {BotMemory} memory @param {string} key @param {string} message
@@ -36,4 +47,4 @@ function optionalWorkAllowed() {
     Game.cpu.getUsed() < Math.min(Game.cpu.limit * config.optionalCpuFraction, Game.cpu.tickLimit - 5);
 }
 
-module.exports = { alert, guard, optionalWorkAllowed };
+module.exports = { startup, alert, guard, optionalWorkAllowed };

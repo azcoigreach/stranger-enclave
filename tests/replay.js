@@ -60,7 +60,10 @@ function replay(fixture, options = {}) {
       intents: workers.map(w => ({ worker: w.name, calls: w.calls.map(c => ({
         action: c.action, target: c.target.id || c.target.name || c.target.pos || c.target,
         amount: c.amount, range: c.opts?.range, maxRooms: c.opts?.maxRooms,
-      })) })), memory: h.Memory, logs: h.logs,
+      })) })), memory: h.Memory,
+      // Startup is intentionally once per runtime, so reset frequency changes only
+      // this lifecycle banner. Keep all operational/error logs in replay equality.
+      logs: h.logs.filter(line => !line.startsWith('[enclave:startup] ')),
     }));
     h.persistMemory();
   }

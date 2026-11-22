@@ -4,7 +4,9 @@ An autonomous Screeps bot for terrain-adaptive colonies, coordinated defense, an
 
 ## Status
 
-Core bootstrap implementation is running on the localhost server. On a fresh deployment, it derives its 9×9 sector from the initial owned spawn and persists that boundary. After the fresh-world reset, the current dev colony is in `W6N8`, inside `W1N1`–`W9N9`; the earlier colony was in `W5N1`. These names are observations, not game-code configuration. Milestones 0–1 are in progress; the existing dev colony has reached RCL 3 with dedicated mining/hauling, while a reproducible fresh-start progression run and sustained recovery remain unvalidated. Public shard selection follows measured results.
+The v0.1.0 release candidate includes bootstrap, dedicated mining/hauling, scouting and adjacent remotes, storage/controller links, defensive planning and reserve-aware engineering. The localhost colony has reached RCL 5. Full player-raid defense, claiming, industry operation and complete sector control remain future work; plans are not milestone completion evidence.
+
+The bot discovers its starting 9×9 sector from the initial owned spawn and persists that boundary. Runtime modules contain no deployment room/account/shard configuration. `version.js` defines the software version and the Screeps console prints it once after each runtime/global restart. See [CHANGELOG.md](CHANGELOG.md), [release notes](docs/releases/0.1.0.md), and [GitHub Issues](https://github.com/azcoigreach/stranger-enclave/issues) for scope and progress.
 
 Read the [implementation plan](docs/IMPLEMENTATION_PLAN.md) for architecture, milestones, and acceptance criteria.
 
@@ -44,12 +46,13 @@ Highway Power Bank expeditions, power processing, and Power Creeps are deferred.
 
 The repository root is the working Screeps script directory. Keep tests, local server tooling, and documentation in `tests/`, `tools/`, and `docs/`; only root game modules belong in the Screeps module set.
 
-Use the branch flow `feature → dev → main`:
+Use `feature → dev → release/<version> → main`:
 
-- `main` holds the most stable, validated version. Promote changes through a reviewed PR from `dev` only after the relevant acceptance gates pass.
-- `dev` is the integration branch for ongoing development and stabilization.
-- Create short-lived `feature/`, `fix/`, or `docs/` branches from the latest `dev`, and target their PRs at `dev`.
+- Feature/fix branches normally start from and target `dev`.
+- Cut a release branch from validated `dev`; preparation/stabilization PRs may target that release branch.
+- Promote the reviewed release branch into `main`. Back-merge its changes into `dev` through a separate PR.
+- Human review owns approval and merging; do not push directly to shared branches or rewrite their history.
 
-Do not commit or push directly to `main` or `dev`, or force-push either shared branch. Keep PRs focused and include relevant checks and recorded test evidence. Human review owns approval and merging. Plans are not proof of implemented behavior; `main` currently contains the planning baseline, not a working bot.
+Use a GitHub issue for each problem or planned change, with acceptance criteria and validation evidence. Link issues from commits and PRs. Keep user-visible changes in the changelog; the release tag identifies the final promoted commit.
 
-See the implementation plan's [validation and release discipline](docs/IMPLEMENTATION_PLAN.md#validation-and-release-discipline) for promotion requirements.
+After promotion, the release workflow revalidates the exact `main` commit, creates `v<version>`, and publishes notes plus a ZIP of all root game modules and a checksum. Existing published releases are left unchanged. See [release procedure](docs/RELEASING.md) and [validation discipline](docs/IMPLEMENTATION_PLAN.md#validation-and-release-discipline).
