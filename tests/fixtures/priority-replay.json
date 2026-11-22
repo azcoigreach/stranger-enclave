@@ -1,0 +1,28 @@
+{
+  "name": "priorities-with-cpu-pressure",
+  "room": "E23S47",
+  "steps": [
+    {
+      "tick": 1, "energy": 199, "spawnEnergy": 250,
+      "workers": { "alpha": { "energy": 50 }, "beta": { "energy": 50 } },
+      "expect": { "actions": { "alpha": ["transfer"], "beta": ["upgradeController"] }, "transfers": [{ "worker": "alpha", "amount": 50 }] }
+    },
+    {
+      "tick": 2, "spawnEnergy": 250,
+      "expect": { "transfers": [{ "worker": "alpha", "amount": 50 }] }
+    },
+    {
+      "tick": 3, "spawnEnergy": 300, "site": true,
+      "expect": { "actions": { "alpha": ["upgradeController"], "beta": ["build"] } }
+    },
+    {
+      "tick": 4, "downgrade": 100,
+      "expect": { "tasks": { "alpha": "PREVENT_DOWNGRADE", "beta": "PREVENT_DOWNGRADE" }, "actions": { "alpha": ["upgradeController"], "beta": ["upgradeController"] } }
+    },
+    {
+      "tick": 15, "bucket": 0, "downgrade": 20000,
+      "workers": { "alpha": { "energy": 0 }, "beta": { "energy": 0 } },
+      "expect": { "planning": "DEFERRED_CPU", "actions": { "alpha": ["harvest"], "beta": ["harvest"] } }
+    }
+  ]
+}

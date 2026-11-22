@@ -1,0 +1,132 @@
+{
+  "gameTime": 1796,
+  "room": "W5N1",
+  "profile": {
+    "assignedCpu": 100,
+    "gclProgress": 0
+  },
+  "code": [
+    {
+      "branch": "stranger-enclave",
+      "modules": [
+        "colony.snapshot",
+        "core.config",
+        "core.memory",
+        "core.runtime",
+        "defense.basic",
+        "economy.spawn",
+        "economy.worker",
+        "main",
+        "movement.local",
+        "planning.bootstrap",
+        "reporting.console",
+        "territory.policy"
+      ]
+    }
+  ],
+  "colony": {
+    "lastSeen": 1795,
+    "level": 1,
+    "energy": 72,
+    "capacity": 300,
+    "workers": 2,
+    "desired": 4,
+    "reason": "WAITING_FOR_200_ENERGY",
+    "planning": "BOOTSTRAP_PHASE_COMPLETE"
+  },
+  "alerts": {},
+  "cpu": {
+    "samples": 100,
+    "average": 0.921354399999991,
+    "p95": 1.5346589999999765,
+    "peak": 17.018484,
+    "bucket": 10000
+  },
+  "objects": [
+    {
+      "type": "controller",
+      "level": 1,
+      "progress": 0,
+      "x": 11,
+      "y": 31
+    },
+    {
+      "type": "spawn",
+      "name": "Spawn1",
+      "spawning": null,
+      "store": {
+        "energy": 73
+      },
+      "x": 20,
+      "y": 27
+    },
+    {
+      "type": "creep",
+      "name": "worker-W5N1-1673-0",
+      "spawning": false,
+      "store": {
+        "energy": 50
+      },
+      "x": 15,
+      "y": 22,
+      "task": {
+        "role": "bootstrap",
+        "home": "W5N1",
+        "working": true,
+        "sourceId": "1983077378536b5",
+        "task": "REFILL",
+        "lastAction": -9,
+        "motion": {
+          "x": 14,
+          "y": 21,
+          "tick": 1795,
+          "stuck": 1
+        },
+        "_move": {
+          "dest": {
+            "x": 20,
+            "y": 27,
+            "room": "W5N1"
+          },
+          "time": 1793,
+          "path": "152244444",
+          "room": "W5N1"
+        }
+      }
+    },
+    {
+      "type": "creep",
+      "name": "worker-W5N1-1744-1",
+      "spawning": false,
+      "store": {
+        "energy": 46
+      },
+      "x": 30,
+      "y": 46,
+      "task": {
+        "role": "bootstrap",
+        "home": "W5N1",
+        "working": false,
+        "sourceId": "391a07737856592",
+        "task": "HARVEST",
+        "lastAction": 0,
+        "motion": {
+          "x": 31,
+          "y": 45,
+          "tick": 1772,
+          "stuck": 0
+        },
+        "_move": {
+          "dest": {
+            "x": 29,
+            "y": 46,
+            "room": "W5N1"
+          },
+          "time": 1771,
+          "path": "30466",
+          "room": "W5N1"
+        }
+      }
+    }
+  ]
+}

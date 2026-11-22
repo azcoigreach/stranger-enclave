@@ -1,0 +1,469 @@
+{
+  "gameTime": 35638,
+  "room": "W5N1",
+  "profile": {
+    "assignedCpu": 100,
+    "gclProgress": 138783
+  },
+  "code": [
+    {
+      "branch": "stranger-enclave",
+      "modules": [
+        "colony.snapshot",
+        "core.config",
+        "core.memory",
+        "core.runtime",
+        "defense.basic",
+        "economy.demand",
+        "economy.hauler",
+        "economy.metrics",
+        "economy.miner",
+        "economy.production",
+        "economy.spawn",
+        "economy.stations",
+        "economy.worker",
+        "main",
+        "movement.controller",
+        "movement.local",
+        "planning.bootstrap",
+        "reporting.console",
+        "territory.policy"
+      ]
+    }
+  ],
+  "territory": {
+    "version": 2,
+    "home": "W5N1",
+    "block": {
+      "minX": -10,
+      "maxX": -2,
+      "minY": -10,
+      "maxY": -2
+    }
+  },
+  "colony": {
+    "lastSeen": 35638,
+    "level": 3,
+    "energy": 800,
+    "capacity": 800,
+    "workers": 12,
+    "reason": "THROUGHPUT_READY",
+    "planning": "BOOTSTRAP_PHASE_COMPLETE",
+    "plannerCursor": 24,
+    "economy": {
+      "lastTick": 35638,
+      "ticks": 179,
+      "harvested": 3580,
+      "upgradeEnergy": 1346,
+      "bySource": {
+        "1983077378536b5": 1790,
+        "391a07737856592": 1790
+      },
+      "sources": {
+        "1983077378536b5": {
+          "energy": 1270,
+          "capacity": 3000,
+          "regen": 127,
+          "requiredPerTick": 10,
+          "unusedLastCycle": 0
+        },
+        "391a07737856592": {
+          "energy": 1020,
+          "capacity": 3000,
+          "regen": 102,
+          "requiredPerTick": 10,
+          "unusedLastCycle": 0
+        }
+      },
+      "actors": [
+        "6c83f8c9ae90a4e",
+        "6cb7f8c9d154261",
+        "0361f8ca101249d",
+        "2e23f8ca3b18a62",
+        "2bf6f8c7ab08ff7",
+        "fe2cf8c8d1c5935",
+        "73eff8c94b9ba66",
+        "ffb6f8c991e580b",
+        "23b9f8cb71484ff",
+        "4f6df8cb9850874",
+        "d3d2f8cbbb56fc5",
+        "398af8cbdea8eff"
+      ],
+      "lastWindow": {
+        "ticks": 300,
+        "harvested": 6000,
+        "upgradeEnergy": 4725,
+        "bySource": {
+          "1983077378536b5": 3000,
+          "391a07737856592": 3000
+        }
+      }
+    },
+    "routes": {
+      "1983077378536b5": {
+        "tick": 35566,
+        "roundTrip": 34,
+        "minerTravel": 75,
+        "reachable": true
+      },
+      "391a07737856592": {
+        "tick": 35566,
+        "roundTrip": 48,
+        "minerTravel": 110,
+        "reachable": true
+      }
+    },
+    "staffing": {
+      "minerWork": 10,
+      "haulCarry": 17,
+      "workerWork": 18,
+      "requiredMinerWork": 10,
+      "requiredHaulCarry": 17,
+      "requiredWorkerWork": 16
+    }
+  },
+  "alerts": {},
+  "cpu": {
+    "samples": 100,
+    "average": 2.9578946500000574,
+    "p95": 3.533578999999918,
+    "peak": 4.388362000000143,
+    "bucket": 10000
+  },
+  "objects": [
+    {
+      "type": "source",
+      "id": "1983077378536b5",
+      "energy": 1270,
+      "energyCapacity": 3000,
+      "regen": 127,
+      "x": 6,
+      "y": 19
+    },
+    {
+      "type": "controller",
+      "id": "be770773785ba16",
+      "level": 3,
+      "progress": 93583,
+      "x": 11,
+      "y": 31
+    },
+    {
+      "type": "source",
+      "id": "391a07737856592",
+      "energy": 1020,
+      "energyCapacity": 3000,
+      "regen": 102,
+      "x": 29,
+      "y": 46
+    },
+    {
+      "type": "spawn",
+      "id": "f199f41e175322d",
+      "name": "Spawn1",
+      "spawning": null,
+      "store": {
+        "energy": 300
+      },
+      "x": 20,
+      "y": 27
+    },
+    {
+      "type": "creep",
+      "id": "2bf6f8c7ab08ff7",
+      "name": "miner-W5N1-34564-156",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "ttl": 443,
+      "body": {
+        "work": 5,
+        "move": 1
+      },
+      "x": 7,
+      "y": 18,
+      "task": {
+        "role": "miner",
+        "sourceId": "1983077378536b5",
+        "working": false,
+        "task": "MINE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "fe2cf8c8d1c5935",
+      "name": "miner-W5N1-34827-157",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "ttl": 706,
+      "body": {
+        "work": 5,
+        "move": 1
+      },
+      "x": 30,
+      "y": 46,
+      "task": {
+        "role": "miner",
+        "sourceId": "391a07737856592",
+        "working": false,
+        "task": "MINE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "73eff8c94b9ba66",
+      "name": "worker-W5N1-34926-158",
+      "spawning": false,
+      "store": {
+        "energy": 129
+      },
+      "ttl": 814,
+      "body": {
+        "work": 3,
+        "carry": 3,
+        "move": 3
+      },
+      "x": 13,
+      "y": 29,
+      "task": {
+        "role": "bootstrap",
+        "working": true,
+        "task": "UPGRADE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "ffb6f8c991e580b",
+      "name": "worker-W5N1-34989-159",
+      "spawning": false,
+      "store": {
+        "energy": 78
+      },
+      "ttl": 877,
+      "body": {
+        "work": 3,
+        "carry": 3,
+        "move": 3
+      },
+      "x": 13,
+      "y": 30,
+      "task": {
+        "role": "bootstrap",
+        "working": true,
+        "task": "UPGRADE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "6c83f8c9ae90a4e",
+      "name": "hauler-W5N1-35016-160",
+      "spawning": false,
+      "store": {
+        "energy": 188
+      },
+      "ttl": 907,
+      "body": {
+        "carry": 5,
+        "move": 5
+      },
+      "x": 8,
+      "y": 17,
+      "task": {
+        "role": "hauler",
+        "sourceId": "1983077378536b5",
+        "working": false,
+        "task": "HAUL_PICKUP",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "6cb7f8c9d154261",
+      "name": "hauler-W5N1-35048-161",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "ttl": 957,
+      "body": {
+        "carry": 8,
+        "move": 8
+      },
+      "x": 30,
+      "y": 41,
+      "task": {
+        "role": "hauler",
+        "sourceId": "391a07737856592",
+        "working": false,
+        "task": "HAUL_PICKUP",
+        "lastAction": -9
+      }
+    },
+    {
+      "type": "creep",
+      "id": "0361f8ca101249d",
+      "name": "hauler-W5N1-35096-162",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "ttl": 969,
+      "body": {
+        "carry": 2,
+        "move": 2
+      },
+      "x": 20,
+      "y": 34,
+      "task": {
+        "role": "hauler",
+        "sourceId": "391a07737856592",
+        "working": false,
+        "task": "HAUL_PICKUP",
+        "lastAction": -9
+      }
+    },
+    {
+      "type": "creep",
+      "id": "2e23f8ca3b18a62",
+      "name": "hauler-W5N1-35131-163",
+      "spawning": false,
+      "store": {
+        "energy": 0
+      },
+      "ttl": 1004,
+      "body": {
+        "carry": 2,
+        "move": 2
+      },
+      "x": 15,
+      "y": 23,
+      "task": {
+        "role": "hauler",
+        "sourceId": "1983077378536b5",
+        "working": false,
+        "task": "WAIT_MINER_OUTPUT",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "energy",
+      "id": "573ff8cab353ba7",
+      "energy": 581,
+      "x": 30,
+      "y": 46
+    },
+    {
+      "type": "creep",
+      "id": "23b9f8cb71484ff",
+      "name": "worker-W5N1-35393-164",
+      "spawning": false,
+      "store": {
+        "energy": 127
+      },
+      "ttl": 1281,
+      "body": {
+        "work": 3,
+        "carry": 3,
+        "move": 3
+      },
+      "x": 12,
+      "y": 29,
+      "task": {
+        "role": "bootstrap",
+        "working": true,
+        "task": "UPGRADE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "4f6df8cb9850874",
+      "name": "worker-W5N1-35428-165",
+      "spawning": false,
+      "store": {
+        "energy": 96
+      },
+      "ttl": 1316,
+      "body": {
+        "work": 3,
+        "carry": 3,
+        "move": 3
+      },
+      "x": 11,
+      "y": 29,
+      "task": {
+        "role": "bootstrap",
+        "working": true,
+        "task": "UPGRADE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "d3d2f8cbbb56fc5",
+      "name": "worker-W5N1-35462-166",
+      "spawning": false,
+      "store": {
+        "energy": 99
+      },
+      "ttl": 1350,
+      "body": {
+        "work": 3,
+        "carry": 3,
+        "move": 3
+      },
+      "x": 10,
+      "y": 29,
+      "task": {
+        "role": "bootstrap",
+        "working": true,
+        "task": "UPGRADE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "creep",
+      "id": "398af8cbdea8eff",
+      "name": "worker-W5N1-35496-167",
+      "spawning": false,
+      "store": {
+        "energy": 63
+      },
+      "ttl": 1384,
+      "body": {
+        "work": 3,
+        "carry": 3,
+        "move": 3
+      },
+      "x": 9,
+      "y": 29,
+      "task": {
+        "role": "bootstrap",
+        "working": true,
+        "task": "UPGRADE",
+        "lastAction": 0
+      }
+    },
+    {
+      "type": "energy",
+      "id": "d771f8cc717cf5f",
+      "energy": 43,
+      "x": 13,
+      "y": 29
+    },
+    {
+      "type": "energy",
+      "id": "f5c4f8cc7d329ba",
+      "energy": 9,
+      "x": 7,
+      "y": 18
+    }
+  ]
+}

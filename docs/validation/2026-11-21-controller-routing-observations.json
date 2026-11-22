@@ -1,0 +1,1071 @@
+[
+  {
+    "tick": 32838,
+    "controllerProgress": 121556,
+    "creeps": [
+      {
+        "name": "hauler-W6N8-31311-244",
+        "x": 18,
+        "y": 6,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-31371-245",
+        "x": 43,
+        "y": 7,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-31421-246",
+        "x": 36,
+        "y": 20,
+        "energy": 0,
+        "task": {
+          "role": "bootstrap",
+          "working": false,
+          "task": "WAIT_HAUL_DELIVERY",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-31467-247",
+        "x": 41,
+        "y": 6,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-31499-248",
+        "x": 43,
+        "y": 13,
+        "energy": 150,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-31569-249",
+        "x": 37,
+        "y": 20,
+        "energy": 29,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "worker-W6N8-31677-250",
+        "x": 38,
+        "y": 20,
+        "energy": 96,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32451-252",
+        "x": 34,
+        "y": 16,
+        "energy": 200,
+        "task": {
+          "role": "hauler",
+          "sourceId": "0d080772ccae8f2",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-32522-254",
+        "x": 39,
+        "y": 20,
+        "energy": 43,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32590-255",
+        "x": 38,
+        "y": 7,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": false,
+          "task": "HAUL_PICKUP",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-32650-256",
+        "x": 21,
+        "y": 6,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": false,
+          "task": "HAUL_PICKUP",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-32723-257",
+        "x": 40,
+        "y": 20,
+        "energy": 123,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32758-258",
+        "x": 20,
+        "y": 5,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-32788-259",
+        "x": 28,
+        "y": 4,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": false,
+          "task": "HAUL_PICKUP",
+          "lastAction": -9
+        }
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 32846,
+    "controllerProgress": 121655,
+    "creeps": [
+      {
+        "name": "hauler-W6N8-31371-245",
+        "x": 42,
+        "y": 15,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-31421-246",
+        "x": 36,
+        "y": 20,
+        "energy": 147,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-31467-247",
+        "x": 42,
+        "y": 14,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-31499-248",
+        "x": 38,
+        "y": 18,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": false,
+          "task": "HAUL_PICKUP",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-31569-249",
+        "x": 37,
+        "y": 20,
+        "energy": 135,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "worker-W6N8-31677-250",
+        "x": 38,
+        "y": 20,
+        "energy": 72,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32451-252",
+        "x": 36,
+        "y": 18,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "0d080772ccae8f2",
+          "working": false,
+          "task": "HAUL_PICKUP",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-32522-254",
+        "x": 39,
+        "y": 20,
+        "energy": 89,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32590-255",
+        "x": 30,
+        "y": 6,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": false,
+          "task": "HAUL_PICKUP",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-32650-256",
+        "x": 18,
+        "y": 6,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-32723-257",
+        "x": 40,
+        "y": 20,
+        "energy": 99,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32758-258",
+        "x": 28,
+        "y": 6,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-32788-259",
+        "x": 20,
+        "y": 5,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": false,
+          "task": "WAIT_MINER_OUTPUT",
+          "lastAction": -9
+        }
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 32855,
+    "controllerProgress": 121790,
+    "creeps": [
+      {
+        "name": "hauler-W6N8-31371-245",
+        "x": 33,
+        "y": 17,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-31421-246",
+        "x": 36,
+        "y": 20,
+        "energy": 120,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-31467-247",
+        "x": 39,
+        "y": 17,
+        "energy": 212,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-31499-248",
+        "x": 43,
+        "y": 11,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": false,
+          "task": "HAUL_PICKUP",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-31569-249",
+        "x": 37,
+        "y": 20,
+        "energy": 108,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "worker-W6N8-31677-250",
+        "x": 38,
+        "y": 20,
+        "energy": 45,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32451-252",
+        "x": 38,
+        "y": 19,
+        "energy": 200,
+        "task": {
+          "role": "hauler",
+          "sourceId": "0d080772ccae8f2",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-32522-254",
+        "x": 39,
+        "y": 20,
+        "energy": 62,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32590-255",
+        "x": 21,
+        "y": 6,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": false,
+          "task": "HAUL_PICKUP",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-32650-256",
+        "x": 27,
+        "y": 7,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-32723-257",
+        "x": 40,
+        "y": 20,
+        "energy": 72,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32758-258",
+        "x": 37,
+        "y": 6,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-32788-259",
+        "x": 19,
+        "y": 5,
+        "energy": 150,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 32863,
+    "controllerProgress": 121910,
+    "creeps": [
+      {
+        "name": "hauler-W6N8-31371-245",
+        "x": 33,
+        "y": 17,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": false,
+          "task": "HAUL_PICKUP",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-31421-246",
+        "x": 36,
+        "y": 20,
+        "energy": 124,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-31467-247",
+        "x": 37,
+        "y": 17,
+        "energy": 212,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-31499-248",
+        "x": 38,
+        "y": 6,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": false,
+          "task": "WAIT_MINER_OUTPUT",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-31569-249",
+        "x": 37,
+        "y": 20,
+        "energy": 84,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "worker-W6N8-31677-250",
+        "x": 38,
+        "y": 20,
+        "energy": 21,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32451-252",
+        "x": 35,
+        "y": 17,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "0d080772ccae8f2",
+          "working": false,
+          "task": "HAUL_PICKUP",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-32522-254",
+        "x": 39,
+        "y": 20,
+        "energy": 126,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32590-255",
+        "x": 18,
+        "y": 5,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-32650-256",
+        "x": 35,
+        "y": 6,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-32723-257",
+        "x": 40,
+        "y": 20,
+        "energy": 132,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32758-258",
+        "x": 43,
+        "y": 9,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-32788-259",
+        "x": 27,
+        "y": 6,
+        "energy": 150,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-32860-260",
+        "x": 32,
+        "y": 19,
+        "energy": 0,
+        "task": {
+          "role": "bootstrap",
+          "working": false
+        }
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 32871,
+    "controllerProgress": 122027,
+    "creeps": [
+      {
+        "name": "hauler-W6N8-31371-245",
+        "x": 41,
+        "y": 15,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": false,
+          "task": "HAUL_PICKUP",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-31421-246",
+        "x": 36,
+        "y": 20,
+        "energy": 100,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-31467-247",
+        "x": 33,
+        "y": 17,
+        "energy": 113,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-31499-248",
+        "x": 30,
+        "y": 6,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": false,
+          "task": "WAIT_MINER_OUTPUT",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-31569-249",
+        "x": 37,
+        "y": 20,
+        "energy": 60,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "worker-W6N8-31677-250",
+        "x": 38,
+        "y": 20,
+        "energy": 0,
+        "task": {
+          "role": "bootstrap",
+          "working": false,
+          "task": "WAIT_HAUL_DELIVERY",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32451-252",
+        "x": 34,
+        "y": 15,
+        "energy": 150,
+        "task": {
+          "role": "hauler",
+          "sourceId": "0d080772ccae8f2",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-32522-254",
+        "x": 39,
+        "y": 20,
+        "energy": 102,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32590-255",
+        "x": 26,
+        "y": 6,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-32650-256",
+        "x": 43,
+        "y": 8,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-32723-257",
+        "x": 40,
+        "y": 20,
+        "energy": 108,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32758-258",
+        "x": 40,
+        "y": 16,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-32788-259",
+        "x": 35,
+        "y": 6,
+        "energy": 150,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-32860-260",
+        "x": 32,
+        "y": 19,
+        "energy": 0,
+        "task": {
+          "role": "bootstrap",
+          "working": false
+        }
+      }
+    ],
+    "alerts": {}
+  },
+  {
+    "tick": 32879,
+    "controllerProgress": 122123,
+    "creeps": [
+      {
+        "name": "hauler-W6N8-31371-245",
+        "x": 43,
+        "y": 8,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": false,
+          "task": "HAUL_PICKUP",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-31421-246",
+        "x": 36,
+        "y": 20,
+        "energy": 141,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-31467-247",
+        "x": 30,
+        "y": 17,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": false,
+          "task": "WAIT_MINER_OUTPUT",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-31499-248",
+        "x": 22,
+        "y": 6,
+        "energy": 0,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": false,
+          "task": "WAIT_MINER_OUTPUT",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-31569-249",
+        "x": 37,
+        "y": 20,
+        "energy": 135,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "worker-W6N8-31677-250",
+        "x": 38,
+        "y": 20,
+        "energy": 0,
+        "task": {
+          "role": "bootstrap",
+          "working": false,
+          "task": "WAIT_HAUL_DELIVERY",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32451-252",
+        "x": 32,
+        "y": 18,
+        "energy": 63,
+        "task": {
+          "role": "hauler",
+          "sourceId": "0d080772ccae8f2",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-32522-254",
+        "x": 39,
+        "y": 20,
+        "energy": 78,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32590-255",
+        "x": 34,
+        "y": 5,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-32650-256",
+        "x": 40,
+        "y": 16,
+        "energy": 250,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-32723-257",
+        "x": 40,
+        "y": 20,
+        "energy": 84,
+        "task": {
+          "role": "bootstrap",
+          "working": true,
+          "task": "UPGRADE",
+          "lastAction": 0
+        }
+      },
+      {
+        "name": "hauler-W6N8-32758-258",
+        "x": 39,
+        "y": 19,
+        "energy": 86,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "hauler-W6N8-32788-259",
+        "x": 42,
+        "y": 7,
+        "energy": 150,
+        "task": {
+          "role": "hauler",
+          "sourceId": "6bb50772cca441b",
+          "working": true,
+          "task": "HAUL_DELIVER",
+          "lastAction": -9
+        }
+      },
+      {
+        "name": "worker-W6N8-32860-260",
+        "x": 32,
+        "y": 19,
+        "energy": 0,
+        "task": {
+          "role": "bootstrap",
+          "working": false
+        }
+      }
+    ],
+    "alerts": {}
+  }
+]
