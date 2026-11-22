@@ -76,3 +76,21 @@ test('an unobstructed carrier can transit near the controller without forced eva
   assert.equal(reservations.has(`traffic:${carrier.id}`), false);
   assert.equal(carrier.calls.length, 0);
 });
+
+test('link-adjacent stations preserve colony transit through the controller corridor',()=>{
+  const {h,room,spawn,controller,at}=world(),footprint=require('./fixtures/rcl5-layout.json');
+  const structures=footprint.buildings.map((b,i)=>({id:`building${i}`,my:true,structureType:b.type,pos:at(b.x,b.y)}));
+  const hub={id:'hub',my:true,structureType:'link',pos:at(39,17)},receiver={id:'receiver',my:true,structureType:'link',pos:at(38,25)};
+  structures.push(hub,receiver);room.storage=structures.find(s=>s.structureType==='storage');
+  const originalFind=room.find;room.find=kind=>kind===h.constants.FIND_STRUCTURES?structures:kind===h.constants.FIND_SOURCES?footprint.sources.map(([x,y],i)=>({id:`source${i}`,pos:at(x,y)})):originalFind(kind);
+  const memory=h.load('core.memory').initialize();memory.colonies[room.name]={links:{hub:{x:39,y:17},controller:{x:38,y:25}}};
+  for(let i=0;i<5;i++)h.addWorker(room,`consumer${i}`);
+  const colony=h.load('colony.snapshot').create(room),spots=h.load('economy.stations').layout(colony).positions;
+  assert.equal(spots.length,5);
+  assert.ok(spots.some(p=>receiver.pos.getRangeTo(p.x,p.y)<=1),'retain a usable link-adjacent station');
+  // Independent terrain search blocks all real structures and selected stationary workers.
+  const blocked=new Set([...structures.filter(s=>!['road','container','rampart'].includes(s.structureType)).map(s=>`${s.pos.x},${s.pos.y}`),...spots.map(s=>`${s.x},${s.y}`)]);
+  const route=at(37,27).findPathTo(hub.pos,{range:1,costCallback(name,matrix){for(const k of blocked){const [x,y]=k.split(',').map(Number);matrix.set(x,y,255);}}});
+  assert.ok(route.length>0 && route.length<=20,`controller supply corridor must remain open, got ${route.length} steps`);
+  h.reset();assert.deepEqual(JSON.parse(JSON.stringify(h.load('economy.stations').layout(colony).positions)),JSON.parse(JSON.stringify(spots)));
+});

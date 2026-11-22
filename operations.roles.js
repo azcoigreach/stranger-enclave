@@ -8,7 +8,8 @@ function run(creep,memory,reservations) {
   if (creep.spawning) return;
   if (creep.memory.role === 'scout') {scout.run(creep,memory);return;}
   const home=creep.memory.home || '', record=memory.colonies[home];
-  const op=record && record.expansion && record.expansion.remote;
+  const state=record && record.expansion;
+  const op=state && (state.remotes || (state.remote ? [state.remote] : [])).find(o=>o.room===creep.memory.targetRoom && o.sourceId===creep.memory.sourceId);
   const homeRoom=Game.rooms[home];
   if (!homeRoom || !homeRoom.controller || !homeRoom.controller.my) {creep.memory.task='REMOTE_HOME_UNAVAILABLE';return;}
   const storage=homeRoom.storage;

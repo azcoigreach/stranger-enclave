@@ -26,7 +26,7 @@ function setup() {
   home.room.energyAvailable=home.room.energyCapacityAvailable=1300;
   home.room.storage={id:'bank',my:true,structureType:'storage',store:store(5000,1000000),pos:position(26,26,home.room.name)};
   home.objects[h.constants.FIND_STRUCTURES].push(home.room.storage);
-  h.context.PathFinder.search=()=>({incomplete:false,cost:45,path:[position(19,20,away.room.name)]});
+  h.context.PathFinder.search=(origin,goal)=>({incomplete:false,cost:45,path:[position(19,20,goal.pos.roomName)]});
   const memory=h.load('core.memory').initialize();
   h.load('territory.intel').observe(home.room,memory);h.load('territory.intel').observe(away.room,memory);
   const record=memory.colonies[home.room.name]={lastSeen:1,level:4,energy:1300,capacity:1300,workers:0,reason:'TEST'};
@@ -80,12 +80,12 @@ test('intel records actual slots, exits, reservation expiry and hostile capabili
 });
 function homeName(){return 'E23S47';}
 
-test('remote commitment waits for storage reserves and accepts only complete short routes',()=> {
+test('remote commitment waits for storage reserves and accepts only complete bounded routes',()=> {
   const {h,home,colony,record,activate}=setup();home.room.storage.store.energy=1999;
   assert.equal(activate(),undefined);assert.equal(record.expansion.reason,'WAIT_STORAGE_RESERVE');
   home.room.storage.store.energy=5000;h.context.PathFinder.search=()=>({incomplete:true,path:[],cost:10});
   assert.equal(activate(),undefined);assert.equal(record.expansion.reason,'NO_ECONOMIC_ROUTE');
-  h.context.PathFinder.search=()=>({incomplete:false,path:[{}],cost:101});assert.equal(activate(),undefined);
+  h.context.PathFinder.search=()=>({incomplete:false,path:[{}],cost:201});assert.equal(activate(),undefined);
   h.context.PathFinder.search=()=>({incomplete:false,path:[{}],cost:45});const op=activate();
   assert.equal(op.room,'E24S47');assert.equal(op.carry,20);
   h.load('operations.remote').update(colony(),h.Memory.enclave,record);assert.equal(record.expansion.remote,op);
@@ -115,16 +115,16 @@ test('routes and movement reject every out-of-block intermediate and remote unkn
 test('scout visits unseen neighboring rooms and retains its target through a reset',()=> {
   const {h,home,away,role,memory}=setup();delete h.Game.rooms[away.room.name];delete memory.intel[away.room.name];
   const c=role('scout','scout');delete c.memory.targetRoom;h.load('operations.scout').run(c,memory);
-  assert.equal(c.memory.targetRoom,'E22S47');assert.equal(c.calls[0].opts.maxRooms,2);
-  const target=c.memory.targetRoom;h.reset();h.Game.time++;c.calls=[];
+  assert.equal(c.memory.targetRoom,'E22S47');assert.equal(c.calls[0].path[0].roomName,'E22S47');
+  const target=c.memory.targetRoom;h.reset();h.context.PathFinder.search=(origin,goal,opts)=>{assert.equal(opts.maxRooms,2);return {incomplete:false,cost:45,path:[position(19,20,goal.pos.roomName)]};};h.Game.time++;c.calls=[];
   h.load('operations.scout').run(c,h.Memory.enclave);assert.equal(c.memory.targetRoom,target);
-  assert.equal(c.calls[0].target.roomName,target);assert.equal(c.memory.home,home.room.name);
+  assert.equal(c.calls[0].path[0].roomName,target);assert.equal(c.memory.home,home.room.name);
 });
 
 test('scout retreats on newly observed threats and does not count unseen rooms as surveyed',()=> {
   const {h,away,role,memory}=setup();const c=role('scout','scout',away.room);
   memory.intel[away.room.name].unsafeUntil=2000;
-  h.load('operations.scout').run(c,memory);assert.equal(c.calls[0].target.roomName,'E23S47');
+  h.load('operations.scout').run(c,memory);assert.equal(c.calls[0].path[0].roomName,'E23S47');
   assert.equal(memory.intel.E22S47,undefined);
 });
 
@@ -286,4 +286,10 @@ test('ordinary construction still defers remote crew spending after the scout is
   const {h,colony,memory,record,role,activate}=setup();activate();role('scout','scout');
   record.layout={version:1,buildings:[{type:'storage',x:40,y:17}]};
   assert.equal(h.load('operations.remote').request(colony(),memory,record),null);
+});
+
+test('scouts do not follow an incomplete route into a cul-de-sac while refreshing remote intel',()=>{
+ const {h,memory,role}=setup(),c=role('scout','scout');
+ h.context.PathFinder.search=()=>({incomplete:true,cost:25,path:[position(5,18,c.room.name)]});
+ assert.equal(h.load('movement.remote').travel(c,'E24S47',memory,true),-2);assert.equal(c.calls.length,0);
 });

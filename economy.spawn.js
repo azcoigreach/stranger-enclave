@@ -59,7 +59,9 @@ function run(colony, memory, record) {
     memory: { role, home: colony.room.name, working: false, ...(request && request.targetRoom ? {targetRoom:request.targetRoom} : {}), ...(request && request.sourceId ? { sourceId: request.sourceId } : {}) },
   });
   if (result === OK && request && request.targetRoom && record.expansion && record.expansion.remote) {
-    record.expansion.remote.spawnEnergy += cost;
+    const state=record.expansion;
+    const op=(state.remotes || (state.remote ? [state.remote] : [])).find(o=>o.room===request.targetRoom && o.sourceId===request.sourceId);
+    if(op) op.spawnEnergy += cost;
   }
   record.spawnResult = result;
   record.reason = result === OK ? (request ? `SPAWNING_${request.role.toUpperCase()}_${request.reason}` :

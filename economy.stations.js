@@ -1,4 +1,6 @@
 'use strict';
+const links=require('economy.links');
+const transit=require('economy.lanes');
 
 /** Plain-coordinate layout cache. Each chosen worker tile preserves a complete
  * delivery path, whose tiles cannot become later worker stations. */
@@ -20,7 +22,7 @@ function layout(colony) {
   for (const object of [...colony.sources, colony.controller, ...colony.room.find(FIND_MINERALS)]) blocked.add(keyOf(object.pos));
   /** @type {Array<{x:number,y:number}>} */
   const positions = [], lanes = [];
-  const laneKeys = new Set();
+  const laneKeys = new Set(), transitAllowed=transit.guard(colony);
   const walkable = (/** @type {{x:number,y:number}} */ p) => p.x > 0 && p.y > 0 && p.x < 49 && p.y < 49 &&
     !(terrain.get(p.x, p.y) & TERRAIN_MASK_WALL) && !blocked.has(keyOf(p));
   /** @param {{x:number,y:number}} spot @returns {Array<{x:number,y:number}> | null} */
@@ -46,10 +48,12 @@ function layout(colony) {
     const path = approach(spot);
     if (path) candidates.push({ ...spot, distance: path.length });
   }
-  candidates.sort((a, b) => a.distance - b.distance || a.x - b.x || a.y - b.y);
+  const receiver=links.network(colony).controller;
+  const linked=(/** @type {{x:number,y:number}} */ p)=>receiver && receiver.pos.getRangeTo(p.x,p.y)<=1 ? 0 : 1;
+  candidates.sort((a, b) => linked(a)-linked(b) || a.distance - b.distance || a.x - b.x || a.y - b.y);
   for (const candidate of candidates) {
     if (positions.length >= workers.length) break;
-    if (laneKeys.has(keyOf(candidate))) continue;
+    if (laneKeys.has(keyOf(candidate)) || !transitAllowed([...positions,candidate])) continue;
     const path = approach(candidate);
     if (!path) continue;
     positions.push({ x: candidate.x, y: candidate.y });
@@ -60,16 +64,18 @@ function layout(colony) {
     }
   }
   const entry = { tick: Game.time, key, positions, lanes };
+  const record=Memory.enclave?.colonies[colony.room.name];
+  if(record)record.controllerStations=positions;
   if (cache.size >= 81) cache.clear();
   cache.set(colony.room.name, entry);
   return entry;
 }
 
 /** Block reserved stations and current worker positions, leaving delivery lanes open.
- * @param {ColonySnapshot} colony @param {CostMatrix} matrix
+ * @param {ColonySnapshot} colony @param {CostMatrix} matrix @param {boolean} [occupiedOnly]
  */
-function blockStations(colony, matrix) {
-  for (const pos of layout(colony).positions) matrix.set(pos.x, pos.y, 255);
+function blockStations(colony, matrix, occupiedOnly=false) {
+  if(!occupiedOnly)for (const pos of layout(colony).positions) matrix.set(pos.x, pos.y, 255);
   for (const worker of colony.workers) {
     if (!worker.spawning && worker.memory.role === 'bootstrap' && worker.pos.inRangeTo(colony.controller, 3)) {
       matrix.set(worker.pos.x, worker.pos.y, 255);

@@ -29,18 +29,24 @@ function harness(savedMemory = {}, options = {}) {
   const logs = [];
   const violations = [];
   const constants = {
-    OK: 0, ERR_NOT_IN_RANGE: -9, ERR_NO_PATH: -2, ERR_NOT_ENOUGH_ENERGY: -6,
+    OK: 0, ERR_BUSY: -4, ERR_TIRED: -11, ERR_NOT_FOUND: -5, ERR_NOT_IN_RANGE: -9, ERR_NO_PATH: -2, ERR_NOT_ENOUGH_ENERGY: -6,
     CLAIM: 'claim', ATTACK: 'attack', RANGED_ATTACK: 'ranged_attack', HEAL: 'heal', WORK: 'work', CARRY: 'carry', MOVE: 'move', RESOURCE_ENERGY: 'energy',
-    STRUCTURE_KEEPER_LAIR: 'keeperLair', STRUCTURE_INVADER_CORE: 'invaderCore', STRUCTURE_SPAWN: 'spawn', STRUCTURE_EXTENSION: 'extension', STRUCTURE_TOWER: 'tower',
+    STRUCTURE_LINK: 'link', STRUCTURE_LAB:'lab', STRUCTURE_TERMINAL:'terminal', STRUCTURE_OBSERVER:'observer', STRUCTURE_POWER_SPAWN:'powerSpawn', STRUCTURE_NUKER:'nuker', STRUCTURE_FACTORY:'factory', STRUCTURE_EXTRACTOR:'extractor', STRUCTURE_KEEPER_LAIR: 'keeperLair', STRUCTURE_INVADER_CORE: 'invaderCore', STRUCTURE_SPAWN: 'spawn', STRUCTURE_EXTENSION: 'extension', STRUCTURE_TOWER: 'tower',
     STRUCTURE_WALL: 'constructedWall', STRUCTURE_CONTAINER: 'container', STRUCTURE_STORAGE: 'storage', STRUCTURE_ROAD: 'road', STRUCTURE_RAMPART: 'rampart',
     CREEP_SPAWN_TIME: 3, TOWER_ENERGY_COST: 10, MAX_CONSTRUCTION_SITES: 100, TERRAIN_MASK_WALL: 1, TERRAIN_MASK_SWAMP: 2,
     BODYPART_COST: { work: 100, carry: 50, move: 50, claim: 600 }, ENERGY_REGEN_TIME: 300, HARVEST_POWER: 2,
+    WALL_HITS_MAX: 300000000, RAMPART_HITS_MAX:{2:300000,3:1000000,4:3000000,5:10000000,6:30000000,7:100000000,8:300000000},
+    BUILD_POWER: 5, REPAIR_POWER: 100, REPAIR_COST: 0.01, RAMPART_DECAY_AMOUNT: 300, RAMPART_DECAY_TIME: 100, LINK_LOSS_RATIO: 0.03, CREEP_CLAIM_LIFE_TIME: 600,
+    CONSTRUCTION_COST: {spawn:15000,extension:3000,tower:5000,storage:30000,link:5000,constructedWall:1,rampart:1},
     CARRY_CAPACITY: 50, CREEP_LIFE_TIME: 1500, UPGRADE_CONTROLLER_POWER: 1,
-    EVENT_TRANSFER: 12, EVENT_HARVEST: 5, EVENT_UPGRADE_CONTROLLER: 9,
+    EVENT_BUILD: 4, EVENT_REPAIR: 7, EVENT_TRANSFER: 12, EVENT_HARVEST: 5, EVENT_UPGRADE_CONTROLLER: 9,
     FIND_STRUCTURES: 1, FIND_SOURCES: 2, FIND_MY_CONSTRUCTION_SITES: 3, FIND_HOSTILE_CREEPS: 4,
     FIND_DROPPED_RESOURCES: 5, FIND_TOMBSTONES: 6, FIND_RUINS: 7, FIND_MINERALS: 8, FIND_EXIT: 9, FIND_CREEPS: 10, FIND_POWER_CREEPS: 11,
-    CONTROLLER_STRUCTURES: { storage: {1:0,2:0,3:0,4:1}, spawn: { 1: 1, 2: 1, 3: 1, 4: 1 }, road: { 1: 2500, 2: 2500, 3: 2500 }, container: { 1: 5, 2: 5, 3: 5 }, extension: { 1: 0, 2: 5, 3: 10, 4: 20 }, tower: { 1: 0, 2: 0, 3: 1, 4: 1 } },
+    CONTROLLER_STRUCTURES: { link:{1:0,2:0,3:0,4:0,5:2,6:3,7:4,8:6}, constructedWall:{1:0,2:2500,3:2500,4:2500,5:2500}, rampart:{1:0,2:2500,3:2500,4:2500,5:2500}, storage: {1:0,2:0,3:0,4:1,5:1}, spawn: { 1: 1, 2: 1, 3: 1, 4: 1, 5: 1 }, road: { 1: 2500, 2: 2500, 3: 2500 }, container: { 1: 5, 2: 5, 3: 5 }, extension: { 1: 0, 2: 5, 3: 10, 4: 20, 5: 30 }, tower: { 1: 0, 2: 0, 3: 1, 4: 1, 5: 2 } },
   };
+  for(const [type,count] of Object.entries({spawn:3,extension:60,tower:6,storage:1,link:6,lab:10,terminal:1,observer:1,powerSpawn:1,nuker:1,factory:1,extractor:1})) {
+    constants.CONTROLLER_STRUCTURES[type] ||= {};constants.CONTROLLER_STRUCTURES[type][8]=count;
+  }
   const Game = { time: 1, creeps: {}, rooms: {}, spawns: {}, constructionSites: {},
     map: { describeExits: () => ({}), findRoute: () => -2 },
     cpu: { bucket: 10000, limit: 100, tickLimit: 500, getUsed: () => 1 } };
@@ -102,9 +108,10 @@ function harness(savedMemory = {}, options = {}) {
       body: ['work', 'carry', 'move'].map(type => ({ type, hits: 100 })),
       getActiveBodyparts(type) { return this.body.filter(part => part.type === type && part.hits > 0).length; },
       ticksToLive: 1000, fatigue: 0, spawning: false, calls: [],
+      moveByPath(path) { this.calls.push({ action: 'path', path }); return 0; },
       move(direction) { this.calls.push({ action: 'step', direction }); return 0; },
       moveTo(target, opts) { this.calls.push({ action: 'move', target, opts }); return 0; } };
-    for (const action of ['reserveController', 'pickup', 'withdraw', 'harvest', 'upgradeController', 'transfer', 'build']) {
+    for (const action of ['repair', 'reserveController', 'pickup', 'withdraw', 'harvest', 'upgradeController', 'transfer', 'build']) {
       creep[action] = function(target, resource, amount) { this.calls.push({ action, target, resource, amount }); return this.actionResults[action] ?? 0; };
     }
     Object.defineProperty(creep, 'memory', { get: () => savedMemory.creeps[name], set: value => { savedMemory.creeps[name] = value; } });
