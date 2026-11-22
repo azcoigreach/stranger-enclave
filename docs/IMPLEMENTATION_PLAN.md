@@ -198,3 +198,8 @@ The defense funding follow-up adds RCL 4–8 barrier goals, staged uniform forti
 
 
 Versioned delivery and GitHub issue tracking begin with v0.1.0 and [issue #5](https://github.com/azcoigreach/stranger-enclave/issues/5). See [release procedure](RELEASING.md) for version consistency, changelog maintenance, review gates, publication and back-merging. Release labels do not claim that unfinished milestones passed their acceptance gates.
+
+
+## Mobile defense update — November 22, 2026
+
+[Issue #14](https://github.com/azcoigreach/stranger-enclave/issues/14) implements observed hostile capability assessment, coordinated tower targeting, bounded mobile reinforcements, escort/evacuation and fresh-vision return gates. Deterministic fixtures and isolated installed-engine intent scenarios cover tower-solvable invaders, unguarded remote raids, healing players, simultaneous threats and defender loss. This advances milestone 3 without claiming its completion: sustained live raids, whole-world interception/pathfinding and CPU behavior remain unverified. See [contracts](CORE_BOT.md#mobile-defense-and-civilian-evacuation) and [scenario evidence](validation/2026-11-22-mobile-defense.md).

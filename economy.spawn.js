@@ -4,6 +4,7 @@ const config = require('core.config');
 const demand = require('economy.demand');
 const production = require('economy.production');
 const operations = require('operations.remote');
+const defense = require('defense.dispatch');
 
 /** Pure bootstrap body selection. The first two workers always use the 200-energy rescue body.
  * @param {number} energy @param {number} active @returns {BodyPartConstant[]}
@@ -22,13 +23,14 @@ function bodyFor(energy, active) {
  */
 function run(colony, memory, record) {
   const plan = colony.demand = demand.plan(colony, record);
-  const generalists = colony.workers.filter(c => c.memory.role === 'bootstrap');
+  const generalists = [...colony.workers.filter(c => c.memory.role === 'bootstrap'),
+    ...Object.values(Game.creeps).filter(c=>c.memory.role==='bootstrap'&&c.memory.home===colony.room.name&&c.memory.evacuation&&c.room.name!==colony.room.name)];
   const active = generalists.filter(c => !c.spawning);
   const desired = Math.max(2, Math.min(6, colony.sources.length * 2));
   let body = bodyFor(colony.room.energyAvailable, active.length);
   const leadTime = config.maxWorkerUnits * 3 * CREEP_SPAWN_TIME + 50;
   const viable = generalists.filter(c => c.spawning || (c.ticksToLive || 0) > leadTime).length;
-  const pending = colony.spawns.filter(s => s.spawning && !Game.creeps[s.spawning.name]).length;
+  const pending = colony.spawns.filter(s => s.spawning && !Game.creeps[s.spawning.name] && Memory.creeps[s.spawning.name]?.role!=='defender').length;
   record.workers = colony.workers.filter(c => !c.spawning).length;
   record.desired = plan.specialized ? undefined : desired;
   record.staffing = plan.specialized ? {
@@ -43,11 +45,19 @@ function run(colony, memory, record) {
   if (!colony.spawns.length) { record.reason = 'NO_SPAWN_SUPPORT_REQUIRED'; return; }
   /** @type {SpawnRequest | null} */
   let request = null;
-  if (plan.specialized && viable + pending >= 2) {
-    request = production.request(colony, plan) || operations.request(colony, memory, record);
+  const combat=defense.request(colony,memory);
+  const evacuated=Object.values(Game.creeps).some(c=>c.memory.home===colony.room.name&&c.memory.evacuation);
+  if(viable+pending>=2&&evacuated&&memory.defense?.rooms[colony.room.name]?.mode!=='clear'&&memory.defense?.rooms[colony.room.name]){
+    if(!combat){record.reason='DEFENSE_EVACUATION';return;}
+    request=combat;body=request.body;
+  } else if (plan.specialized && viable + pending >= 2) {
+    const local=production.request(colony, plan);
+    request=local&&(!combat||local.priority<=combat.priority||colony.controller.ticksToDowngrade<5000)?local:combat;
+    request=request || operations.request(colony, memory, record);
     if (!request) { record.reason = 'THROUGHPUT_READY'; return; }
     body = request.body;
-  } else if (viable + pending >= desired) { record.reason = 'WORKFORCE_READY'; return; }
+  } else if (viable + pending >= 2 && combat) {request=combat;body=request.body;}
+  else if (viable + pending >= desired) { record.reason = 'WORKFORCE_READY'; return; }
   const spawn = colony.spawns.find(s => !s.spawning);
   if (!spawn) { record.reason = 'SPAWN_BUSY'; return; }
   if (!body.length) { record.reason = 'WAITING_FOR_200_ENERGY'; return; }
@@ -56,8 +66,9 @@ function run(colony, memory, record) {
   const role = request ? request.role : 'bootstrap';
   const name = `${role === 'bootstrap' ? 'worker' : role}-${colony.room.name}-${Game.time}-${memory.sequence++}`;
   const result = spawn.spawnCreep(body, name, {
-    memory: { role, home: colony.room.name, working: false, ...(request && request.targetRoom ? {targetRoom:request.targetRoom} : {}), ...(request && request.sourceId ? { sourceId: request.sourceId } : {}) },
+    memory: { role, home: colony.room.name, working: false, ...(request?.defenseRoom ? {defenseRoom:request.defenseRoom} : {}), ...(request && request.targetRoom ? {targetRoom:request.targetRoom} : {}), ...(request && request.sourceId ? { sourceId: request.sourceId } : {}) },
   });
+  if(result===OK&&request?.role==='defender')defense.spawned(request,name,memory);
   if (result === OK && request && request.targetRoom && record.expansion && record.expansion.remote) {
     const state=record.expansion;
     const op=(state.remotes || (state.remote ? [state.remote] : [])).find(o=>o.room===request.targetRoom && o.sourceId===request.sourceId);

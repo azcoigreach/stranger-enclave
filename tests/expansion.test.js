@@ -71,7 +71,7 @@ test('home haulers withdraw storage only during a source gap with home demand',(
 test('intel records actual slots, exits, reservation expiry and hostile capabilities',()=> {
   const {h,away,memory}=setup();away.room.getTerrain=()=>({get:(x,y)=>x===19&&y===20?0:1});
   away.controller.reservation={username:'rival',ticksToEnd:200};
-  away.objects[h.constants.FIND_HOSTILE_CREEPS]=[{body:[{type:'attack',hits:100},{type:'heal',hits:0}]}];
+  away.objects[h.constants.FIND_HOSTILE_CREEPS]=[{id:'raider',pos:position(20,20,away.room.name),owner:{username:'rival'},hits:100,body:[{type:'attack',hits:100},{type:'heal',hits:0}]}];
   h.load('territory.intel').observe(away.room,memory);
   const info=memory.intel[away.room.name];
   assert.equal(info.sources[0].slots.length,1);assert.equal(info.sources[0].capacity,1500);

@@ -102,3 +102,10 @@ Remote reservation scheduling adds three regressions: an unreserved second opera
 
 
 `version.test.js` covers one banner per runtime, repeated banners after global reset, persistence through Memory serialization, visibility on initialization failure and use of the deployed version module. Metadata checks reject mismatched runtime/package/lock versions. Operational replay excludes only `[enclave:startup]` banners because their frequency intentionally depends on reset frequency; all other logs and prior expected game actions remain compared.
+
+
+### Mobile defense
+
+`mobile-defense.test.js` covers observed boosts/active parts, affordable bodies, tower support, interception deadlines and lifetime, home/remote priority, shared spawn arbitration, accepted spending and loss caps, pending names, safe fallbacks, partial/forbidden routes, civilian work preemption, combat/escort actions, original-health fitness, dead-memory cleanup, and return after fresh vision. A 32-tick replay compares full defense/evacuation memory with and without serialization/global resets and reversed insertion order. Existing tower-before-worker assertions remain unchanged; their tower mock now exposes `isActive()`, and the intel fixture supplies the real hostile identity/position fields required by richer observations.
+
+The optional `node tools/check-defense-engine.js /path/to/node_modules/@screeps/engine` executes installed engine attack, healing, tower, body damage and movement processors against an in-memory world. Its fixture-only driver provides constants and no-op notifications, with no database/network API. It never connects to the running world. It clears transient `_oldHits` between fixture ticks to reproduce the engine's fresh object loading. Fixed combat positions and supplied evacuation paths make this a processor integration check, not a live raid or whole-world movement/CPU test. See [recorded evidence](validation/2026-11-22-mobile-defense.md).
